@@ -4,30 +4,30 @@ Drawings
 .. contents:: :local:
     :depth: 2
 
-Since Pine version 4, it is possible to write indicators and strategies which
+Since Pine version 4, it is possible to write indicators and strategies that
 create *drawing objects* on chart. At the moment two kinds of 
-drawings are supported, they are *label* and *line*:
+drawings are supported - *label* and *line*:
 
 .. image:: images/label_and_line_drawings.png
 
-.. note:: On TradingView chart there is a whole set of *Drawing Tools*
-  which are created and modified manually by user mouse actions. Though they look very similar to
+.. note:: There is a whole set of *Drawing Tools*
+  on the chart which are created and modified manually by user's mouse actions. Though they look very similar to
   Pine drawing objects they are essentially different entities. 
-  Drawing objects created from Pine code are unable to modify by mouse actions.
+  Drawing objects created from Pine code cannot be modified by mouse actions.
 
-Lines and labels allow you to create more sophisticated indicators like pivot points support/resistance levels,
+Lines and labels allow you to create more sophisticated indicators like pivot point support/resistance levels,
 zig zag, various labels with dynamic text info, etc.
 
 In contrast to indicator plots (plots are created with functions ``plot``, ``plotshape``, ``plotchar``), 
-drawing objects could be created on historical bars as well as in the future (where there is no bars yet).
+drawing objects could be created on historical or future bars (if there are no bars yet).
 
 Creating drawings
 -----------------
 
 Drawing objects in Pine are created with functions `label.new <https://www.tradingview.com/study-script-reference/v4/#fun_label{dot}new>`__ 
 and `line.new <https://www.tradingview.com/study-script-reference/v4/#fun_line{dot}new>`__. 
-Each function has a number of various parameters, but only the coorinates are the mandatory ones.
-For example, a minimal code, that creates a label on every bar::
+Each function has a number of various parameters, but only the coordinates are mandatory.
+For example, a minimum code, that creates a label on every bar::
     
     //@version=4
     study("My Script", overlay=true)
@@ -35,13 +35,13 @@ For example, a minimal code, that creates a label on every bar::
 
 .. image:: images/minimal_label.png
 
-Label is created with parameters ``x=bar_index`` (which is the index of the current bar, 
-`bar_index <https://www.tradingview.com/study-script-reference/v4/#var_bar_index>`__) and ``y=high`` (high price of the current bar).
-When a new bar opens, a new label is created on it. Label object, created on the previous closed bar stays on chart, 
+Label is created with ``x=bar_index`` parameters (index of current bar, 
+`bar_index <https://www.tradingview.com/study-script-reference/v4/#var_bar_index>`__) and ``y=high`` (current high).
+When a new bar opens, a new label is created on it. Label object, created on the previous closed bar stays on the chart, 
 until indicator deletes it with an explicit call of `label.delete <https://www.tradingview.com/study-script-reference/v4/#fun_label{dot}delete>`__ 
 function or it would be automatically collected as an old garbage object after a while.
 
-Here is a modified version of the same script that shows values of ``x`` and ``y`` coordinates of the created labels::
+Here is a modified version of the same script that shows values of ``x`` and ``y`` coordinates of created labels::
 
     //@version=4
     study("My Script", overlay=true)
@@ -53,7 +53,7 @@ Here is a modified version of the same script that shows values of ``x`` and ``y
 In this example labels are shown without a background coloring (because of parameter ``style=label.style_none``) but with a 
 dynamically created text (``text="x=" + tostring(bar_index) + "\ny=" + tostring(high)``) that prints actual values of label coordinates.
 
-Finally, here is a minimal code, that creates line objects on chart::
+Finally, here is a minimum code, that creates line objects on the chart::
 
     //@version=4
     study("My Script", overlay=true)
@@ -67,21 +67,20 @@ Calculation of drawings on bar updates
 
 Drawing objects are subject to both *commit* and *rollback* actions as well as any other Pine variables, :doc:`/language/Execution_model`.
 
-That is why script::
+Here is an example:
 
     //@version=4
     study("My Script", overlay=true)
     label.new(bar_index, high)
 
-Being calculated on realtime bar updates script does not produce a new label object after every price movement. Rollback erases any drawing objects,
-created during any intra-bar update. After calculation on a closing bar update a label object is finally commited and stays on chart.
+Drawings that were created based on previous updates are going to be deleted automatically. Once the script has been calculated on a closing bar update a label object is finally commited and stays on the chart.
 
 .. _drawings_coordinates:
 
 Coordinates
 -----------
 
-Drawing objects are positioned on chart according to the *x* and *y* coordinates. Meaning (and the resulting effect) could be different, depending on
+Drawing objects are positioned on the chart according to the *x* and *y* coordinates. Meaning (and the resulting effect) could be different, depending on
 values of drawing properties *x-location* and *y-location*. Plus there are minor nuances for label and line.
 
 If drawing object uses `xloc.bar_index <https://www.tradingview.com/study-script-reference/v4/#var_xloc{dot}bar_index>`__, then
@@ -309,12 +308,12 @@ In "Last Bar Close 1" study, on every new bar update a new label object is creat
 Variable ``l`` has type *series label*, so operator ``[]`` is used to get label object on the previous bar. 
 That old label then is passed to ``label.delete`` function to delete it.
 
-Functions ``label.delete`` and ``line.delete`` do nothing if ``na`` object is passed to them. That is why::
+Functions ``label.delete`` and ``line.delete`` do nothing if ``na`` object is passed to them. Here is why::
 
     if not na(l[1])
         label.delete(l[1])
 
-Such a "protection" (the ``if`` statement) is not necessary.
+Such "protection" (the ``if`` statement) is not necessary.
 
 Exactly the same behaviour could be achieved with another approach. An old label could be deleted and then a new one created using just one 
 reference ``l`` on the same current bar::
@@ -557,16 +556,16 @@ Issues
 Total number of drawings limit
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Pine code that operates with drawing objects consume server resources. That is why there is a limitation on total number of drawings 
+Pine code that operates with drawing objects consume server resources. That is why there is a limitation of total number of drawings 
 per study or strategy. If Pine code creates too many drawings, the old ones are automatically deleted by the Pine runtime.
 
-For example, here is a code, that creates a drawing on every bar::
+For example, here is a code that creates a drawing on every bar::
 
     //@version=4
     study("My Script", overlay=true)
     label.new(bar_index, high)
 
-Scrolling the chart to the left one may see that there are no drawings after about the 50 bars back:
+Scrolling the chart back will demonstrate that drawings were removed:
 
 .. image:: images/drawings_total_number_limit.png
 
@@ -576,15 +575,15 @@ Additional securities
 
 Pine code may use additional symbols and/or timeframes with the :doc:`security <Context_switching_the_security_function>` function. 
 But all the drawing functions are allowed to be called only on the main symbol context. Anyway, secondary symbols are not displayed on the
-chart, so this limitation is pretty natural.
+chart, so this limitation is quite standard.
 
 
 max_bars_back of time
 ^^^^^^^^^^^^^^^^^^^^^
 
-Usage of ``barstate.isrealtime`` in combination with drawings sometimes could lead to not so obvious weird behaviour of Pine code.
-For example, there is a code, that supposed to create label drawings on the *realtime* bars, skipping
-all the history bars::
+Usage of ``barstate.isrealtime`` in combination with drawings could sometimes lead to not so obvious behaviour of Pine code.
+For example, there is a code that is supposed to create label drawings on the *realtime* bars, skipping
+all the historical bars::
 
     //@version=4
     study("My Script", overlay=true)
@@ -592,20 +591,19 @@ all the history bars::
     if barstate.isrealtime
         label.new(bar_index[10], na, text="Label", yloc=yloc.abovebar)
 
-This study doesn't add anything on chart at all, actually, it fails in runtime with an error. 
-The reason for the error is that Pine could not determine the buffer size for history values of ``time`` plot, but...
+This study doesn't add anything on the chart at all. In fact, it fails in runtime with an error. 
+The reason for the error is that Pine could not determine the buffer size for historical values of ``time`` plot, but...
 ``time`` built-in variable even was not mentioned in the Pine code!
 
-First, built-in variable ``bar_index`` under the covers works with ``time`` series. Accessing the value of 
-bar index 10 bars back, needs that history buffer size of ``time`` series should be of size 10 elements or more.
+Firstly, a built-in ``label.new``function on the back end works with ``time`` series. To get the time value that was recorded 10 bars ago this data must be stored in a buffer. 
 
-Second, in Pine there is a mechanism that automaticaly detects history buffer sizes in most of the cases.
-Autodetection works like this. For a limited number of bars study is allowed to access history values any bars back from the current bar.
-Thus the system knows what history buffer size a series or a variable needs. Condition `if barstate.isrealtime` makes the line with
-``bar_index[10]`` to be skipped for all history bars, so the system does not know anything about the ``bar_index`` (but, remember, ``time`` series)
-history buffer size needed. That is why the code fails.
+Secondly, in Pine there is a mechanism that automaticaly detects historical buffer sizes in most of the cases.
+Autodetection works like this. For a limited number of bars study is allowed to access historical values any bars back from the current bar.
+Thus the system knows what historical buffer size a series or a variable needs. Condition `if barstate.isrealtime` makes the line with
+``bar_index[10]`` to be skipped for all historical bars, so the system does not know anything about the ``time`` (but remembers ``bar_index`` variable)
+historical buffer size needed. That is why the code fails.
 
-Solution for this is to use `max_bars_back <https://www.tradingview.com/pine-script-reference/v4/#fun_max_bars_back>`__ function to explicitly set the history buffer size for ``time`` series::
+Solution for this is to use `max_bars_back <https://www.tradingview.com/pine-script-reference/v4/#fun_max_bars_back>`__ function to explicitly set the historical buffer size for ``time`` series::
 
     //@version=4
     study("My Script", overlay=true)
@@ -615,5 +613,5 @@ Solution for this is to use `max_bars_back <https://www.tradingview.com/pine-scr
     if barstate.isrealtime
         label.new(bar_index[10], na, text="Label", yloc=yloc.abovebar)
 
-This case is rare, and very confusing. Pine team knows about it and works hard to make things simpler and clearer.
+This case is rare and very confusing. Pine team knows about it and works hard to make things simpler and clearer.
 

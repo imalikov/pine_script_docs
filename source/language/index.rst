@@ -4,12 +4,12 @@ Language fundamentals
 .. toctree::
    :maxdepth: 3
    :name: appendixtoc
-   
+
    Structure_of_the_script
    Versions
    Comments
    Identifiers
-   Lines_wrapping
+   Line_wrapping
    Type_system
    Operators
    Functions_and_annotations

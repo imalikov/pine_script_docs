@@ -11,7 +11,7 @@ Pine Script |version| documentation
 .. toctree::
    :maxdepth: 3
    :name: mastertoc
-   
+
    Introduction
    Quickstart_guide
    language/index

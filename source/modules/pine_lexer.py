@@ -13,7 +13,7 @@ class PinePygmentsLexer(RegexLexer):
             (r'(\.\d+|[0-9]+\.[0-9]*)([eE][-+]?[0-9]+)?', Number.Float),
             (r'\s+', Text.Whitespace),
             (r'//.*?$', Comment), 
-            (r'(for|if)\b', Keyword),
+            (r'(for|if|else|var)\b', Keyword),
             (r'(open|high|low|close|volume|time|hl2|hlc3|ohlc4)\b', Name.Constant), # Built-in series 'open', 'high', ...
             (r'(study|strategy|plot|plotshape|plotchar|plotarrow|fill|hline|input)\b', Name.Entity), # Annotation function
             (r'[\w\.]+', Name.Other),

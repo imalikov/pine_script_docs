@@ -2,10 +2,10 @@
 Barcoloring a series with barcolor
 ----------------------------------
 
-The annotation function `barcolor <https://www.tradingview.com/study-script-reference/v4/#fun_barcolor>`__ 
-lets you specify a color for a bar
-dependent on the fulfillment of a certain condition. The following
-example script renders the *inside* and *outside* bars in different colors::
+The `barcolor <https://www.tradingview.com/pine-script-reference/v4/#fun_barcolor>`__
+annotation function lets you specify the color of bars.
+The coloring can be conditional. The following
+script renders *inside* and *outside* bars in different colors::
 
     //@version=4
     study("barcolor example", overlay=true)
@@ -19,5 +19,6 @@ example script renders the *inside* and *outside* bars in different colors::
 .. image:: images/Barcoloring_a_series_barcolor_1.png
 
 
-As you can see, when passing the ``na`` value, the colors stay with the default
-chart color.
+As you can see, the ``na`` value leaves bars as is.
+
+``barcolor`` works whether the script is running in ``overlay=true`` mode or not.

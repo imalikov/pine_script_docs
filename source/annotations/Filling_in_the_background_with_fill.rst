@@ -1,10 +1,10 @@
-Filling in the background with fill
------------------------------------
+Filling the background with fill
+--------------------------------
 
-The `fill <https://www.tradingview.com/study-script-reference/v4/#fun_fill>`__ 
-annotation function lets you color the background between two
-series, or two horizontal lines (created with ``hline``). The following
-example illustrates how it works::
+The `fill <https://www.tradingview.com/pine-script-reference/v4/#fun_fill>`__
+annotation function lets you color the background between two plotted
+series or two horizontal lines created with ``hline``. The following
+example illustrates how ``fill`` works::
 
     //@version=4
     study("fill Example")
@@ -23,8 +23,8 @@ example illustrates how it works::
 .. image:: images/Filling_in_the_background_between_objects_with_fill_1.png
 
 
-Please note that ``fill`` annotation is not designed to be used with ``plot`` and ``hline`` arguments simultaneously. 
-As a workaround you may replace ``hline`` call with a ``plot(<constant number>)``. For example::
+Please note that the ``fill`` annotation cannot be used with ``plot`` and ``hline`` arguments simultaneously.
+As a workaround you may replace ``hline`` calls with a ``plot(<constant number>)``. For example::
 
     //@version=4
     study("Fill example 2")
@@ -38,8 +38,8 @@ As a workaround you may replace ``hline`` call with a ``plot(<constant number>)`
 .. image:: images/Filling_in_the_background_between_objects_with_fill_2.png
 
 
-You can set the filling color by using constants like ``color=color.red`` or
-``color=#ff001a`` as well as complex expressions like ``color = close >=
+You can set the fill color by using constants like ``color=color.red`` or
+``color=#ff001a``, as well as complex expressions like ``color = close >=
 open ? color.green : color.red``. Example::
 
     //@version=4

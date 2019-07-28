@@ -1,9 +1,8 @@
 Price levels, hline
 -------------------
 
-The annotation function `hline <https://www.tradingview.com/study-script-reference/v4/#fun_hline>`__ 
-renders a horizontal line at a given
-fixed price level. For example::
+The `hline <https://www.tradingview.com/pine-script-reference/v4/#fun_hline>`__
+annotation function renders a horizontal line at a given level. For example::
 
     //@version=4
     study(title="Chaikin Oscillator", shorttitle="Chaikin Osc")
@@ -16,7 +15,7 @@ fixed price level. For example::
 .. image:: images/Price_levels_hline_1.png
 
 
-A *number* must be the first argument of ``hline``. Values of a *series* type
+A *number* must be the first argument of ``hline``. Values of *series* type
 are forbidden. It's possible to create a few horizontal lines with the
-help of ``hline`` and fill in the background between them with a
-translucent light using the function `fill <https://www.tradingview.com/study-script-reference/v4/#fun_fill>`__.
+help of ``hline`` and fill the background between them with a
+translucent color using `fill <https://www.tradingview.com/pine-script-reference/v4/#fun_fill>`__.

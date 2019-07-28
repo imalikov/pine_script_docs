@@ -2,14 +2,16 @@
 Background coloring with bgcolor
 --------------------------------
 
-Similar to the ``barcolor`` function, the `bgcolor <https://www.tradingview.com/study-script-reference/v4/#fun_bgcolor>`__ 
-function changes the color
-of the background. Function will the color of that can be calculated in
-an expression, and an optional parameter ``transp`` --- transparency from
-0--100 range --- which is 90 by default.
+The `bgcolor <https://www.tradingview.com/pine-script-reference/v4/#fun_bgcolor>`__
+annotation function changes the color
+of the script's background. If the script is running in ``overlay=true`` mode,
+then it will color the chart's background.
+The color used in ``bgcolor`` can be calculated in
+an expression and an optional ``transp`` parameter (0--100, default 90) allows
+control over the transparency level.
 
-As an example, here's a script for coloring trading sessions (try it on
-EURUSD, 30 min resolution)::
+Here is a script that colors the background of trading sessions (try it on
+EURUSD, at *30 minutes* resolution)::
 
     //@version=4
     study("bgcolor example", overlay=true)
@@ -18,8 +20,8 @@ EURUSD, 30 min resolution)::
     regular = #0000FF
     postmarket = #5000FF
     color notrading = na
-    sessioncolor = timeinrange("30", "0400-0930") ? premarket : 
-      timeinrange("30", "0930-1600") ? regular : 
+    sessioncolor = timeinrange("30", "0400-0930") ? premarket :
+      timeinrange("30", "0930-1600") ? regular :
       timeinrange("30", "1600-2000") ? postmarket : notrading
     bgcolor(sessioncolor, transp=75)
 

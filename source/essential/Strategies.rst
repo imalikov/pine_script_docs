@@ -6,19 +6,19 @@ Strategies
 
 ..    include:: <isonum.txt>
 
-A *strategy* is a study that can send, modify and cancel *orders* (to
-buy/sell). Strategies allow you to perform *backtesting* (emulation of
+A *strategy* is a Pine script that can send, modify and cancel *buy/sell orders*.
+Strategies allow you to perform *backtesting* (emulation of a
 strategy trading on historical data) and *forwardtesting* (emulation
-of strategy trading on real-time data) according to your precoded
+of a strategy trading on real-time data) according to your
 algorithms.
 
-A strategy written in Pine Script language has all the same capabilities
-as a Pine indicator. When you write a strategy code, it should start
-with the `strategy <https://www.tradingview.com/study-script-reference/v4/#fun_strategy>`__ 
-annotation call (instead of ``study``). Strategies not
-only plot something, but also place, modify and cancel orders. They have
+A strategy written in Pine has many of the same capabilities
+as a Pine *study*, a.k.a. *indicator*. When you write a strategy, it must start
+with the `strategy <https://www.tradingview.com/pine-script-reference/v4/#fun_strategy>`__
+annotation call (instead of ``study``). Strategies may plot data,
+but they can also place, modify and cancel orders. They also have
 access to essential strategy performance information through specific
-keywords. The same information is available for you on the *Strategy
+keywords. The same information is available externally in the *Strategy
 Tester* tab. Once a strategy is calculated on historical data, you can
 see hypothetical order fills.
 
@@ -36,73 +36,71 @@ A simple strategy example
 
 As soon as the script is compiled and applied to a chart, you can see
 filled order marks on it and how your balance was changing during
-backtesting (*equity* curve). It is a simplest strategy that buys and
+backtesting (*equity* curve). This is a very basic strategy that buys and
 sells on every bar.
 
-The line ``strategy("test")`` states that the code belongs to strategy
-type and its name is "test". ``strategy.entry()`` is a command to send
+The ``strategy("test")`` line states that the script is a strategy
+named "test". ``strategy.entry()`` is a command that can be used to send both
 "buy" and "sell" orders. ``plot(strategy.equity)`` plots the equity
 curve.
 
-How to apply a strategy to the chart
-------------------------------------
+Applying a strategy to a chart
+------------------------------
 
 To test your strategy, apply it to the chart. Use the symbol and time
 intervals that you want to test. You can use a built-in strategy from
-the *Indicators & Strategies* dialog box, or write your own in *Pine
-Editor*.
+the *Indicators & Strategies* dialog box, or write your own.
 
 .. image:: images/Strategy_tester.png
 
-.. note:: When using :doc:`non-standard types of chart <Non-standard_chart_types_data>` 
-   (Heikin Ashi, Renko, etc.) as a basis for strategy, you
-   need to realize that the result will be different. The orders will be
-   executed at the prices of this chart (e.g., for Heikin Ashi it'll take
-   Heikin Ashi prices (the average ones) **not the real market prices**).
-   Therefore we highly recommend you to use standard chart type for
-   strategies.
+.. note:: When applying strategies to :doc:`non-standard types of charts <Non-standard_chart_types_data>`
+   (Heikin Ashi, Renko, etc.), it is very important to realize that results
+   will not reflect real market conditions. Orders on these types of charts will be
+   executed at the synthetic price levels used on these charts,
+   which often **do not reflect real market prices** and thus lead
+   to unrealistic backtesting results. We therefore highly recommend
+   using only standard chart types for backtesting strategies.
 
 Backtesting and forwardtesting
 ------------------------------
 
-On TradingView strategies are calculated on all available historical
-data on the chart and automatically continue calculation when real-time
-data comes in.
+On TradingView, strategies are calculated on all the chart's available historical
+data (*backtesting*), and then automatically continue calculations when real-time data comes in (*forwardtesting*).
 
-Both during historical and real-time calculation, code is calculated on
-bar closes by default.
+By default, during both historical and real-time calculation, code is calculated on
+the bar's close.
 
-If this is forwardtesting, code calculates on every tick in real-time.
-To enable this, check off the option *Recalculate On Every Tick* in
-settings or specify it in the script code: ``strategy(..., calc_on_every_tick=true)``.
+When forwardtesting, you have the option of configuring script calculation to occur
+on every real-time tick. To enable this, check the *Recalculate On Every Tick*  option in
+the strategy's *Settings/Properties*, or specify it in the script's code
+using: ``strategy(..., calc_on_every_tick=true)``.
 
-You can set the strategy to perform additional calculation after an
-order is filled. For this you need to check off *Recalculate After Order
-filled* in settings or do it in the script code: ``strategy(..., calc_on_order_fills=true)``.
+You can set the strategy to perform one additional calculation after an
+order is filled. For this you need to check *Recalculate After Order
+filled* in the strategy's *Settings/Properties*, or do it in the script's code
+using: ``strategy(..., calc_on_order_fills=true)``.
 
 Broker emulator
 ---------------
 
-There is a *broker emulator* on TradingView for testing strategies. Unlike
-real trading, the emulator fills orders only at chart prices, that is
-why an order can be filled only on next tick in forwardtesting and on
-next bar in backtesting (or later) after the strategy calculated.
+TradingView uses a *broker emulator* when running strategies. Unlike
+in real trading, the emulator only fills orders at chart prices, which is
+why an order can only be filled on the next tick in forwardtesting and on
+the next bar or later in backtesting, i.e., after the strategy calculates.
 
-As stated above, in backtesting the strategy is calculated on bar's close.
 The following logic is used to emulate order fills:
 
-#. If opening price of bar is closer to the highest price of the same bar,
+#. If the bar's high is closer to bar's open than the bar's low,
    the broker emulator assumes that intrabar price was moving this way:
    open → high → low → close.
-#. If opening price of bar is closer to the lowest price of the same bar,
+#. If the bar's low is closer to bar's open than the bar's high,
    the broker emulator assumes that intrabar price was moving this way:
    open → low → high → close.
-#. Broker emulator assumes that there were no gaps inside bar, meaning
-   all intrabar prices are available for order execution.
-#. If the option *Recalculate On Every Tick* in strategy properties is
-   enabled (or ``strategy`` parameter ``calc_on_every_tick=true`` is
-   specified in the script), code is still calculated only on bar's close,
-   following the above logic.
+#. The broker emulator assumes that there are no gaps inside bars, meaning
+   the full range of intrabar prices is available for order execution.
+#. Even if the *Recalculate On Every Tick* option is
+   enabled  in strategy properties (or the script's ``strategy`` call uses
+   ``calc_on_every_tick=true``), the broker emulator's behavior still uses the above logic.
 
 .. image:: images/Filled_stategy.png
 
@@ -113,18 +111,18 @@ emulator::
     strategy("History SAW demo", overlay=true, pyramiding=100, calc_on_order_fills=true)
     strategy.entry("LE", strategy.long)
 
-This code is calculated once per bar by default, on its close, however
-there is an additional calculation as soon as an order is filled. That
+This code is calculated once per bar on the close, but
+an additional calculation occurs as soon as an order is filled. That
 is why you can see 4 filled orders on every bar: 2 orders on open, 1
-order on high and 1 order on low. This is backtesting. If it were at
+order on high and 1 order on low. This is for backtesting. In
 real-time, orders would be executed on every new tick.
 
 It is also possible to emulate an *order queue*. The setting is called
-*Verify Price For Limit Orders* and can be found in strategy properties
-or set in the script code: ``strategy(..., backtest_fill_limits_assumption=X)``.
-The specified value is a number of points/pips (minimum price movements), default value is 0.
-A limit order is filled if current price is better (higher for sell
-orders, lower for buy orders) for the specified number of points/pips.
+*Verify Price For Limit Orders* and can be found in strategy properties,
+or set in the script's code with ``strategy(..., backtest_fill_limits_assumption=X)``.
+The specified value is a minimum price movements in number of points/pips (default value is 0).
+A limit order is filled if the current price is better (higher for sell
+orders, lower for buy orders) by the specified number of points/pips.
 The execution price still matches the limit order price. Example:
 
 * ``backtest_fill_limits_assumption = 1``. Minimum price movement is ``0.25``.
@@ -133,12 +131,12 @@ The execution price still matches the limit order price. Example:
 
 * Current price is ``12.50``.
 
-* The order cannot be filled at the current price only because
+* The order cannot be filled at the current price because
   ``backtest_fill_limits_assumption = 1``. To fill the order the price must
-  become ``0.25*1`` lower. The order is put in the queue.
+  be ``0.25*1`` lower. The order is put in the queue.
 
 * Assume that the next tick comes at price ``12.00``. This price is 2 points
-  lower, what means the condition ``backtest_fill_limits_assumption = 1``
+  lower, meaning the condition ``backtest_fill_limits_assumption = 1``
   is satisfied, so the order should be filled. The order is filled at
   ``12.50`` (original order price), even if the price is not available
   anymore.
@@ -146,44 +144,44 @@ The execution price still matches the limit order price. Example:
 Order placement commands
 ------------------------
 
-All keywords that are designed for strategies start with a
+All keywords related to strategies start with a
 ``strategy.`` prefix. The following commands are used for placing
-orders: ``strategy.entry``, ``strategy.order`` and ``strategy.exit``:
+orders: ``strategy.entry``, ``strategy.order`` and ``strategy.exit``.
 
-`strategy.entry <https://www.tradingview.com/study-script-reference/v4/#fun_strategy{dot}entry>`__
-   This command places only entry orders. It is
-   affected by ``pyramiding`` setting (in strategy properties) and by
-   ``strategy.risk.allow_entry_in`` function. If there is an open
+`strategy.entry <https://www.tradingview.com/pine-script-reference/v4/#fun_strategy{dot}entry>`__
+   This command only places entry orders. It is
+   affected by the ``pyramiding`` setting in the strategy's properties and by
+   the ``strategy.risk.allow_entry_in`` function. If there is an open
    market position when an opposite direction order is generated, the
    number of contracts/shares/lots/units will be increased by the number
-   of currently open contracts (script equivalent: ``strategy.position_size + quantity``). 
-   As the result, the size of market position to open will be equal to order size, specified in
-   the command ``strategy.entry``.
+   of currently open contracts (script equivalent: ``strategy.position_size + quantity``).
+   As a result, the size of the opened market position will be equal to the order size specified in
+   the ``strategy.entry`` command.
 
-`strategy.order <https://www.tradingview.com/study-script-reference/v4/#fun_strategy{dot}order>`__
-   This command places both entry and exit orders. It is not affected by pyramiding setting and by
+`strategy.order <https://www.tradingview.com/pine-script-reference/v4/#fun_strategy{dot}order>`__
+   This command places both entry and exit orders. It is not affected by pyramiding settings or by the
    ``strategy.risk.allow_entry_in`` function. It allows you to create
-   complex enter and exit order constructions when capabilities of the
-   ``strategy.entry`` and ``strategy.exit`` are not enough.
+   complex entry and exit order constructions when the functionality of
+   ``strategy.entry`` and ``strategy.exit`` will not do.
 
-`strategy.exit <https://www.tradingview.com/study-script-reference/v4/#fun_strategy{dot}exit>`__
+`strategy.exit <https://www.tradingview.com/pine-script-reference/v4/#fun_strategy{dot}exit>`__
    This command allows you to exit a market position
-   by an order or or form multiple exit order strategy (stop loss,
-   profit target, trailing stop). All such orders are part of the same
+   or form multiple exit order strategies using a stop loss,
+   profit target or trailing stop. All such orders are part of the same
    ``strategy.oca.reduce`` group. An exit order cannot be placed if
    there is no open market position or there is no active entry order
-   (an exit order is bound to ID of an entry order). It is not possible
+   (an exit order is bound to the ID of an entry order). It is not possible
    to exit a position with a market order using the command
-   ``strategy.exit``. For this goal the following commands should be
-   used: `strategy.close <https://www.tradingview.com/study-script-reference/v4/#fun_strategy{dot}close>`__ 
-   or `strategy.close_all <https://www.tradingview.com/study-script-reference/v4/#fun_strategy{dot}close_all>`__. 
-   If number of contracts/shares/lots/units specified for the ``strategy.exit`` is
-   less than the size of current open position, the exit will be
-   partial. It is not possible to exit from the same entry order more
-   than 1 time using the same exit order (ID), that allows you to create
-   exit strategies with multiple levels. In case, when a market position
-   was formed by multiple entry orders (pyramiding enabled), each exit
-   orders is bound to each entry order individually.
+   ``strategy.exit``. For this, the `strategy.close <https://www.tradingview.com/pine-script-reference/v4/#fun_strategy{dot}close>`__
+   or `strategy.close_all <https://www.tradingview.com/pine-script-reference/v4/#fun_strategy{dot}close_all>`__
+   commands should be used.
+   If the number of contracts/shares/lots/units specified for the ``strategy.exit`` is
+   less than the size of current open positions, the exit will be
+   partial. It is possible to exit from the same entry order more
+   than once using the same exit order ID, which allows you to create
+   exit strategies with multiple levels. In cases where a market position
+   is formed by multiple entry orders (pyramiding enabled), each exit
+   order must be linked to a matching entry order.
 
 Example 1::
 
@@ -195,7 +193,7 @@ Example 1::
     plot(strategy.equity)
 
 The above strategy constantly reverses market position from +4 to -6,
-back and forth, what is shown by its plot.
+back and forth, which the plot shows.
 
 Example 2::
 
@@ -204,10 +202,10 @@ Example 2::
     strategy.entry("buy", strategy.long, 4, when=strategy.position_size <= 0)
     strategy.exit("bracket", "buy",  2, profit=10, stop=10)
 
-This strategy demonstrates the case, when market position is never
-closed, because it uses exit order to close market position only
-partially and it cannot be used more than once. If you double the line
-for exiting, the strategy will close market position completely.
+This strategy demonstrates a case where a market position is never
+closed because it uses a partial exit order to close the market position
+and it cannot be executed more than once. If you double the line
+for exiting, the strategy will close the market position completely.
 
 Example 3::
 
@@ -225,29 +223,28 @@ level to exit 2 contracts and the second one to exit all the rest.
 .. image:: images/Levels_brackets.png
 
 The first take profit and stop loss orders (level 1) are in an :ref:`OCA group <oca_groups>`.
-The other orders (level 2) are in another OCA group. It means
-that as soon as the order from level 1 is filled, the orders from level 2
-are not cancelled, they stay active.
+The other orders (level 2) are in another OCA group. This means
+that as the order from level 1 is filled, the orders from level 2
+are not cancelled; they stay active.
 
-Every command placing an order has an ID (string value) --- unique order
-identifier. If an order with same ID is already placed (but not yet
-filled), current command modifies the existing order. If modification is
-not possible (conversion from buy to sell), the old order is cancelled,
+Every command placing an order has an ID (string value) which is a unique order
+identifier. If an order with the same ID is already placed but not yet
+filled, the last command modifies the existing order. If modification is
+not possible (conversion from buy to sell), the old order is cancelled and
 the new order is placed. ``strategy.entry`` and ``strategy.order`` work
 with the same IDs (they can modify the same entry order).
 ``strategy.exit`` works with other order IDs (it is possible to have an
 entry order and an exit order with the same ID).
 
-To cancel a specific order (by its ID) the command
-`strategy.cancel(string ID) <https://www.tradingview.com/study-script-reference/#fun_strategy{dot}cancel>`__ 
-should be used. To cancel all pending
-orders the command `strategy.cancel_all() <https://www.tradingview.com/study-script-reference/#fun_strategy{dot}cancel_all>`__ 
-should be used. Strategy orders are placed as soon as their conditions are satisfied and command
-is called in code. Broker emulator doesn't execute orders before next
-tick comes after the code was calculated, while in real trading with
-real broker, an order can be filled sooner. It means that if a market
-order is generated at close of current bar, it is filled at open price of the
-next bar.
+To cancel a specific order using its ID, the
+`strategy.cancel(string ID) <https://www.tradingview.com/pine-script-reference/#fun_strategy{dot}cancel>`__
+command should be used. To cancel all pending
+orders the `strategy.cancel_all() <https://www.tradingview.com/pine-script-reference/#fun_strategy{dot}cancel_all>`__
+command should be used. Strategy orders are placed as soon as their conditions are satisfied and command
+is called in code. The broker emulator doesn't execute orders before the next
+tick comes after the code was calculated, while in real trading
+an order can get filled sooner. When a market order is generated at the close of the current bar,
+the broker emulator only executes it at the open price of the next.
 
 Example::
 
@@ -257,11 +254,11 @@ Example::
         strategy.order("buy", strategy.long, when=strategy.position_size == 0)
         strategy.order("sell", strategy.short, when=strategy.position_size != 0)
 
-If this code is applied to a chart, all orders are filled at open of
+If this code is applied to a chart, all orders are filled at the open of
 every bar.
 
 Conditions for order placement (``when``, ``pyramiding``, ``strategy.risk``)
-are checked when script is calculated. If all
+are checked when the script is calculated. If all
 conditions are satisfied, the order is placed. If any condition is not
 satisfied, the order is not placed. It is important to cancel price
 orders (limit, stop and stop-limit orders).
@@ -271,24 +268,24 @@ Example (for MSFT, 1D)::
     //@version=4
     strategy("Priced Entry demo")
     var c = 0
-    if year > 2014 
+    if year > 2014
         c := c + 1
     if c == 1
         strategy.entry("LE1", strategy.long, 2, stop = high + 35 * syminfo.mintick)
         strategy.entry("LE2", strategy.long, 2, stop = high + 2 * syminfo.mintick)
 
-Even though pyramiding is disabled, these both orders are filled in
-backtesting, because when they are generated there is no open long
+Even though pyramiding is disabled, both these orders are filled in
+backtesting because when they are generated there is no opened long
 market position. Both orders are placed and when price satisfies order
-execution, they both get executed. It is recommended to to put the
-orders in 1 OCA group by means of ``strategy.oca.cancel``. in this case
+execution conditions, they both get executed. It is recommended to put the
+orders in an OCA group using ``strategy.oca.cancel``. This way
 only one order is filled and the other one is cancelled. Here is the
 modified code::
 
     //@version=4
     strategy("Priced Entry demo")
     var c = 0
-    if year > 2014 
+    if year > 2014
         c := c + 1
     if c == 1
         strategy.entry("LE1", strategy.long, 2, stop = high + 35 * syminfo.mintick, oca_type = strategy.oca.cancel, oca_name = "LE")
@@ -296,7 +293,7 @@ modified code::
 
 If, for some reason, order placing conditions are not met when executing
 the command, the entry order will not be placed. For example, if
-pyramiding settings are set to 2, existing position already contains two
+pyramiding settings are set to 2, the existing position already contains two
 entries and the strategy tries to place a third one, it will not be
 placed. Entry conditions are evaluated at the order generation stage and
 not at the execution stage. Therefore, if you submit two price type
@@ -305,9 +302,8 @@ will not be cancelled automatically. To avoid issues we recommend using
 ``strategy.oca.cancel`` groups for entries so when one entry order is filled the
 others are cancelled.
 
-The same is true for price type exits --- orders will be placed once their
-conditions are met (i.e. an entry order with the respective ID is
-filled). 
+The same is true for price type exits. Orders will be placed once their
+conditions are met, i.e., an entry order with a matching ID is filled.
 
 Example::
 
@@ -319,36 +315,36 @@ Example::
     strategy.entry("buy", strategy.long, when=counter > 2)
 
 If you apply this example to a chart, you can see that the exit order
-has been filled despite the fact that it had been generated only once
+is filled despite the fact that it has been generated only once,
 before the entry order to be closed was placed. However, the next entry
-was not closed before the end of the calculation as the exit command has
+was not closed before the end of the calculation, as the exit command has
 already been triggered.
 
 
 Closing market position
 -----------------------
 
-Despite it is possible to exit from a specific entry in code, when
-orders are shown in the *List of Trades* on *Strategy Tester* tab, they all
-are linked according FIFO (first in, first out) rule. If an entry order
+Despite the fact that it is possible to exit from a specific entry in code, when
+orders are shown in the *List of Trades* in the *Strategy Tester* tab, they all
+are linked according to FIFO (first in, first out) rules. If an entry order
 ID is not specified for an exit order in code, the exit order closes the
 first entry order that opened market position. Let's study the following
 example::
 
     //@version=4
     strategy("exit Demo", pyramiding=2, overlay=true)
-    strategy.entry("Buy1", strategy.long, 5, 
+    strategy.entry("Buy1", strategy.long, 5,
                    when = strategy.position_size == 0 and year > 2014)
-    strategy.entry("Buy2", strategy.long, 
+    strategy.entry("Buy2", strategy.long,
                    10, stop = strategy.position_avg_price +
                    strategy.position_avg_price*0.1,
                    when = strategy.position_size == 5)
     strategy.exit("bracket", loss=10, profit=10, when=strategy.position_size == 15)
 
 The code given above places 2 orders sequentially: "Buy1" at market
-price and "Buy2" at 10% higher price (stop order). Exit order is placed
+price and "Buy2" at a 10% higher price (stop order). The exit order is placed
 only after entry orders have been filled. If you apply the code to a
-chart, you will see that each entry order is closed by exit order,
+chart, you will see that each entry order is closed by an exit order,
 though we did not specify entry order ID to close in this line:
 ``strategy.exit("bracket", loss=10, profit=10, when=strategy.position_size == 15)``
 
@@ -357,15 +353,15 @@ Another example::
     //@version=4
     strategy("exit Demo", pyramiding=2, overlay=true)
     strategy.entry("Buy1", strategy.long, 5, when = strategy.position_size == 0)
-    strategy.entry("Buy2", strategy.long, 
-                10, stop = strategy.position_avg_price + 
+    strategy.entry("Buy2", strategy.long,
+                10, stop = strategy.position_avg_price +
                 strategy.position_avg_price*0.1,
                 when = strategy.position_size == 5)
     strategy.close("Buy2",when=strategy.position_size == 15)
     strategy.exit("bracket", "Buy1", loss=10, profit=10, when=strategy.position_size == 15)
     plot(strategy.position_avg_price)
 
--  It opens 5 contracts long position with the order "Buy1".
+-  It opens a 5-contract long position with the order "Buy1".
 -  It extends the long position by purchasing 10 more contracts at 10%
    higher price with the order "Buy2".
 -  The exit order (strategy.close) to sell 10 contracts (exit from
@@ -374,19 +370,19 @@ Another example::
 If you take a look at the plot, you can see that average entry price =
 "Buy2" execution price and our strategy closed exactly this entry order,
 while on the *Trade List* tab we can see that it closed the first "Buy1"
-order and half of the second "Buy2". It means that the no matter what
+order and half of the second "Buy2". It means that no matter which
 entry order you specify for your strategy to close, the broker emulator
-will still close the the first one (according to FIFO rule). It works
-the same way when trading with through a real broker.
+will still close the first one, according to FIFO rules. It works
+the same way as when trading with a real broker.
 
 .. _oca_groups:
 
 OCA groups
 ----------
 
-It is possible to put orders in 2 different One-Cancells-All (OCA) groups in Pine Script:
+It is possible to put orders in 2 different One-Cancells-All (OCA) groups in Pine Script.
 
-`strategy.oca.cancel <https://www.tradingview.com/study-script-reference/v4/#var_strategy{dot}oca{dot}cancel>`__
+`strategy.oca.cancel <https://www.tradingview.com/pine-script-reference/v4/#var_strategy{dot}oca{dot}cancel>`__
    As soon as an order from the group is filled
    (even partially) or cancelled, the other orders from the same group
    get cancelled. One should keep in mind that if order prices are the
@@ -403,13 +399,13 @@ Example::
         strategy.entry("SE", strategy.short, oca_type = strategy.oca.cancel, oca_name="Entry")
 
 You may think that this is a reverse strategy since pyramiding is not
-allowed, but in fact both order will get filled because they are market
-orders, what means they are to be executed immediately at the current price.
+allowed, but in fact both orders will get filled because they are market
+orders, which means they are to be executed immediately at the current price.
 The second order doesn't get cancelled because both are filled almost at
-the same moment and the system doesn't have time to process first order
+the same moment and the system doesn't have time to process the first order
 fill and cancel the second one before it gets executed. The same would
-happen if these were price orders with same or similar prices. Strategy
-places all orders (which are allowed according to market position, etc).
+happen if these were price orders with same or similar prices. The strategy
+places all orders allowed according to market position, etc.
 
 The strategy places all orders that do not contradict the rules (in our
 case market position is flat, therefore any entry order can be filled).
@@ -417,7 +413,7 @@ At each tick calculation, firstly all orders with the satisfied
 conditions are executed and only then the orders from the group where an
 order was executed are cancelled.
 
-`strategy.oca.reduce <https://www.tradingview.com/study-script-reference/v4/#var_strategy{dot}oca{dot}reduce>`__
+`strategy.oca.reduce <https://www.tradingview.com/pine-script-reference/v4/#var_strategy{dot}oca{dot}reduce>`__
    This group type allows multiple orders
    within the group to be filled. As one of the orders within the group
    starts to be filled, the size of other orders is reduced by the
@@ -427,11 +423,11 @@ order was executed are cancelled.
    filled contracts amount, thus protecting the rest of the open
    position.
 
-`strategy.oca.none <https://www.tradingview.com/study-script-reference/v4/#var_strategy{dot}oca{dot}none>`__
+`strategy.oca.none <https://www.tradingview.com/pine-script-reference/v4/#var_strategy{dot}oca{dot}none>`__
    The order is placed outside of the group
    (default value for the ``strategy.order`` and ``strategy.entry`` functions).
 
-Every group has its own unique id (the same way as the orders have). If
+Every group has its own unique id, like orders. If
 two groups have the same id, but different type, they will be considered a
 different groups. Example::
 
@@ -452,25 +448,26 @@ group.
 Risk management
 ---------------
 
-It is not easy to create a universal profitable strategy. Usually,
+It is not easy to create a universally profitable strategy. Usually,
 strategies are created for certain market patterns and can produce
-uncontrollable losses when applied to other data. Therefore stopping
-auto trading in time should things go bad is a serious issue. There is a
-special group of strategy commands to manage risks. They all start with
+uncontrollable losses when applied to other data. Therefore, stopping
+auto trading when too many losses occur is important. A
+special group of strategy commands help you manage risk. They all start with
 the ``strategy.risk.`` prefix.
 
-You can combine any number of risks in any combination within one
-strategy. Every risk category command is calculated at every tick as
-well as at every order execution event regardless of the
+In any given strategy you can combine any number of risk management criteria
+in any combination. Every risk category command is calculated at every tick as
+well as at every order execution event, regardless of the
 ``calc_on_order_fills`` strategy setting. There is no way to disable
-any risk rule at runtime from script. Regardless of where in the script
+any risk rule at runtime from a script. Regardless of where in the script
 the risk rule is located it will always be applied unless the line with
 the rule is deleted and the script is recompiled.
 
-If on the next calculation any of the rules is triggered, no orders will
-be sent. Therefore if a strategy has several rules of the same type with
+When a risk management rule is triggered, no orders will be generated
+starting from the next calculation of the script.
+Therefore, if a strategy has several rules of the same type with
 different parameters, it will stop calculating when the rule with the
-most strict parameters is triggered. When a strategy is stopped all
+most strict parameters is triggered. When a strategy is stopped, all
 unexecuted orders are cancelled and then a market order is sent to close
 the position if it is not flat.
 
@@ -488,13 +485,13 @@ Example (MSFT, 1)::
     strategy.risk.max_intraday_filled_orders(2)
 
 The position will be closed and trading will be stopped until the end of
-every trading session after two orders are executed within this session
+every trading session after two orders are executed within this session,
 as the second rule is triggered earlier and is valid until the end of
 the trading session.
 
 One should remember that the ``strategy.risk.allow_entry_in`` rule is
 applied to entries only so it will be possible to enter in a trade using
-the ``strategy.order`` command as this command is not an entry command
+the ``strategy.order`` command, as this command is not an entry command
 per se. Moreover, when the ``strategy.risk.allow_entry_in`` rule is
 active, entries in a "prohibited trade" become exits instead of reverse
 trades.
@@ -508,18 +505,18 @@ Example (MSFT, 1D)::
         strategy.entry("SE", strategy.short, when=strategy.position_size > 0)
     strategy.risk.allow_entry_in(strategy.direction.long)
 
-As short entries are prohibited by the risk rules, instead of reverse
-trades long exit trades will be made.
+As short entries are prohibited by the risk rules,
+long exit trades will be made instead of reverse trades.
 
 Currency
 --------
 
 TradingView strategies can operate in a currency that is different from the
-instrument currency. *Net Profit* and *Open Profit* are recalculated in the
-account currency. Account currency is set in the strategy properties ---
-the *Base Currency* drop-down list or in the script via the
-``strategy(..., currency=currency.*)`` parameter. At the same time,
-performance report values are calculated in the selected currency.
+instrument's currency. *Net Profit* and *Open Profit* are recalculated in the
+account currency. Account currency is set in the strategy properties'
+*Base Currency* drop-down list or in the script via the
+``strategy(..., currency=currency.*)`` parameter.
+Performance report values are calculated in the selected currency.
 
 Trade profit (open or closed) is calculated based on the profit in the
 instrument currency multiplied by the cross-rate on the *close* of the
@@ -544,14 +541,14 @@ After adding this strategy to the chart we can see that the plot lines
 are matching. This demonstrates that the rate to calculate the profit
 for every trade was based on the *close* of the previous day.
 
-When trading on intra-day resolutions the cross-rate on the close of the
+When trading on intra-day resolutions, the cross-rate on the close of the
 trading day previous to the bar where the strategy is calculated will be
-used and it will not be changed during whole trading session.
+used and it will not change during the trading session.
 
-When trading on resolutions higher than 1 day the cross-rate on the
+When trading on resolutions higher than 1 day, the cross-rate on the
 close of the trading day previous to the close of the bar where the
 strategy is calculated will be used. Let's say we trade on a weekly
 chart, then the cross rate on Thursday's session close will always be
 used to calculate the profits.
 
-In real-time the yesterday's session close rate is used.
+In real-time, yesterday's session close rate is used.

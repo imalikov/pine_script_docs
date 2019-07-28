@@ -4,47 +4,50 @@ Custom OHLC bars and candles
 .. contents:: :local:
     :depth: 2
 
-You may define your own custom *bars* and *candles* in Pine Scripts. There
-are functions `plotbar <https://www.tradingview.com/study-script-reference/#fun_plotbar>`__
-and `plotcandle <https://www.tradingview.com/study-script-reference/#fun_plotcandle>`__
-for that purpose. Here is a small example::
+You may create your own custom *bars* and *candles* in Pine scripts by using the
+`plotbar <https://www.tradingview.com/pine-script-reference/v4/#fun_plotbar>`__
+and `plotcandle <https://www.tradingview.com/pine-script-reference/v4/#fun_plotcandle>`__
+annotation functions::
 
+    //@version=4
     study("Example 1")
     plotbar(open, high, low, close)
 
 .. image:: images/Custom_ohlc_bars_and_candles_1.png
 
-The script *Example 1* simply replicates bars of the current symbol.
-Nothing outstanding. We can paint them with green and red colors::
+*Example 1* simply replicates bars of the current symbol.
+To color them green or red, we can use the following code::
 
+    //@version=4
     study("Example 2")
-    palette = close >= open ? lime : red
+    palette = close >= open ? color.lime : color.red
     plotbar(open, high, low, close, color=palette)
 
 .. image:: images/Custom_ohlc_bars_and_candles_2.png
 
-The *Example 2* illustrates ``color`` argument, which could be given
-constant values as ``red``, ``lime``, ``"#FF9090"``, as well as expressions that
-calculate color (``palette`` variable in the example above) at runtime.
+*Example 2* illustrates using the ``color`` argument, which can be given
+constant values such as ``red``, ``lime``, ``"#FF9090"``, as well as expressions that
+calculate colors conditionally at runtime (see the ``palette`` variable in the example above).
 
-Function ``plotcandle`` is similar to ``plotbar``, it just plots candles
-instead of bars and have optional argument ``wickcolor``.
+The ``plotcandle`` annotation function is similar to ``plotbar``, but it plots candles
+instead of bars and has an optional argument: ``wickcolor``.
 
-Both ``plotbar`` and ``plotcandle`` need four series arguments that will be
-used as bar/candle OHLC prices correspondingly. If, for example, one of
-the OHLC variables at some bar have a ``na`` value, then the whole bar is not
+Both ``plotbar`` and ``plotcandle`` need four series as the arguments that will be
+used for new bar/candle OHLC prices. If one of
+the arguments for a bar has a ``na`` value, then the bar is not
 plotted. Example::
 
+    //@version=4
     study("Example 3")
     c = close > open ? na : close
     plotcandle(open, high, low, c)
 
 .. image:: images/Custom_ohlc_bars_and_candles_3.png
 
-Of course you may calculate OHLC values without using the available ``open``,
-``high``, ``low`` and ``close`` values. For example you can calculate and plot 
-some sort of a *smoothed* candles::
+You can build bars or candles using values other than the actual OHLC values.
+For example you could calculate and plot *smoothed* candles using the following code::
 
+    //@version=4
     study("Example 4")
     len = input(9)
     smooth(x) =>
@@ -57,22 +60,23 @@ some sort of a *smoothed* candles::
 
 .. image:: images/Custom_ohlc_bars_and_candles_4.png
 
-You may get an interesting effect, if you plot OHLC values taken from a
-higher timeframe. Let's say you want to plot daily bars on 60 minute chart::
+You may find it useful to plot OHLC values taken from a
+higher timeframe. You can, for example, plot daily bars on a *60 minutes* chart::
 
     // NOTE: add this script on intraday chart
+    //@version=4
     study("Example 5")
-    higherRes = input("D", type=resolution)
+    higherRes = input("D", type=input.resolution)
     is_newbar(res) =>
         t = time(res)
-        change(t) != 0 ? 1 : 0
-    o = security(tickerid, higherRes, open)
-    h = security(tickerid, higherRes, high)
-    l = security(tickerid, higherRes, low)
-    c = security(tickerid, higherRes, close)
-    plotbar(is_newbar(higherRes) ? o : na, h, l, c, color=c >= o ? lime : red)
+        not na(t) and (na(t[1]) or t > t[1])
+    o = security(syminfo.tickerid, higherRes, open)
+    h = security(syminfo.tickerid, higherRes, high)
+    l = security(syminfo.tickerid, higherRes, low)
+    c = security(syminfo.tickerid, higherRes, close)
+    plotbar(is_newbar(higherRes) ? o : na, h, l, c, color=c >= o ? color.lime : color.red)
 
 .. image:: images/Custom_ohlc_bars_and_candles_5.png
 
-Functions ``plotbar`` and ``plotcandle`` also have a ``title`` argument, so user can distinguish them in
-Styles tab of Format dialog.
+The ``plotbar`` and ``plotcandle`` annotation functions also have a ``title`` argument, so users can distinguish them in
+the *Style* tab of the *Settings* dialog box.

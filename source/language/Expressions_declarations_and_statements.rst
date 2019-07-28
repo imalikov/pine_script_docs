@@ -37,7 +37,7 @@ in one of the following ways:
 ``<identifier>`` is the name of the declared variable, see :doc:`Identifiers`.
 
 ``<type>`` can be one of the predefined keywords: ``float``, ``int``, ``bool``, ``color``, ``string``, ``line`` or ``label``.
-However, in most cases, an explicit type declaration is redundant because type is automatically inferred from the ``<expression>`` 
+However, in most cases, an explicit type declaration is redundant because type is automatically inferred from the ``<expression>``
 on the right of the ``=`` at compile time, so the decision to use them is often a matter of preference. For example::
 
     baseLine0 = na          // compile time error!
@@ -62,7 +62,7 @@ The ``var`` keyword is a special modifier that instructs the compiler to *create
 Without the ``var`` modifier, variable ``count`` would be reset to zero (thus losing it's value) every time a new bar update triggered a script recalculation.
 
 In Pine v3 the study "Green Bars Count" could be written without using the ``var`` keyword::
-    
+
     //@version=3
     study("Green Bars Count")
     count = 0                       // These two lines could be replaced in v4
@@ -72,11 +72,11 @@ In Pine v3 the study "Green Bars Count" could be written without using the ``var
         count := count + 1
     plot(count)
 
-The v4 code is more readable and can be more efficient if, for example, the ``count`` variable is 
+The v4 code is more readable and can be more efficient if, for example, the ``count`` variable is
 initialized with an expensive function call instead of ``0``.
 
 Examples of simple variable declarations::
-    
+
     src = close
     len = 10
     ma = sma(src, len) + high
@@ -89,7 +89,7 @@ Examples with type modifiers and var keyword::
     var hl = high - low
 
 Example, illustrating the effect of ``var`` keyword::
-    
+
     // Creates a new label object on every bar:
     label lb = label.new(bar_index, close, title="Hello, World!")
 
@@ -102,8 +102,8 @@ Example, illustrating the effect of ``var`` keyword::
 Variable assignment
 -------------------
 
-A mutable variable is a variable which can be given a new value. 
-The operator ``:=`` must be used to give a new value to a variable. 
+A mutable variable is a variable which can be given a new value.
+The operator ``:=`` must be used to give a new value to a variable.
 A variable must be declared before you can assign a value to it
 (see declaration of variables :ref:`above<variable_declaration>`).
 
@@ -127,7 +127,7 @@ if statement
 ------------
 
 An ``if`` statement defines a block of statements to be executed when
-the ``if``'s conditional expression evaluates to ``true``, and optionally, 
+the ``if``'s conditional expression evaluates to ``true``, and optionally,
 an alternative block to be executed when the expression is ``false``.
 
 General code form:
@@ -153,13 +153,13 @@ where:
    statement as a whole.
 -  ``condition`` --- if the ``condition`` expression is true, the logic from the *then* block immediately following the ``if`` first line
    (``var_decl_then0``, ``var_decl_then1``, etc.) is used, if the
-   ``condition`` is false, the logic from the *else* block 
+   ``condition`` is false, the logic from the *else* block
    (``var_decl_else0``, ``var_decl_else1``, etc.) is used.
 -  ``return_expression_then``, ``return_expression_else`` --- the last
    expression from the *then* block or from the *else* block will
    determine the final value of the whole ``if`` statement.
 
-The type of the returning value of the ``if`` statement is determined by the type of 
+The type of the returning value of the ``if`` statement is determined by the type of
 ``return_expression_then`` and ``return_expression_else``. Their types
 must match. It is not possible to return an integer value from the *then* block
 if the *else* block returns a string value.
@@ -207,7 +207,7 @@ side effect of the expression, for example in :doc:`strategy trading</essential/
 ::
 
     if (crossover(source, lower))
-        strategy.entry("BBandLE", strategy.long, stop=lower,                    
+        strategy.entry("BBandLE", strategy.long, stop=lower,
                        oca_name="BollingerBands",
                        oca_type=strategy.oca.cancel, comment="BBandLE")
     else
@@ -266,7 +266,7 @@ where:
 Variable ``sum`` is a :ref:`mutable variable <variable_assignment>` so a
 new value can be given to it by the operator ``:=`` in the loop's body.
 Note that we recommend using the built-in
-`sma <https://www.tradingview.com/study-script-reference/#fun_sma>`__
+`sma <https://www.tradingview.com/pine-script-reference/v4/#fun_sma>`__
 function for simple moving averages, as it calculates faster.
 
 .. rubric:: Footnotes

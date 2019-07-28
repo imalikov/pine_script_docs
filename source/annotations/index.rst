@@ -4,7 +4,7 @@ Annotations overview
 .. toctree::
    :maxdepth: 3
    :name: appendixtoc
-   
+
    study_annotation
    plot_annotation
    Script_inputs

@@ -9,36 +9,36 @@ This page contains release notes of notable changes in Pine Script.
 Pine version 4 (June 2019)
 --------------------------
 
-* Drawing objects support. Added drawings *label* and *line*
+* Support for drawing objects. Added *label* and *line* drawings
 * ``var`` keyword for one time variable initialization
-* Type system improvements: 
+* Type system improvements:
 
   * *series string* data type
   * functions for explicit type casting
   * syntax for explicit variable type declaration
   * new *input* type forms
 
-* Built-ins renamings and a version 3 to 4 converter utility
+* Renaming of built-ins and a version 3 to 4 converter utility
 * ``max_bars_back`` function to control series variables internal history buffer sizes
 * Pine Script documentation versioning
 
 
-Pine version 3 (17 May 2017) 
+Pine version 3 (17 May 2017)
 ----------------------------
 
 Added `compile-time constants <https://blog.tradingview.com/en/possibilities-compile-time-constants-4127/>`__.
-Pine Script used to have 3 types of constants --- 
-literal, non-literal and 
+Pine Script used to have 3 types of constants ---
+literal, non-literal and
 serial. Now there's one more, but let's look at existing ones first.
 
-Some functions (``input``, ``color``) can only accept literals as certain
-arguments. We realized that it could be more convenient, so we added a
+Some functions (``input``, ``color``) could only accept literals as
+arguments. To make it more convenient, we added a
 new type of constants that can be calculated during compilation. In
 addition to literals, they include mathematical expressions that use
 other literals and constants.
 
 Any type of Pine Script literal (integer, float, boolean, string) is the
-most specific type while the serial type is the most general one. The
+most narrow type while the serial type is the most general one. The
 compilation-time constants take a spot between the literal and
 non-literal types. All of the functions that accepted literal as an
 argument will now accept compilation-time constants as well.
@@ -46,7 +46,7 @@ argument will now accept compilation-time constants as well.
 Pine version 3 (26 Apr 2017)
 ----------------------------
 
-Added `string input with options <https://blog.tradingview.com/en/several-new-features-added-pine-scripting-language-3933/>`__. 
+Added `string input with options <https://blog.tradingview.com/en/several-new-features-added-pine-scripting-language-3933/>`__.
 Some built-in indicators have a setting that lets you choose several
 options. The same is possible in Pine Script now. For example::
 
@@ -86,7 +86,7 @@ Repainting issue
 ~~~~~~~~~~~~~~~~
 
 There's a substantial difference between historical and real-time data
-that a Pine Script indicator or strategy uses. The key difference --- a
+that a Pine Script study or strategy uses. The key difference: a
 historical bar does NOT contain information about price movements
 between *high* and *low* of a bar. Only a few Pine Script language tools are
 sensitive to this difference, read more :doc:`/essential/Indicator_repainting`.
@@ -129,24 +129,24 @@ create an incorrect backtesting strategy::
         strategy.entry("My Short Entry Id", strategy.short)
 
 However, we believe that this type of behavior of the security function
-could be useful when it's being used in indicators. For instance,
-`ChrisMoody <https://www.tradingview.com/u/ChrisMoody/>`__ 
-uses this effect in a popular indicator called 
+could be useful when it's being used in studies. For instance,
+`ChrisMoody <https://www.tradingview.com/u/ChrisMoody/>`__
+uses this effect in a popular indicator called
 `CM_Pivot Points_M-W-D-4H-1H_Filtered <https://www.tradingview.com/script/kqKEuQpn-CM-Pivot-Points-M-W-D-4H-1H-Filtered/>`__
-(over 3000 likes) that is used to create pivot lines. Some other examples --- 
+(over 3000 likes) that is used to create pivot lines. Other examples include:
 `Open Close Daily Line <https://www.tradingview.com/script/qDvoNB8f-Open-Close-Daily-Line/>`__,
 `Time Frame Superimpose <https://www.tradingview.com/script/QCvh8Cyx-Time-Frame-Superimpose/>`__,
-as well as the 
+as well as the
 `Get Satisfaction comment <https://getsatisfaction.com/tradingview/topics/strategies-and-indicators-are-repainting#reply_18341804>`__.
 We decided that the old behavior will remain available only when it's explicitly indicated.
 
-By default, in Pine Script version 3, ``security`` function will NOT return future data (in contrast to version 2).
-We also added a new parameter ``lookahead`` with two values:
-`barmerge.lookahead_off <https://www.tradingview.com/study-script-reference/#var_barmerge.lookahead_off>`__
+By default, in Pine Script version 3, the ``security`` function will NOT return future data (in contrast to version 2).
+We also added the new ``lookahead`` parameter with two values:
+`barmerge.lookahead_off <https://www.tradingview.com/pine-script-reference/v4/#var_barmerge.lookahead_off>`__
 and
-`barmerge.lookahead_on <https://www.tradingview.com/study-script-reference/#var_barmerge.lookahead_on>`__
+`barmerge.lookahead_on <https://www.tradingview.com/pine-script-reference/v4/#var_barmerge.lookahead_on>`__
 to switch between the new and old behavior of the
-`security <https://www.tradingview.com/study-script-reference/#fun_security>`__
+`security <https://www.tradingview.com/pine-script-reference/v4/#fun_security>`__
 function. Detailed description of this parameter can be found in the section :ref:`barmerge_gaps_and_lookahead`.
 
 Other changes

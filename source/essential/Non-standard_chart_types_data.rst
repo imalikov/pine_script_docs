@@ -4,26 +4,28 @@ Non-standard chart types data
 .. contents:: :local:
     :depth: 2
 
-There are additional functions that you may apply to ``tickerid``
-function return value. They are ``heikinashi``, ``renko``,
+These functions allow scripts to fetch information from non-standard
+bars or chart types, regardless of the type of chart the script is running on.
+They are ``heikinashi``, ``renko``,
 ``linebreak``, ``kagi`` and ``pointfigure``. All of them work in the
-same manner, they just create a special ticker identifier that could be
-passed later as ``security`` function first argument.
+same manner; they create a special ticker identifier to be used as
+the first argument in a ``security`` function call.
 
 heikinashi function
 -------------------
 
-*Heikin-Ashi* means *average bar* in Japanese. Open, high, low and close
-prices of HA candlesticks are not actual prices, they are results from
-avergaing values of the previous bar, which helps eliminate random
-volatility.
+*Heikin-Ashi* means *average bar* in Japanese. The open, high, low and close
+prices of Heikin-Ashi candlesticks are synthetic; they are not actual prices.
+Each value is calculated using combinations of normal OHLC
+values from the current and previous bar. The calculations used make Heikin-Ashi bars
+less noisy than normal candlesticks.
 
-Pine function `heikinashi <https://www.tradingview.com/study-script-reference/v4/#fun_heikinashi>`__ 
-creates a special ticker identifier for
-requesting Heikin-Ashi data with ``security`` function.
+The `heikinashi <https://www.tradingview.com/pine-script-reference/v4/#fun_heikinashi>`__
+function creates a special ticker identifier for
+requesting Heikin-Ashi data with the ``security`` function.
 
 This script requests low prices of Heikin-Ashi bars and plots them on
-top of usual OHLC bars::
+top of the usual candlesticks::
 
     //@version=4
     study("Example 5", overlay=true)
@@ -33,12 +35,12 @@ top of usual OHLC bars::
 
 .. image:: images/Pine_Heikinashi.png
 
-Note that low prices of Heikin-Ashi bars are different from usual bars
-low prices.
+Note that the low prices of Heikin-Ashi bars are different from the
+low prices of the normal candlesticks.
 
-You may want to switch off extended hours data in *Example 5*. In this
-case we should use ``tickerid`` function instead of ``syminfo.tickerid``
-variable::
+If you wanted to switch off extended hours data in *Example 5*, you would
+need to use the ``tickerid`` function first, instead of using the ``syminfo.tickerid``
+variable directly::
 
     //@version=4
     study("Example 6", overlay=true)
@@ -47,14 +49,14 @@ variable::
     ha_low = security(ha_t, timeframe.period, low, gaps=barmerge.gaps_on)
     plot(ha_low, style=plot.style_linebr)
 
-Note that we pass additional fourth parameter to security (``gaps=barmerge.gaps_on``),
-and it means that points where data is absent, will not be filled up
-with previous values. So we'd get empty areas during the extended hours.
-To be able to see this on chart we also had to specify special plot
-style (``style=plot.style_linebr`` --- *Line With Breaks* style).
+Note that we use an additional fourth parameter with ``security``: ``gaps=barmerge.gaps_on``,
+which instructs the function not to use previous values to fill slots where data is absent.
+This means we will get empty areas during extended hours.
+To be able to see this on the chart, we also need to use a special plot
+style (``style=plot.style_linebr``), the *Line With Breaks* style.
 
-You may plot Heikin-Ashi bars exactly as they look from Pine script.
-Here is the source code::
+You may plot Heikin-Ashi bars from a script so they look exactly like a
+chart's Heikin-Ashi bars::
 
     //@version=4
     study("Example 6.1")
@@ -68,17 +70,17 @@ Here is the source code::
 
 .. image:: images/Pine_Heikinashi_2.png
 
-Read more about `plotcandle <https://www.tradingview.com/study-script-reference/v4/#fun_plotcandle>`__ 
-and `plotbar <https://www.tradingview.com/study-script-reference/v4/#fun_plotbar>`__ functions in 
-section :doc:`/annotations/Custom_OHLC_bars_and_candles`.
+You will find more information on the `plotcandle <https://www.tradingview.com/pine-script-reference/v4/#fun_plotcandle>`__
+and `plotbar <https://www.tradingview.com/pine-script-reference/v4/#fun_plotbar>`__ functions in
+the :doc:`/annotations/Custom_OHLC_bars_and_candles` section.
 
 renko function
 --------------
 
-*Renko* chart type only plots price movements, without taking time or
-volume into consideration. It is constructed from ticks and looks like
+*Renko* bars only plot price movements, without taking time or
+volume into consideration. They are constructed from ticks and look like
 bricks stacked in adjacent columns [#ticks]_. A new brick is drawn after the price
-passes the top or bottom of previously predefined amount.
+passes the top or bottom by a predetermined amount.
 
 ::
 
@@ -91,15 +93,15 @@ passes the top or bottom of previously predefined amount.
 .. image:: images/Pine_Renko.png
 
 Please note that you cannot plot Renko bricks from Pine script exactly
-as they look. You can just get a series of numbers that are somewhat
-OHLC values for Renko chart and use them in your algorithms.
+as they look. You can only get a series of numbers similar to
+OHLC values for Renko bars and use them in your algorithms.
 
-For detailed reference see `renko <https://www.tradingview.com/study-script-reference/v4/#fun_renko>`__.
+For detailed information, see `renko <https://www.tradingview.com/pine-script-reference/v4/#fun_renko>`__.
 
 linebreak function
 ------------------
 
-*Line Break* chart type displays a series of vertical boxes that are based on
+The *Line Break* chart type displays a series of vertical boxes that are based on
 price changes [#ticks]_.
 
 ::
@@ -113,19 +115,17 @@ price changes [#ticks]_.
 .. image:: images/Pine_Linebreak.png
 
 Please note that you cannot plot Line Break boxes from Pine script
-exactly as they look. You can just get a series of numbers that are
-somewhat OHLC values for Line Break chart and use them in your
-algorithms.
+exactly as they look. You can only get a series of numbers similar to
+OHLC values for Line Break charts and use them in your algorithms.
 
-For detailed reference see `linebreak <https://www.tradingview.com/study-script-reference/v4/#fun_linebreak>`__.
+For detailed information, see `linebreak <https://www.tradingview.com/pine-script-reference/v4/#fun_linebreak>`__.
 
 kagi function
 -------------
 
-*Kagi* chart type looks like a continuous line that changes directions and
-switches from thin to bold. The direction changes when the price changes [#ticks]_
-beyond a predefined amount, and the line switches between thin and bold
-if the last change bypassed the last horizontal line.
+*Kagi* charts are made of a continuous line that changes directions.
+The direction changes when the price changes [#ticks]_
+beyond a predetermined amount.
 
 ::
 
@@ -138,24 +138,23 @@ if the last change bypassed the last horizontal line.
 .. image:: images/Pine_Kagi.png
 
 Please note that you cannot plot Kagi lines from Pine script exactly as
-they look. You can just get a series of numbers that are somewhat OHLC
-values for Kagi chart and use them in your algorithms.
+they look. You can only get a series of numbers similar to OHLC
+values for Kagi charts and use them in your algorithms.
 
-For detailed reference see `kagi <https://www.tradingview.com/study-script-reference/v4/#fun_kagi>`__.
+For detailed information, see `kagi <https://www.tradingview.com/pine-script-reference/v4/#fun_kagi>`__.
 
 pointfigure function
 --------------------
 
-*Point and Figure* (PnF) chart type only plots price movements [#ticks]_, without
+*Point and Figure* (PnF) charts only plot price movements [#ticks]_, without
 taking time into consideration. A column of X's is plotted as the price
-rises --- and O's as the price drops.
+rises, and O's are plotted when price drops.
 
 Please note that you cannot plot PnF X's and O's from Pine script
-exactly as they look. You can just get a series of numbers that are
-somewhat OHLC values for PnF chart and use them in your algorithms.
-Every column of X's or O's are represented with four numbers, you may
-think of them as some imaginary OHLC PnF values. In Pine script you may
-request and get those numbers and plot them on chart.
+exactly as they look. You can only get a series of numbers that are
+similar to OHLC values for PnF charts and use them in your algorithms.
+Every column of X's or O's is represented with four numbers. You may
+think of them as synthetic OHLC PnF values.
 
 ::
 
@@ -169,10 +168,10 @@ request and get those numbers and plot them on chart.
 
 .. image:: images/Pine_Point_and_Figure.png
 
-For detailed reference see `pointfigure <https://www.tradingview.com/study-script-reference/v4/#fun_pointfigure>`__.
+For detailed information, see `pointfigure <https://www.tradingview.com/pine-script-reference/v4/#fun_pointfigure>`__.
 
 
 .. rubric:: Footnotes
 
-.. [#ticks] On TradingView Renko, Line Break, Kagi and PnF chart types are built from OHLC candles of a lower timeframe, 
-   which is an approximation of corresponding chart type built from tick data.
+.. [#ticks] On TradingView, Renko, Line Break, Kagi and PnF chart types are generated from OHLC values from a lower timeframe.
+   These chart types thus represent only an approximation of what they would be like if they were generated from tick data.

@@ -19,20 +19,22 @@ after compilation:
 
 ::
 
-    //@version=2
+    //@version=4
     study("Securities count")
-    a = security(tickerid, '42', close) // (1) first unique security call
-    b = security(tickerid, '42', close) // same call as above, will not produce new security call after optimizations
+    a = security(syminfo.tickerid, '42', close)  // (1) first unique security call
+    b = security(syminfo.tickerid, '42', close)  // same call as above, will not produce new security call after optimizations
 
     plot(a)
     plot(a + 2)
     plot(b)
 
-    sym(p) => security(tickerid, p, close) // no security call on this line
-    plot(sym('D')) // (2) one indirect call to security
-    plot(sym('W')) // (3) another one indirect call to security
+    sym(p) =>  // no security call on this line
+        security(syminfo.tickerid, p, close)
+    plot(sym('D'))  // (2) one indirect call to security
+    plot(sym('W'))  // (3) another one indirect call to security
 
-    security(tickerid, period, open) // result of this line is never used, and will be optimized-out
+    security(syminfo.tickerid, timeframe.period, open)  // result of this line is never used, and will be optimized-out
+
 
 
 Script could not be translated from: null
@@ -43,7 +45,7 @@ Script could not be translated from: null
     study($)
 
 Usually this error occurs in version 1 pine scripts, and means that code
-is incorrect. Pine of version 2 is better at
+is incorrect. Pine of version 2 (and higher) is better at
 explaining errors of this kind. So you can try to switch to version 2 by
 adding a :ref:`special attribute <versions>` in the first line. You'll get
 ``line 2: no viable alternative at character '$'``
@@ -63,38 +65,24 @@ of string with script title. For example::
     study("title")
 
 
-Mismatched input <...> expect <???>
------------------------------------
+Mismatched input <...> expecting <???>
+--------------------------------------
 
 Same as ``no viable alternative``, but it is known what should be at that
 place. Example::
 
-    //@version=2
+    //@version=4
     study("My Script")
         plot(1)
 
-``line 3: mismatched input 'plot' expecting LEND``
+``line 3: mismatched input 'plot' expecting 'end of line without line continuation'``
 
 To fix this you should start line with ``plot`` on a new line without an
 indent::
 
-    //@version=2
+    //@version=4
     study("My Script")
     plot(1)
-
-Cannot call \`operator ?:\` with arguments (series, string, string)
--------------------------------------------------------------------
-
-Example::
-
-    //@version=2
-    study("Cannot call `operator ?:")
-    c = open > close ? '$' : '#'
-    plot(c == '$' ? 1 : 2)
-
-The result of such ternary operator should be series of string. But
-there is no support for *series of string* type in Pine Script. So this call
-is forbidden.
 
 Loop is too long (> 200 ms)
 ---------------------------
@@ -108,12 +96,12 @@ loading.
 
 ::
 
-    //@version=2
+    //@version=4
     study("Loop is too long", max_bars_back=101)
     s = 0
-    for i = 1 to 1e3 // to make it longer
+    for i = 1 to 1e3  // to make it longer
         for j = 0 to 100
-            if (timestamp(2017, 02, 23, 00, 00) <= time[j] and time[j] < timestamp(2017, 02, 23, 23, 59))
+            if timestamp(2017, 02, 23, 00, 00) <= time[j] and time[j] < timestamp(2017, 02, 23, 23, 59)
                 s := s + 1
     plot(s)
 
@@ -122,7 +110,7 @@ this case, algorithm may be optimized like this:
 
 ::
 
-    //@version=2
+    //@version=4
     study("Loop is too long", max_bars_back=101)
     bar_back_at(t) =>
         i = 0
@@ -135,14 +123,19 @@ this case, algorithm may be optimized like this:
                 break
             if time[i] >= t
                 i := i + step
+                i
             else
                 i := i - step
+                i
             step := step / 2
+            step
         i
 
     s = 0
-    for i = 1 to 1e3 // to make it longer
-        s := s - bar_back_at(timestamp(2017, 02, 23, 23, 59)) + bar_back_at(timestamp(2017, 02, 23, 00, 00))
+    for i = 1 to 1e3  // to make it longer
+        s := s - bar_back_at(timestamp(2017, 02, 23, 23, 59)) +
+             bar_back_at(timestamp(2017, 02, 23, 00, 00))
+        s
     plot(s)
 
 Script has too many local variables

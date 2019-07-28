@@ -6,13 +6,13 @@ Pine version 3 migration guide
 This document helps to migrate Pine Script code from ``@version=2`` to
 ``@version=3``.
 
-Default behaviour of ``security`` function has changed
-------------------------------------------------------
+Default behaviour of security function has changed
+--------------------------------------------------
 
 Let's look at the simple ``security`` function use case. Add this
 indicator on an intraday chart::
 
-    // Add this indicator on an intraday (e.g. '30' minutes) chart
+    // Add this indicator on an intraday (e.g., 30 minutes) chart
     //@version=2
     study("My Script", overlay=true)
     s = security(tickerid, 'D', high, false)
@@ -81,8 +81,8 @@ should be rewritten in Pine version 3 as follows::
     e = d + 1
     f := e + close
 
-Resolving a problem with a mutable variable in a ``security`` expression
-------------------------------------------------------------------------
+Resolving a problem with a mutable variable in a security expression
+--------------------------------------------------------------------
 
 When you migrate script to version 3 it's possible that after removing
 self-referencing and forward-referencing variables the Pine compiler

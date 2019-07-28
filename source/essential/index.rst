@@ -4,7 +4,7 @@ Essential features
 .. toctree::
    :maxdepth: 3
    :name: appendixtoc
-   
+
    Context_switching_the_security_function
    Bar_states_Built-in_variables_barstate
    Sessions_and_time_functions

@@ -2,3 +2,4 @@
 /tmp/
 /src/
 /.vscode/
+/source/_build/**

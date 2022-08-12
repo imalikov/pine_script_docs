@@ -163,6 +163,7 @@ For alerts based on other types, users can set the frequency in the alert widget
 .. image:: images/Faq-Alerts-01.png
 
 
+
 .. image:: /images/TradingView-Logo-Block.svg
     :width: 200px
     :align: center

@@ -98,7 +98,6 @@ Here are two ways you can go about it:
     var float entryPrice = na
     if longCondition[1] or shortCondition[1]
         entryPrice := open
-        entryPrice
     plot(entryPrice, 'Method 1', color.new(color.orange, 0), 3, plot.style_circles)
 
     // ————— Method 2: use built-in variable.

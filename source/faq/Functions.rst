@@ -108,31 +108,31 @@ You will see how the unshielded value (``upVwap2`` in the thick line) will produ
 
     //@version=5
     indicator("When to pre-evaluate functions/built-ins", "", true)
-    CN1 = "1. Condition A is true because evaluation varies bar to bar"
-    CN2 = "2. Condition A is false because `timeframe.multiplier` does not vary during the script\'s execution"
-    CN3 = "3. Condition A is false because an input does not vary during the script\'s execution"
-    useCond = input.string(CN1, "Test on conditional expression:", options=[CN1, CN2, CN3])
-    p = 10
+    string CN1     = "1. Condition A is true because evaluation varies bar to bar"
+    string CN2     = "2. Condition A is false because `timeframe.multiplier` does not vary during the script\'s execution"
+    string CN3     = "3. Condition A is false because an input does not vary during the script\'s execution"
+    string useCond = input.string(CN1, "Test on conditional expression:", options=[CN1, CN2, CN3])
+    int p          = 10
 
     // ————— Conditional expression 1: CAUTION!
     //       Can lead to execution of either `if` block because:
     //          uses *series* variables, so result changes bar to bar.
     //       (Condition A is fulfilled).
-    cond1 = close > open
+    bool cond1 = close > open
     // ————— Conditional expression 2: NO WORRIES
     //       Guarantees execution of same `if` block on every bar because:
     //          uses *simple* variable, so result does NOT change bar to bar
     //          because it is known before the script executes and does not change.
     //       (Condition A is NOT fulfilled).
-    cond2 = timeframe.multiplier > 0
+    bool cond2 = timeframe.multiplier > 0
     // ————— Conditional expression 3: NO WORRIES
     //       Guarantees execution of same `if` block on every bar because:
     //          uses *input* variable, so result does NOT change bar to bar
     //          because it is known before the script execcutes and does not change.
     //       (Condition A is NOT fulfilled).
-    cond3 = input(true)
+    bool cond3 = input.bool(true)
 
-    cond = useCond == CN1 ? cond1 : useCond == CN2 ? cond2 : cond3
+    bool cond = useCond == CN1 ? cond1 : useCond == CN2 ? cond2 : cond3
 
     // Built-in used in "if" blocks that is not part of the exception list,
     // and so will require forced evaluation on every bar prior to entry in "if" statement.
@@ -156,7 +156,7 @@ How can I round a number to x increments?
 
     //@version=5
     indicator("Round fraction example")
-    incrementAmt = input.float(0.75, "Increment", step = 0.01)
+    float incrementAmt = input.float(0.75, "Increment", step = 0.01)
 
     roundToIncrement(value, increment) =>
         // Kudos to @veryevilone for the idea.

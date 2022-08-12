@@ -125,7 +125,7 @@ For a more in-depth overview of scopes, please read `this article <https://www.t
 
 Please note that:
     * You are allowed to access variables declared in a global scope from anywhere but can only access variables declared in a local scope inside the local scope.
-    * We can declare the `cond2` variable in the global scope and only change the value in a local scope to get this code to compile properly.
+    * We can declare the ``cond2`` variable in the global scope and only change the value in a local scope to get this code to compile properly.
     
 
 

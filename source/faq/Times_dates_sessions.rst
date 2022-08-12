@@ -378,6 +378,28 @@ This code shows three methods to detect bars opening at 18h00:
 Can I time the duration of a condition?
 ---------------------------------------
 
+This shows how to use our ``secondsSince(cond, resetCond)`` function to calculate how many seconds has passed since the condition was true. 
+Keep in mind that this is designed to work on realtime data only.
+
+::
+
+//@version=5
+indicator("Seconds since cond example")
+
+secondsSince(bool cond, bool resetCond = barstate.isnew) =>
+    varip int timeBegin = na
+    varip bool lastCond = false
+    if resetCond
+        timeBegin := cond ? timenow : na
+    else if cond
+        if not lastCond
+            timeBegin := timenow
+    else
+        timeBegin := na
+    lastCond := cond
+    int result = (timenow - timeBegin) / 1000
+
+plot(secondsSince(close < ta.sma(close, 200)))
 
 
 

@@ -106,7 +106,7 @@ Use the ``multipleOfRes()`` function from the PineCoders MTF Selection Framework
     //@author=LucF, for PineCoders
     indicator("Multiple of current TF")
 
-    resMult = input.int(4, minval=1)
+    int resMult = input.int(4, minval=1)
 
     // Returns a multiple of current TF as a string usable with "security()".
     multipleOfRes(res, mult) =>

@@ -23,18 +23,44 @@ How do I prevent the ‘x1 is too far from the current bar_index’ error?
 
 
 
-How can I update all x2/right side of all lines/boxes in an array.new_line() / array.new_box()?
+How can I update all x2/right side of all lines/boxes in an \'array.new_line()\' / \'array.new_box()\'?
 -----------------------------------------------------------------------------------------------
 
 
 
-How to avoid repainting when using the request.security() function?
+How to avoid repainting when using the \'request.security()\' function?
 -----------------------------------------------------------
 
+See the discussion published with the PineCoders indicator script: 
+`How to avoid repainting when using request.security() <https://www.tradingview.com/script/cyPWY96u-How-to-avoid-repainting-when-using-security-PineCoders-FAQ/>`__
+
+The easiest way is to use the following syntax for v5:
+
+::
+
+    request.security(syminfo.tickerid, "D", close[1], lookahead = barmerge.lookahead_on)
+
+This is how you do it for v4:
+
+::
+
+    security(syminfo.tickerid, "D", close[1], lookahead = barmerge.lookahead_on)
+
+And this is the method for v3:
+
+::
+
+    security(tickerid, "D", close[1], lookahead = barmerge.lookahead_on)
 
 
-How to avoid repainting when NOT using the request.security() function?
+
+How to avoid repainting when NOT using the \'request.security()\' function?
 ---------------------------------------------------------------
+
+See the discussion published with the PineCoders indicator script: 
+`How to avoid repainting when NOT using request.security() <https://www.tradingview.com/script/s8kWs84i-How-to-avoid-repainting-when-NOT-using-security/>`__
+
+The general idea is to use the confirmed information from the last bar for calculations.
 
 
 
@@ -213,13 +239,13 @@ Method 2 is more readable. Method 3 is a more concise method.
 
 
 
-How can I optimize Pine code?
------------------------------
+How can I optimize Pine Script™ code?
+-------------------------------------
 
 
 
-How can I access financials information on stocks from Pine?
-------------------------------------------------------------
+How can I access a stock's financial information using Pine Script™?
+--------------------------------------------------------------------
 
 
 
@@ -231,10 +257,77 @@ How can I save a value from a signal when a pivot occurs?
 How can I find the maximum value among the last pivots?
 -------------------------------------------------------
 
+We will be finding the highest value of the last 3 `high <https://www.tradingview.com/pine-script-reference/v5/#var_high>`__ pivots here, 
+but the technique can be extended to any number of pivots. We will be using `ta.valuewhen() <https://www.tradingview.com/pine-script-reference/v5/#fun_ta{dot}valuewhen>`__ 
+to fetch the value from the nth occurrence of a `high <https://www.tradingview.com/pine-script-reference/v5/#var_high>`__ pivot, 
+remembering to offset the value we are retrieving with number of right legs used to detect the pivot, 
+as a pivot is only detected after than number of bars has elapsed from the actual pivot bar.
+
+::
+
+    //@version=5
+    indicator("Max pivot example", "", true)
+    int legs    = input.int(4)
+    float pH    = ta.pivothigh(legs, legs)
+    bool newPH  = not na(pH)
+    float p00   = ta.valuewhen(newPH, high[legs], 00)
+    float p01   = ta.valuewhen(newPH, high[legs], 01)
+    float p02   = ta.valuewhen(newPH, high[legs], 02)
+    float maxPH = math.max(p00, p01, p02)
+    plot(maxPH)
+    plotchar(newPH, "newPH", "•", location.abovebar, offset = -legs)
+    plotchar(newPH, "newPH", "▲", location.top)
+
+.. note:: We use ``not na(pH)`` to detect a new pivot, rather than the more common way of simply relying on the fact that pH will be different from zero or na—so true—when a pivot is found. While the common technique will work most of the time, it will not work when a pivot is found at a value of zero, because zero is evaluated as false in a conditional expression. Our method is thus more robust, and the recommended way to test for a pivot.
+
 
 
 How can I access normal bar OHLC values on a non-standard chart?
 ----------------------------------------------------------------
+
+You need to use the `request.security() <https://www.tradingview.com/pine-script-reference/v5/#fun_request{dot}security>`__ function. 
+This script allows you to view normal candles on the chart, although depending on the non-standard chart type you use, this may or may not make much sense:
+
+::
+
+    //@version=5
+    indicator("Plot underlying OHLC", "", true)
+
+    // ————— Allow plotting of underlying candles on chart.
+    plotCandles = input(true, "Plot Candles")
+    method = input.int(1, "Using Method", minval = 1, maxval = 2)
+
+    // ————— Method 1: Only works when chart is on default exchange for the symbol.
+    o1 = request.security(syminfo.ticker, timeframe.period, open)
+    h1 = request.security(syminfo.ticker, timeframe.period, high)
+    l1 = request.security(syminfo.ticker, timeframe.period, low)
+    c1 = request.security(syminfo.ticker, timeframe.period, close)
+    // ————— Method 2: Works all the time because it use the chart"s symbol and exchange information.
+    ticker = ticker.new(syminfo.prefix, syminfo.ticker)
+    o2 = request.security(ticker, timeframe.period, open)
+    h2 = request.security(ticker, timeframe.period, high)
+    l2 = request.security(ticker, timeframe.period, low)
+    c2 = request.security(ticker, timeframe.period, close)
+    // ————— Get value corresponding to selected method.
+    o = method == 1 ? o1 : o2
+    h = method == 1 ? h1 : h2
+    l = method == 1 ? l1 : l2
+    c = method == 1 ? c1 : c2
+
+    // ————— Plot underlying close.
+    plot(c, "Underlying close", color = color.new(color.gray, 0), linewidth = 3, trackprice = true)
+    // ————— Plot candles if required.
+    invisibleColor = color.new(color.white, 100)
+    plotcandle(plotCandles ? o : na, plotCandles ? h : na, plotCandles ? l : na, plotCandles ? c : na, color = color.orange, wickcolor = color.orange)
+
+    var table tbl = table.new(position.top_right, 1, 1)
+
+    if barstate.isfirst
+        table.cell(tbl, 0, 0, "", bgcolor = color.yellow)
+    else if barstate.islast
+        string txt = str.format("Underlying Close1 = {0, number, #.##}\nUnderlying Close2 = {1, number, #.##} \n{2} close = {3, number, #.##}\n Delta = {4, number, #.##}"
+        , c1, c2, "Chart\'s", close, close - c)
+        table.cell_set_text(tbl, 0, 0, txt)
 
 
 
@@ -251,10 +344,28 @@ How can I display plot values in the chart’s scale?
 How can I reset a sum on a condition?
 -------------------------------------
 
+We first need a variable whose value is preserved bar to bar, so we will use the `var <https://www.tradingview.com/pine-script-reference/v5/#op_var>`__ keyword to 
+initialize our ``vol`` variable on the first bar only. We then need to define the resetting condition, in this case a MACD cross. 
+We then add the `volume <https://www.tradingview.com/pine-script-reference/v5/#var_volume>`__ to our ``vol`` variable on each bar, except when a cross occurs, 
+in which case we reset our sum to zero. We also plot a dot on crosses for debugging purposes:
+
+::
+
+    //@version=5
+    indicator("Reset sum on condition example")
+    [macdLine, signalLine, _] = ta.macd(close, 12, 26, 9)
+    var float vol = na
+    bool cond = ta.cross(macdLine, signalLine)
+    vol := cond ? 0. : vol + volume
+    plot(vol)
+    plotchar(cond, "cond", "•", location.top, size = size.tiny)
+
+.. note:: We do not use the third tuple value in the `ta.macd() <https://www.tradingview.com/pine-script-reference/v5/#fun_ta{dot}macd>`__ call, so we replace it with an underscore.
 
 
-How can I cumulate a value for two exclusive states?
-----------------------------------------------------
+
+How can I accumulate a value for two exclusive states?
+------------------------------------------------------
 
 
 
@@ -270,6 +381,18 @@ How can I find the nth highest/lowest value in the last bars?
 
 How can I calculate the all-time high and all-time low?
 -------------------------------------------------------
+
+Use the `ta.max() <https://www.tradingview.com/pine-script-reference/v5/#fun_ta{dot}max>`__ and the 
+`ta.min() <https://www.tradingview.com/pine-script-reference/v5/#fun_ta{dot}min>`__ functions. These functions will return the all-time high and low for the given data source.
+
+::
+
+    //@version=5
+    indicator("All-time high and low example")
+    ath = ta.max(high)
+    atl = ta.min(low)
+    plot(ath, color = color.green)
+    plot(atl, color = color.red)
 
 
 

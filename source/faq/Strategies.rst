@@ -114,8 +114,8 @@ but to reach them you will need to use a third party execution engine to relay o
 
 
 
-Can my Pine strategy or study place automated orders in markets?
-----------------------------------------------------------------
+Can my Pine Script™ strategy or indicator place automated orders?
+-----------------------------------------------------------------
 
 
 

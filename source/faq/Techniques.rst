@@ -101,6 +101,35 @@ How can I remember when the last time a condition occurred?
 How can I plot the previous and current day’s open?
 ---------------------------------------------------
 
+We define a period through the script’s Settings/Inputs, in this case 1 day. 
+Then we use the `time() <https://www.tradingview.com/pine-script-reference/v5/#fun_time>`__ function to detect changes in the period, and when it changes, 
+save the running `open <https://www.tradingview.com/pine-script-reference/v5/#var_open>`__ in the the previous day’s variable, 
+and get the current `open <https://www.tradingview.com/pine-script-reference/v5/#var_open>`__.
+
+Note the plots using a choice of lines or circles. When using the lines, rather than use 
+`plot.style_linebr <https://www.tradingview.com/pine-script-reference/v5/#var_plot{dot}style_linebr>`__ and plot 
+`na <https://www.tradingview.com/pine-script-reference/v5/#var_na>`__ on changes so we don’t get a diagonal plot between the levels, we simply don’t use a color on changes, 
+which leaves a void of one bar rather the void of 2 bars used when we plot an `na <https://www.tradingview.com/pine-script-reference/v5/#var_na>`__ value.
+
+.. image:: images/Faq-Techniques-05.png
+    
+::
+
+    //@version=5
+    indicator("Previous and current day open", "", true)
+    string period = input.timeframe("D", "Period after which hi/lo is reset")
+    bool lines = input.bool(true)
+
+    var float oYesterday = na
+    var float oToday = na
+    if ta.change(time(period))
+        oYesterday := oToday
+        oToday := open
+
+    stylePlots = lines ? plot.style_line : plot.style_circles
+    plot(oYesterday, "oYesterday", lines and ta.change(time(period)) ? na : color.gray, 2, stylePlots)
+    plot(oToday, "oToday", lines and ta.change(time(period)) ? na : color.silver, 2, stylePlots)
+
 
 
 How can I count the occurrences of a condition in the last x bars?
@@ -174,15 +203,120 @@ One way to do it is by using `ta.barssince() <https://www.tradingview.com/pine-s
 Can I merge two or more indicators into one?
 --------------------------------------------
 
+Sure, but start by looking at the scale each one is using. If you’re thinking of merging a moving average indicator designed to plot on top of candles and in relation to them, 
+you are going to have problems if you also want to include an indicator showing volume bars in the same script because their values are not using the same scale.
+
+Once you’ve made sure your scaling will be compatible (or you have devised a way of normalizing/re-scaling them), 
+it’s a matter of gathering the code from all indicators into one script and removing any variable name collisions so each indicator’s calculations retain their independence 
+and integrity. You may need to convert some code from one version of Pine Script™ to another, so pay attention to the version used in each script.
+
+.. note:: If the indicators you’ve merged are CPU intensive, you may run into runtime limitations when executing the compound script.
+
 
 
 How can I rescale an indicator from one scale to another?
 ---------------------------------------------------------
 
+The answer depends on whether you know the minimum/maximum possible values of the signal to be rescaled. 
+If you don’t know them, as is the case for `volume <https://www.tradingview.com/pine-script-reference/v5/#var_volume>`__ or 
+`ta.macd() <https://www.tradingview.com/pine-script-reference/v5/#fun_ta{dot}macd>`__ where the maximum value is unknown, 
+then you will need to use a function that uses past history to determine the minimum/maximum values, as in the ``normalize()`` function here. 
+While this is an imperfect solution since the minimum/maximum need to be discovered as your script progresses bar to bar, we prefer it to the technique using 
+`ta.lowest() <https://www.tradingview.com/pine-script-reference/v5/#fun_ta{dot}lowest>`__ and 
+`ta.highest() <https://www.tradingview.com/pine-script-reference/v5/#fun_ta{dot}highest>`__ over a fixed period because it uses the minimum/maximum values for the complete set 
+of elapsed bars rather than a subset of fixed length. 
+The ideal solution would be to know in advance the minimum/maximum values for the whole series prior to beginning the normalization process, 
+but this is currently not possible in Pine.
+
+If you know the minimum/maximum values of the series (RSI, Stoch, etc.), then you should use the ``rescale()`` function, 
+which only translates the values into another space without changing their relative proportion.
+
+Here, we show how to present `ta.rsi() <https://www.tradingview.com/pine-script-reference/v5/#fun_ta{dot}rsi>`__ and 
+`volume <https://www.tradingview.com/pine-script-reference/v5/#var_volume>`__ in one part of our our indicator’s pane, in the -100/100 range. 
+As `ta.rsi() <https://www.tradingview.com/pine-script-reference/v5/#fun_ta{dot}rsi>`__ is a bounded indicator with known values between 0/100, 
+we can rescale it to the -100/100 and not lose any of its information. `Volume <https://www.tradingview.com/pine-script-reference/v5/#var_volume>`__, however, is another story. 
+As it is unbounded, we need to normalize it to the same -100/100 scale because we want its plot line to be constrained to the same space as our rescaled 
+`ta.rsi() <https://www.tradingview.com/pine-script-reference/v5/#fun_ta{dot}rsi>`__. 
+`Volume <https://www.tradingview.com/pine-script-reference/v5/#var_volume>`__ is shown as the black line.
+
+In addition to `ta.rsi() <https://www.tradingview.com/pine-script-reference/v5/#fun_ta{dot}rsi>`__ and 
+`volume <https://www.tradingview.com/pine-script-reference/v5/#var_volume>`__ in one part of our indicator’s space, let’s say we also want to show 
+`ta.cci() <https://www.tradingview.com/pine-script-reference/v5/#fun_ta{dot}cci>`__ which is an unbounded indicator. 
+While 75% of its values should lie in the -100/100 space, there are no fixed upper/lower bounds for 
+`ta.cci() <https://www.tradingview.com/pine-script-reference/v5/#fun_ta{dot}cci>`__ since it is unbounded. We will thus need to normalize the value. 
+We choose to present it in the 100/500 space of our indicator. 
+`ta.cci() <https://www.tradingview.com/pine-script-reference/v5/#fun_ta{dot}cci>`__ is normally displayed with lines at -100 and 100, 
+but in the 100/500 bounded space where we are normalizing it, there is no precise equivalent for the -100 and 100 levels, so we arbitraly decided on 200/400:
+
+.. image:: images/Faq-Techniques-04.png
+
+::
+
+    //@version=5
+    //@author=glaz + LucF, for PineCoders
+    indicator("FAQ - Rescaling/Normalizing values")
+
+    // ————— When the scale of the signal to rescale is unknown (unbounded).
+    // Min/Max of signal to rescale is determined by its historical low/high.
+    normalize(src, min, max) =>
+        // Normalizes series with unknown min/max using historical min/max.
+        // src      : series to rescale.
+        // min, max : min/max values of rescaled series.
+        var historicMin = 10e10
+        var historicMax = -10e10
+        historicMin := math.min(nz(src, historicMin), historicMin)
+        historicMax := math.max(nz(src, historicMax), historicMax)
+        min + (max - min) * (src - historicMin) / math.max(historicMax - historicMin, 10e-10)
+
+    // ————— When the scale of the signal to rescale is known (bounded).
+    rescale(src, oldMin, oldMax, newMin, newMax) =>
+        // Rescales series with known min/max.
+        // src            : series to rescale.
+        // oldMin, oldMax : min/max values of series to rescale.
+        // newMin, newMax : min/max values of rescaled series.
+        newMin + (newMax - newMin) * (src - oldMin) / math.max(oldMax - oldMin, 10e-10)
+
+    // ————— Usual CCI calculations.
+    int length = input.int(20, minval = 1)
+    float src  = input.source(close, title = "Source")
+    float ma   = ta.sma(src, length)
+    float cci  = (src - ma) / (0.015 * ta.dev(src, length))
+
+    // —————————— Plots
+
+    // ————— Normalized CCI.
+    plot(normalize(cci, 100, 500), "Normalized CCI", color = color.new(#996A15, 0))
+    // Arbitrary and inexact equivalent of 100 and -100 levels rescaled to the 100/500 scale.
+    band1 = hline(400, "Upper Band", color = #C0C0C0, linestyle = hline.style_dashed)
+    band0 = hline(200, "Lower Band", color = #C0C0C0, linestyle = hline.style_dashed)
+    fill(band1, band0, color = color.new(#9C6E1B, 90), title = "Background")
+
+    // ————— Normalized volume in the same region as the rescaled RSI.
+    plot(normalize(volume, -100, 100), "Normalized volume", color.new(color.black, 0))
+    hline(100)
+    hline(-100)
+
+    // ————— Rescaled RSI.
+    plot(rescale(ta.rsi(close, 14), 0, 100, -100, 100), "Rescaled RSI", color.new(#8E1599, 0))
+    hline(0)
+    // Precise equivalent of 70 and 30 levels rescaled to the -100/100 scale.
+    band11 = hline(40, "Upper Band", color = #C0C0C0)
+    band00 = hline(-40, "Lower Band", color = #C0C0C0)
+    fill(band11, band00, color = color.new(#9915FF, 90), title = "Background")
+
+    // ————— Plot actual values in Data Window.
+    plotchar(na, "═══════════════", "", location.top, size = size.tiny)
+    plotchar(cci, "Real CCI", "", location.top, size = size.tiny)
+    plotchar(volume, "Real volume", "", location.top, size = size.tiny)
+    plotchar(ta.rsi(close, 14), "Real RSI", "", location.top, size = size.tiny)
 
 
-How can I monitor script run time?
-----------------------------------
+
+How can I calculate my script's run time?
+-----------------------------------------
+
+Use the code from the `PineCoders Script Stopwatch <>`__. 
+You will be able to time your script execution time so you can explore different scenarios when developing code and see for yourself which version performs the best.
 
 
 
@@ -193,6 +327,66 @@ How can I save a value when an event occurs?
 
 How can I count touches of a specific level?
 --------------------------------------------
+
+This technique shows one way to count touches of a level that is known in advance (the median in this case). 
+We keep a separate tally of up and down bar touches, and account for gaps across the median. Every time a touch occurs, we simply save a 1 value in a series. 
+We can then use the `math.sum() <https://www.tradingview.com/pine-script-reference/v5/#fun_math{dot}sum>`__ function to count the number of ones in 
+that series in the last ``lookBackTouches`` bars.
+
+Note that the script can be used in overlay mode to show the median and touches on the chart, or in pane mode to show the counts. 
+Change the setting of the overlay variable accordingly and re-add the indicator to the chart to implement the change.
+
+.. image:: images/Faq-Techniques-03.png
+
+::
+
+    //@version=5
+    //@author=LucF, for PineCoders
+
+    // Median Touches
+    //  v1.0, 2020.01.02 13:01 — LucF
+
+    // Can work in overlay or pane mode and plots differently for each case.
+    overlay = false
+    indicator("Median Touches", "", overlay)
+    int lookBackMedian  = input.int(100)
+    int lookBackTouches = input.int(50)
+    float median = ta.percentile_nearest_rank(close, lookBackMedian, 50)
+    // Don"t count neutral touches when price doesn"t move.
+    bool barUp = close > open
+    bool barDn = close < open
+    // Bar touches median.
+    bool medianTouch = high > median and low < median
+    bool gapOverMedian = high[1] < median and low > median
+    bool gapUnderMedian = low[1] > median and high < median
+    // Record touches.
+    int medianTouchUp = medianTouch and barUp or gapOverMedian ? 1 : 0
+    int medianTouchDn = medianTouch and barDn or gapUnderMedian ? 1 : 0
+    // Count touches.
+    float touchesUp = math.sum(medianTouchUp, lookBackTouches)
+    float touchesDn = math.sum(medianTouchDn, lookBackTouches)
+    // —————————— Plots
+    // ————— Both modes
+    // Markers
+    plotchar(medianTouchUp, "medianTouchUp", "▲", overlay ? location.belowbar : location.bottom, color.new(color.lime, 0))
+    plotchar(medianTouchDn, "medianTouchDn", "▼", overlay ? location.abovebar : location.top, color.new(color.red, 0))
+    // ————— Overlay mode
+    // Median for overlay mode.
+    plot(overlay ? median : na, "Median", color.new(color.orange, 0))
+    // ————— Pane mode
+    // Base areas.
+    lineStyle = overlay ? plot.style_line : plot.style_columns
+    plot(not overlay ? touchesUp : na, "Touches Up", color.new(color.green, 0), style = lineStyle)
+    plot(not overlay ? -touchesDn : na, "Touches Dn", color.new(color.maroon, 0), style = lineStyle)
+    // Exceeding area.
+    float minTouches = math.min(touchesUp, touchesDn)
+    bool minTouchesIsUp = touchesUp < touchesDn
+    basePlus = plot(not overlay ? minTouches : na, "Base Plus", #00000000)
+    hiPlus = plot(not overlay and not minTouchesIsUp ? touchesUp : na, "High Plus", #00000000)
+    fill(basePlus, hiPlus, color.new(color.lime, 0))
+    baseMinus = plot(not overlay ? -minTouches : na, "Base Plus", #00000000)
+    loMinus = plot(not overlay and minTouchesIsUp ? -touchesDn : na, "Low Minus", #00000000)
+    fill(baseMinus, loMinus, color.new(color.red, 0))
 
 
 
@@ -251,6 +445,27 @@ How can I access a stock's financial information using Pine Script™?
 
 How can I save a value from a signal when a pivot occurs?
 ---------------------------------------------------------
+
+You will need to:
+
+Detect a new pivot, which is done by testing for ``not na(pHi)``, as the pivot built-ins only return a non-na value when they identify a pivot. 
+Keep in mind this always happens n bars after the pivot itself, with n corresponding to the number of bars you use as right legs to identify your pivots.
+Save the value of the signal n bars back, because that is when the pivot was found.
+
+::
+
+    //@version=5
+    indicator("Signal value on pivot")
+    r = ta.rsi(close, 14)
+    legs = input(12)
+    pHi = ta.pivothigh(legs, legs)
+    newPHi = not na(pHi)
+    var float rHi = na
+    if newPHi
+        rHi := r[legs]
+    plot(r, "Rsi value")
+    plot(rHi, "Signal value", newPHi ? na : color.fuchsia, offset = -legs)
+    plotchar(pHi, "pHi", "▲", location.top, offset = -legs)
 
 
 

@@ -88,13 +88,84 @@ Use everget’s `Chart Type Identifier <https://www.tradingview.com/script/8xCRJ
 
 
 
-How can I plot the chart’s historical high and low?
----------------------------------------------------
+How can I plot the chart’s visible high and low?
+------------------------------------------------
 
 
 
 How can I remember when the last time a condition occurred?
 -----------------------------------------------------------
+
+The `ta.barssince() <https://www.tradingview.com/pine-script-reference/v5/#fun_ta{dot}barssince>`__ built-in function is the simplest way of doing it, 
+as is done in Method 1 in the following script. Method 2 shows an alternate way to achieve the same result as 
+`ta.barssince() <https://www.tradingview.com/pine-script-reference/v5/#fun_ta{dot}barssince>`__. In Method 2 we watch for the condition as the script is executing 
+on each successive bar, initialize our distance to 0 when we encounter the condition, and until we encounter the condition again, add 1 to the distance at each bar. 
+In method 3 we save the bar’s index when the condition occurs, and we then use the difference between the current bar’s index and that one to derive the distance between the two.
+
+In all cases the resulting value can be used as an index with the[] 
+`history-referencing operator <https://www.tradingview.com/pine-script-docs/en/v5/language/Operators.html#history-referencing-operator>`__ 
+because it accepts a series value, i.e., a value that can change on each bar.
+
+::
+
+    //@version=5
+    indicator("Track distance from condition", "", true)
+    // Plot the high/low from bar where condition occurred the last time.
+
+    // Conditions.
+    bool upBar   = close > open
+    bool dnBar   = close < open
+    bool up3Bars = dnBar and upBar[1] and upBar[2] and upBar[3]
+    bool dn3Bars = upBar and dnBar[1] and dnBar[2] and dnBar[3]
+
+    // Method 1, using "barssince()".
+    plot(high[ta.barssince(up3Bars)], color = color.new(color.blue, 80), linewidth = 16)
+    plot(low[ta.barssince(dn3Bars)], color = color.new(color.red, 80), linewidth = 16)
+    plotchar(ta.barssince(up3Bars), "1. barssince(up3Bars)", "", location.top)
+    plotchar(ta.barssince(dn3Bars), "1. barssince(dn3Bars)", "", location.top)
+
+    // Method 2, doing manually the equivalent of "ta.barssince()".
+    var barsFromUp = 0
+    var barsFromDn = 0
+    barsFromUp := up3Bars ? 0 : barsFromUp + 1
+    barsFromDn := dn3Bars ? 0 : barsFromDn + 1
+    plot(high[barsFromUp])
+    plot(low[barsFromDn], color = color.new(color.red, 0))
+    plotchar(barsFromUp, "2. barsFromUp", "", location.top)
+    plotchar(barsFromDn, "2. barsFromDn", "", location.top)
+
+    // Method 3, storing bar_index when condition occurs.
+    var int barWhenUp = na
+    var int barWhenDn = na
+    if up3Bars
+        barWhenUp := bar_index
+    if dn3Bars
+        barWhenDn := bar_index
+    plot(high[bar_index - barWhenUp], color = color.new(color.blue, 70), linewidth = 8)
+    plot(low[bar_index - barWhenDn], color = color.new(color.red, 70), linewidth = 8)
+    plotchar(bar_index - barWhenUp, "3. bar_index - barWhenUp", "", location.top)
+    plotchar(bar_index - barWhenDn, "3. bar_index - barWhenDn", "", location.top)
+
+This script shows how to keep track of the number of bars since the last cross using methods 1 and 2. Method 3 could be used just as well:
+
+::
+
+    //@version=5
+    indicator("Bars between crosses", "", true)
+
+    maS = ta.sma(close, 30)
+    maF = ta.sma(close, 5)
+    masCross = ta.cross(maF, maS)
+
+    // ————— Count number of bars since last crossover: manually or using built-in function.
+    var barCount1 = 0
+    barCount1 := masCross ? 0 : barCount1 + 1
+    barCount2 = ta.barssince(masCross)
+
+    // ————— Plots
+    label.new(bar_index, high + ta.tr, "barCount1: " + str.tostring(barCount1) + "\nbarCount2: " + str.tostring(barCount2), xloc.bar_index, yloc.price, size = size.small)
+    plot(maF)
+    plot(maS, color = color.new(color.fuchsia, 0))
 
 
 
@@ -112,7 +183,7 @@ Note the plots using a choice of lines or circles. When using the lines, rather 
 which leaves a void of one bar rather the void of 2 bars used when we plot an `na <https://www.tradingview.com/pine-script-reference/v5/#var_na>`__ value.
 
 .. image:: images/Faq-Techniques-05.png
-    
+
 ::
 
     //@version=5
@@ -135,27 +206,129 @@ which leaves a void of one bar rather the void of 2 bars used when we plot an `n
 How can I count the occurrences of a condition in the last x bars?
 ------------------------------------------------------------------
 
+The built-in `math.sum() <https://www.tradingview.com/pine-script-reference/v5/#fun_math{dot}sum>`__ function is the most efficient way to do it, 
+but its length (the number of last bars in your sample) can't be a series float or int. This script shows three different ways of achieving the count:
 
+ - Method 1 uses the `math.sum() <https://www.tradingview.com/pine-script-reference/v5/#fun_math{dot}sum>`__ built-in function.
+ - Method 2 uses a technique that is also efficient, but not as efficient as the built-in. It has the advantage of accepting a series float or int as a length.
+ - Method 3 also accepts a series float or int as a length, but is very inefficient because it uses a `for <https://www.tradingview.com/pine-script-reference/v5/#op_for>`__ 
+   loop to go back on past bars at every bar. Examining all length bars at every bar is unnecessary since all of them except the last bar have already been examined previously 
+   when the script first executed on them. This makes for slower code and will be detrimental to the chart loading time.
 
-How can I implement an On/Off switch?
---------------------------------------
+Method 2 is a very good example of the Pine Script™ way of doing calculations by taking advantage of series and a good understanding of the Pine Script™ runtime environment 
+to code our scripts. While it is useful to count occurrences of a condition in the last x bars, it is also worth studying because the technique it uses will 
+allow you to write much more efficient Pine Script™ code than one using a `for <https://www.tradingview.com/pine-script-reference/v5/#op_for>`__ loop when applied to other 
+situations. There are situations when using a `for <https://www.tradingview.com/pine-script-reference/v5/#op_for>`__ loop is the only way to realize what we want, 
+but in most cases they can be avoided. `for <https://www.tradingview.com/pine-script-reference/v5/#op_for>`__ loops are the only way to achieve some types of backward analysis 
+when the criteria used are only known after the bars used to analyze the data have elapsed.
 
 ::
 
     //@version=5
-    indicator("On/Off condition example", "", true)
-    upBar = close > open
-    // On/off conditions.
-    triggerOn = upBar and upBar[1] and upBar[2]
-    triggerOff = not upBar and not upBar[1]
-    // Switch state is implicitly saved across bars thanks to initialize-only-once keyword "var".
-    var onOffSwitch = false
-    // Turn the switch on when triggerOn is true. If it is already on,
-    // keep it on unless triggerOff occurs.
-    onOffSwitch := triggerOn or onOffSwitch and not triggerOff
-    bgcolor(onOffSwitch ? color.new(color.green, 90) : na)
-    plotchar(triggerOn, "triggerOn", "▲", location.belowbar, color.new(color.lime, 0), size = size.tiny, text = "On")
-    plotchar(triggerOff, "triggerOff", "▼", location.abovebar, color.new(color.red, 0), size = size.tiny, text = "Off")
+    //@author=LucF, for PineCoders
+
+    // TimesInLast - PineCoders FAQ
+    //  v1.0, 2019.07.15 19:37 — Luc 
+
+    // This script illustrates 3 different ways of counting the number of occurrences when a condition occured in the last len bars.
+    // By using the script's Settings/Inputs you can choose between 4 types of length to use with the functions.
+    // If you look at results in the Data Window, you will see the impact of sending different types of length to each of the functions.
+
+    // Conclusions: 
+    //      - Unless your length is of series type, use Method 1.
+    //      - Use Method 2 if you need to be able to use a series int or series float length.
+    //      - Never use Method 3.
+    indicator("TimesInLast - PineCoders FAQ")
+
+    // Change this value when you want to use different lengths.
+    // Inputs cannot be change through Settings/Inputs; only the form-type.
+    int DEF_LEN = 100
+
+    // ————— Allow different types to be specified as length value.
+    // This part is only there to show the impact of using different form-types of length with the 3 functions.
+    // In normal situation, we would just use the following: len = input(100, "Length")
+    string LT1 = "1. input int"
+    string LT2 = "2. input float"
+    string LT3 = "3. series int"
+    string LT4 = "4. series float"
+    string lt = input.string(LT1, "Type of \"length\" argument to functions", options = [LT1, LT2, LT3, LT4])
+    int len1 = input.int(DEF_LEN, LT1, minval = DEF_LEN, maxval = DEF_LEN)
+    float len2 = input.float(DEF_LEN, LT2, minval = DEF_LEN, maxval = DEF_LEN)
+    var len3 = 0
+    len3 := len3 == DEF_LEN ? len3 : len3 + 1
+    var len4 = 0.
+    len4 := len4 == DEF_LEN ? len4 : len4 + 1
+    // Choose proper form-type of length.
+    len = lt == LT1 ? len1 : lt == LT2 ? len2 : lt == LT3 ? len3 : lt == LT4 ? len4 : na
+
+    // Condition on which all counts are done.
+    bool condition = close > open
+
+    // ————— Method 1. This function uses Pine's built-in function but only accepts a simple int for the length.
+    ideal_TimesInLast(cond, len) =>
+        math.sum(cond ? 1 : 0, len)
+
+    // ————— Method 2. This function is equivalent to using sum() but works with a float and series value for len.
+    verboseButEfficient_TimesInLast(cond, len) =>
+        // For first len bar we just add to cumulative count of occurrences.
+        // After that we add count for current bar and make adjustment to count for the tail bar in our mini-series of length = len.
+        var qtyBarsInCnt = 0
+        var cnt = 0
+        if cond
+            // Add to count as per current bar's condition state.
+            cnt += 1
+        if qtyBarsInCnt < len
+            // We have not counted the first len bars yet; keep adding to checked bars count.
+            qtyBarsInCnt += 1
+        else
+            // We already have a len bar total, so need to subtract last count at the tail of our len length count.
+            if cond[len]
+                cnt -= 1
+        qtyBarsInCnt == len ? cnt : na  // Use this to return na until first len bars have elapsed, as built-in "sum()" does.
+        // cnt // Use this when you want the running count even if full len bars haven"t been examined yet.
+
+    // ————— Method 3. Very inefficient way to go about the problem. Not recommended.
+    verboseAndINEFFICIENT_TimesInLast(cond, len) =>
+        // At each bar we loop back len - 1 bars to re-count conditions that were already counted in previous calls, except for the current bar's condition.
+        cnt = 0
+        for i = 0 to len - 1 by 1
+            if na(cond[i])
+                cnt := na
+            else
+                if cond[i]
+                    cnt += 1
+
+    // ————— Plots
+    v1 = ideal_TimesInLast(condition, int(len))
+    v2 = verboseButEfficient_TimesInLast(condition, int(len))
+    v3 = verboseAndINEFFICIENT_TimesInLast(condition, int(len))
+    plot(v1, "1. ideal_TimesInLast", color.new(color.fuchsia, 0))
+    plot(v2, "2. verboseButEfficient_TimesInLast", color.new(color.orange, 0))
+    plot(v3, "3. verboseAndINEFFICIENT_TimesInLast")
+    // Plot red background on discrepancies between results.
+    bgcolor(v1 != v2 or v2 != v3 ? color.new(color.red, 80) : na)
+
+
+
+    How can I implement an On/Off switch?
+    --------------------------------------
+
+    ::
+
+        //@version=5
+        indicator("On/Off condition example", "", true)
+        upBar = close > open
+        // On/off conditions.
+        triggerOn = upBar and upBar[1] and upBar[2]
+        triggerOff = not upBar and not upBar[1]
+        // Switch state is implicitly saved across bars thanks to initialize-only-once keyword "var".
+        var onOffSwitch = false
+        // Turn the switch on when triggerOn is true. If it is already on,
+        // keep it on unless triggerOff occurs.
+        onOffSwitch := triggerOn or onOffSwitch and not triggerOff
+        bgcolor(onOffSwitch ? color.new(color.green, 90) : na)
+        plotchar(triggerOn, "triggerOn", "▲", location.belowbar, color.new(color.lime, 0), size = size.tiny, text = "On")
+        plotchar(triggerOff, "triggerOff", "▼", location.abovebar, color.new(color.red, 0), size = size.tiny, text = "Off")
 
 
 

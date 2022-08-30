@@ -84,12 +84,43 @@ Use the `ta.barssince() <https://www.tradingview.com/pine-script-reference/v5/#f
 How can my script identify what chart type is active?
 -----------------------------------------------------
 
-Use everget’s `Chart Type Identifier <https://www.tradingview.com/script/8xCRJkGR-RESEARCH-Chart-Type-Identifier/>`__.
+::
+
+    //@version=5
+    indicator("Chart's type", "", true)
+
+    var table tbl = table.new(position.top_right, 1, 1)
+    string chartType = chart.is_heikinashi ? "Heikin Ashi" : chart.is_renko ? "Renko" : chart.is_linebreak ? "Line Break" : chart.is_kagi ? "Kagi" : chart.is_pnf ? "Point & Figure" : chart.is_range ? "Range" : "Standard"
+
+    if barstate.isfirst
+        table.cell(tbl, 0, 0, "", bgcolor = color.yellow)
+    else if barstate.islast
+        string txt = str.format("Chart type: {0}", chartType)
+        table.cell_set_text(tbl, 0, 0, txt)
 
 
 
 How can I plot the chart’s visible high and low?
 ------------------------------------------------
+
+::
+
+    //@version=5
+    indicator("Chart's visible high/low", "", true)
+
+    var float[] chartHighs = array.new_float(0)
+    var float[] chartLows = array.new_float(0)
+    var table tbl = table.new(position.top_right, 1, 1)
+
+    if time >= chart.left_visible_bar_time and time <= chart.right_visible_bar_time
+        array.push(chartHighs, high)
+        array.push(chartLows, low)
+
+    if barstate.isfirst
+        table.cell(tbl, 0, 0, "", bgcolor = color.yellow)
+    else if barstate.islast
+        string txt = str.format("Visible High: {0}\nVisible Low: {1}", array.max(chartHighs), array.min(chartLows))
+        table.cell_set_text(tbl, 0, 0, txt)
 
 
 
@@ -496,6 +527,43 @@ You will be able to time your script execution time so you can explore different
 How can I save a value when an event occurs?
 --------------------------------------------
 
+The key to this technique is declaring a variable using the `var <https://www.tradingview.com/pine-script-reference/v5/#op_var>`__ keyword. 
+While there are other ways to accomplish our task in Pine Script™, this is the simplest. 
+When you declare a variable using the `var <https://www.tradingview.com/pine-script-reference/v5/#op_var>`__ keyword, the variable is initialized only once at bar_index zero, 
+rather than on each bar. This has the effect of preserving the variable’s value without the explicit re-assignement that was required in earlier versions of Pine Script™ 
+where you would see code like this:
+
+::
+
+    priceAtCross = 0.0
+    priceAtCross := nz(priceAtCross[1])
+
+This was required because the variable was reassigned the value 0 at the beginning of each bar, so to remember its last value, 
+it had to be manually reset to its last bar’s value on each bar. 
+This is now unnecessary with the `var <https://www.tradingview.com/pine-script-reference/v5/#op_var>`__ keyword and makes for cleaner code:
+
+::
+
+    //@version=5
+    indicator("Save a value when an event occurs", "", true)
+    hiHi = ta.highest(high, 5)[1]
+    var float priceAtCross = na
+    var float[] pricesAtCross = array.new_float(0)
+    if ta.crossover(close, hiHi)
+        // When a cross occurs, save price. Since variable was declared with "var" keyword,
+        // it will then preserve its value until the next reassignment occurs at the next cross.
+        // Very important to use the ":=" operator here, otherwise we would be creating a second,
+        // instance of the priceAtCross" variable local to the "if" block, which would disappear
+        // once the "if" block was exited, and the global variable "priceAtCross"'s value would then not have changed.
+        priceAtCross := close
+        
+        // The var keyword will only allow you to hold one value at a time so the code below is a good option to keep
+        // track of multiple values at the same time so you can build a list of prices when a condition is hit.
+        array.push(pricesAtCross, close)
+    plot(hiHi)
+    plot(priceAtCross, "Price At Cross", color.new(color.orange, 0), 3, plot.style_circles)
+    plot(array.max(pricesAtCross), "Price At Cross Max", color.new(color.purple, 0), 3)
+
 
 
 How can I count touches of a specific level?
@@ -560,11 +628,6 @@ Change the setting of the overlay variable accordingly and re-add the indicator 
     baseMinus = plot(not overlay ? -minTouches : na, "Base Plus", #00000000)
     loMinus = plot(not overlay and minTouchesIsUp ? -touchesDn : na, "Low Minus", #00000000)
     fill(baseMinus, loMinus, color.new(color.red, 0))
-
-
-
-What does the Return type of 'then' block (series[label]) is not compatible with return type of 'else' block (series[integer]) compilation error mean?
-------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 

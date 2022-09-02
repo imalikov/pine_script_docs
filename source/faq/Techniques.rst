@@ -341,25 +341,25 @@ when the criteria used are only known after the bars used to analyze the data ha
 
 
 
-    How can I implement an On/Off switch?
-    --------------------------------------
+How can I implement an On/Off switch?
+--------------------------------------
 
-    ::
+::
 
-        //@version=5
-        indicator("On/Off condition example", "", true)
-        upBar = close > open
-        // On/off conditions.
-        triggerOn = upBar and upBar[1] and upBar[2]
-        triggerOff = not upBar and not upBar[1]
-        // Switch state is implicitly saved across bars thanks to initialize-only-once keyword "var".
-        var onOffSwitch = false
-        // Turn the switch on when triggerOn is true. If it is already on,
-        // keep it on unless triggerOff occurs.
-        onOffSwitch := triggerOn or onOffSwitch and not triggerOff
-        bgcolor(onOffSwitch ? color.new(color.green, 90) : na)
-        plotchar(triggerOn, "triggerOn", "▲", location.belowbar, color.new(color.lime, 0), size = size.tiny, text = "On")
-        plotchar(triggerOff, "triggerOff", "▼", location.abovebar, color.new(color.red, 0), size = size.tiny, text = "Off")
+    //@version=5
+    indicator("On/Off condition example", "", true)
+    upBar = close > open
+    // On/off conditions.
+    triggerOn = upBar and upBar[1] and upBar[2]
+    triggerOff = not upBar and not upBar[1]
+    // Switch state is implicitly saved across bars thanks to initialize-only-once keyword "var".
+    var onOffSwitch = false
+    // Turn the switch on when triggerOn is true. If it is already on,
+    // keep it on unless triggerOff occurs.
+    onOffSwitch := triggerOn or onOffSwitch and not triggerOff
+    bgcolor(onOffSwitch ? color.new(color.green, 90) : na)
+    plotchar(triggerOn, "triggerOn", "▲", location.belowbar, color.new(color.lime, 0), size = size.tiny, text = "On")
+    plotchar(triggerOff, "triggerOff", "▼", location.abovebar, color.new(color.red, 0), size = size.tiny, text = "Off")
 
 
 
@@ -672,36 +672,51 @@ Method 2 is more readable. Method 3 is a more concise method.
 How can I optimize Pine Script™ code?
 -------------------------------------
 
+The most important factor in writing fast Pine Script™ code is to structure your code so that it maximizes the combined power of the Pine Script™ runtime model and series.
+This requires a good understanding of what’s going on when your script executes. These User Manual sections on the 
+`execution model <https://www.tradingview.com/pine-script-docs/en/v5/language/Execution_model.html>`__ and 
+`time series <https://www.tradingview.com/pine-script-docs/en/v5/language/Time_series.html>`__ will get you started.
+
+
+ - Only use strategy scripts when you need to. Indicator scripts run much faster and consume less resources.
+ - Use built-in functions whenever you can to calculate values.
+ - Structure your code to do things on the fly, taking advantage of the bar-by-bar progression to avoid having to look back whenever you can.
+ - Minimize the use of `for loops <https://www.tradingview.com/pine-script-reference/v5/#op_for>`__. 
+ - `For loops <https://www.tradingview.com/pine-script-reference/v5/#op_for>`__ are only necessary when values required to derive calculations are not available when 
+   your script is executed bar by bar. In many cases they can be avoided if you understand how the Pine Script™ runtime works. 
+   If you use `for loops <https://www.tradingview.com/pine-script-reference/v5/#op_for>`__, do everything you can to minimize the number of iterations and the 
+   number of statements in loops.
+ - Minimize `request.security() <https://www.tradingview.com/pine-script-reference/v5/#fun_request{dot}security>`__ calls. 
+   If you are using multiple calls to fetch different values from the same symbol/TF, 
+   using tuples to return multiple values with one call will slightly reduce the script’s overhead.
+ - Use label/line.set_*() functions to modify drawings created only once, instead of deleting/recreating them.
+ - Only use ``max_bars_back`` when needed, and when you do, keep its value to the strict minimum required. 
+   See this `Help Center article <https://www.tradingview.com/support/solutions/43000587849>`__ on ``max_bars_back``.
+ - Isolating sections of large code bases in functions will also often improve performance, but you will need a good understanding of global/local scope constraints.
+ - Use the `var <https://www.tradingview.com/pine-script-reference/v5/#op_var>`__ keyword to declare variables when their initializing code takes a reasonable of time to execute, 
+   e.g., complex functions or string manipulations.
+ - String concatenations can be slow so try to minimize their use. Some constant evaluations like ``s = "foo" + "bar"`` are optimized to ``s = "foobar"``, but others aren’t.
+ - If your script does not use `request.security() <https://www.tradingview.com/pine-script-reference/v5/#fun_request{dot}security>`__, 
+   consider using the `PineCoders Script Stopwatch <>`__to measure your script’s execution time.
+
 
 
 How can I access a stock's financial information using Pine Script™?
 --------------------------------------------------------------------
 
+There are three ways:
 
+ - Using the `request.financial() <https://www.tradingview.com/pine-script-reference/v5/#fun_request{dot}financial>`__ function.
+ - Using the `request.security() <https://www.tradingview.com/pine-script-reference/v5/#fun_request{dot}security>`__ function, 
+   you can access information on earnings, splits and dividends using the techniques illustrated in 
+   `this script <https://www.tradingview.com/script/XUX5VVN0-Earnings-Splits-Dividends>`__. 
+   Note that this method is not officially supported by TradingView and may not work in the future.
+ - Fundamental information is available through the Financials button on your chart. This information appears on the chart as an indicator. 
+   Using an external input, your script will be able to access information from one of those Financial indicators at a time. This will require the following setup:
 
-How can I save a value from a signal when a pivot occurs?
----------------------------------------------------------
-
-You will need to:
-
-Detect a new pivot, which is done by testing for ``not na(pHi)``, as the pivot built-ins only return a non-na value when they identify a pivot. 
-Keep in mind this always happens n bars after the pivot itself, with n corresponding to the number of bars you use as right legs to identify your pivots.
-Save the value of the signal n bars back, because that is when the pivot was found.
-
-::
-
-    //@version=5
-    indicator("Signal value on pivot")
-    r = ta.rsi(close, 14)
-    legs = input(12)
-    pHi = ta.pivothigh(legs, legs)
-    newPHi = not na(pHi)
-    var float rHi = na
-    if newPHi
-        rHi := r[legs]
-    plot(r, "Rsi value")
-    plot(rHi, "Signal value", newPHi ? na : color.fuchsia, offset = -legs)
-    plotchar(pHi, "pHi", "▲", location.top, offset = -legs)
+ - Your script will need to allow for an external input.
+ - Both your script and the required Financial indicators will need to be loaded on the chart.
+ - The selection of the Financials indicator’s output as an input into your indicator will need to be done manually through your script’s Settings/Inputs.
 
 
 

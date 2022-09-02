@@ -902,6 +902,64 @@ Here we display the cumulative count in Weis Wave fashion. We also display the o
 How can I organize my script’s inputs in the Settings/Inputs tab?
 -----------------------------------------------------------------
 
+The script below shows you how to organize your inputs using the following tricks:
+
+ - Create separators using boolean checkboxes. Make their default value `true <https://www.tradingview.com/pine-script-reference/v5/#op_true>`__ so users are less prone to 
+   trying them out to see what they do, as they will most often do nothing. If your separators actually do something, make this clear in their wording.
+ - Indent sub-sections using Unicode white space characters. Choose one that shows up in the Pine Script™ Editor as a visible character. 
+   We like to use the Em space ( ): 8195 (0x2003).
+
+Notes
+=====
+
+ - We cannot indent checkboxes, so your sections will look cleaner if you use the `input() <https://www.tradingview.com/pine-script-reference/v5/#fun_input>`__ 
+   options parameter to provide selections via dropdowns rather than checkboxes.
+ - For separators to align neatly a hair to the left of the rightmost edge of dropdowns, start by creating the longest 
+   `input() <https://www.tradingview.com/pine-script-reference/v5/#fun_input>`__ title you will be using, as it determines the width of the dropdown. 
+   This way you will avoid the tedious task of re-balancing the line characters on each side of your separator’s name because of changes 
+   in the dropdown's width when you add an `input() <https://www.tradingview.com/pine-script-reference/v5/#fun_input>`__ with a title longer than previous ones.
+ - If your longest `input() <https://www.tradingview.com/pine-script-reference/v5/#fun_input>`__ title turns out to be shorter than you had first planned and you want to avoid 
+   re-balancing separators, you can use Unicode white space to artificially make it longer, as we demonstrate for input ``f4`` in our code example.
+ - Use ASCII characters 205 or 196 for continuous separator lines. The dash (ASCII 45) or Em dash (ASCII 151) do not join properly; they are thus less visually appealing.
+ - For better visual effect, ensure all of your separator titles are centered vertically throughout all of your Inputs. 
+   This requires trial and error, as the MS Trebuchet font used for TradingView text is proportionally spaced.
+
+Tips
+====
+
+ - Your script’s plots and inputs constitute their user interface. Inputs thus play a key role in the user experience. The more options you provide, 
+   the more important the design of your Inputs dialog box becomes, especially when users don’t read script descriptions or if your description is lacking.
+ - Design the sequence of inputs with the user in mind; not with the order you use them in your calculations. Place the most important/frequent selections in a descending order.
+ - Never use two checkboxes for mutually exclusive selections. Use dropdowns instead; they allow you to include as many useful options as you see fit.
+ - Do not be stingy when naming option selections. The dropdown widget can accommodate long strings.
+ - Remember not to use ampersands in option arguments, as your boolean expressions will not work with them.
+ - Choose your default values wisely.
+ - Provide adequate min and max values for numeric values, selecting the proper `float <https://www.tradingview.com/pine-script-reference/v5/#op_float>`__ or 
+   `int <https://www.tradingview.com/pine-script-reference/v5/#op_int>`__ type.
+ - When needed, customize step values to the particular use of each inputs.
+
+::
+
+    //@version=5
+    indicator("Inputs")
+    string EQ1  = "On"  // Do not use ampersand ("&") in `options` arguments. 
+    string EQ2  = "Off"
+    bool b50    = input.bool(true, "══════════════ Settings ═══════════════")  // ASCII 205
+    bool b60    = input.bool(true, "────────────── Settings ───────────────")  // ASCII 196
+    bool b70    = input.bool(true, "————————————— Settings ———————————————")  // ASCII 151 (Em dash)
+    bool b80    = input.bool(true, "-------------------------- Settings ------------------------------")  // ASCII 45 (dash)
+    float f1    = input.float(65., "First level")
+    float f2    = input.float(65., "  Second Level")
+    string f3   = input.string(EQ1, "    Checkbox equivalent", options = [EQ1, EQ2])
+    float f4    = input.float(65., "Widest Legend            ")
+    plot(close)
+
+The code will look this way in the Pine Script™ Editor:
+.. image:: images/Faq-Techniques-06.png
+
+It will generate this Inputs dialog box:
+.. image:: images/Faq-Techniques-07.png
+
 
 
 How can I find the nth highest/lowest value in the last bars?

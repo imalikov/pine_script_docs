@@ -5,7 +5,7 @@ This is a list of the **new** features added to the editor, and a few of the **c
 New features
 ^^^^^^^^^^^^^
 
-There are many new options and commands available using the new Command Palette. You can access this by either right-clicking in the editor itself or by pressing F1. 
+There are many new options and commands available using the new Command Palette. You can access this by either right-clicking in the editor itself or by pressing ``F1``.
 You can either scroll through all of the new options or you can use keywords to use the new search function.
 
 The new editor is now fully accessible on mobile devices! If your device doesn't support showing the Pine Script™ editor by default, then you can either
@@ -22,10 +22,10 @@ if they use the ``//@function``, ``//@param``, and ``//@returns`` annotations.
 The editor can now provide real-time errors and warnings so you won't need to add the script to your chart to view any potential errors or warnings anymore. 
 Lines of code that will produce an error are now underlined in red or in orange if they will produce a warning.
 
-Lines of code that are indented or wrapped around are now able to be minimized by using the new Fold function (Ctrl + Shift + L). 
+Lines of code that are indented or wrapped around are now able to be minimized by using the new Fold function ``(Ctrl + Shift + L)``. 
 You can also create minimized sections of code by utilizing the new ``//#region`` and ``//#endregion`` annotations.
 
-The Find (Ctrl + F) and Replace (Ctrl + H) functions have been completely overhauled to not only provide dynamic results as you type, 
+The Find ``(Ctrl + F)`` and Replace ``(Ctrl + H)`` functions have been completely overhauled to not only provide dynamic results as you type, 
 but also allows you to find matching words easier. There are now many more options available such as finding matching words in a highlighted section or the entire script.
 
 A new minimap has been added which will allow you to see a zoomed out version of your code. This is especially helpful with larger scripts, 

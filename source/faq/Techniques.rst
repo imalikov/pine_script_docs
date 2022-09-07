@@ -19,12 +19,28 @@ Techniques FAQ
 
 
 How do I prevent the ‘x1 is too far from the current bar_index’ error?
-------------------------------------------------------------------
+----------------------------------------------------------------------
+
+Make sure that you don't draw anything farther than 10000 bars away from the bar where you create the drawing itself. 
+Alternatively, you can use `xloc.bar_time <https://www.tradingview.com/pine-script-reference/v5/#var_xloc{dot}bar_time>`__ for the ``xloc`` parameter and pass 
+`time <https://www.tradingview.com/pine-script-reference/v5/#var_time>`__ instead of `bar_index <https://www.tradingview.com/pine-script-reference/v5/#var_bar_index>`__; 
+the `time <https://www.tradingview.com/pine-script-reference/v5/#var_time>`__ variable has no such limitations.
 
 
 
 How can I update all x2/right side of all lines/boxes in an \'array.new_line()\' / \'array.new_box()\'?
------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------
+
+The easiest method would be to add your lines or boxes to an `array <https://www.tradingview.com/pine-script-reference/v5/#op_array>`__ and then use the 
+`for...in loop <https://www.tradingview.com/pine-script-reference/v5/#op_for{dot}{dot}{dot}in>`__ to cycle through each 
+`line <https://www.tradingview.com/pine-script-reference/v5/#op_line>`__ or `box <https://www.tradingview.com/pine-script-reference/v5/#op_box>`__ to update the ``x2`` using the 
+`line.set_x2() <https://www.tradingview.com/pine-script-reference/v5/#fun_line{dot}set_x2>`__ or 
+`box.set_right() <https://www.tradingview.com/pine-script-reference/v5/#fun_box{dot}set_right>`__ functions. Here is an easy example for how to do this using lines:
+
+::
+
+    for line in line_array
+        line.set_x2(line, bar_index)
 
 
 

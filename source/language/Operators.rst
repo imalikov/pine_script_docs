@@ -38,7 +38,9 @@ Expressions always return a form of the strongest one used in the expression, e.
 the expression will produce a "series int" result, which you will not be able to use as the argument to ``length`` in 
 `ta.ema() <https://www.tradingview.com/pine-script-reference/v5/#fun_ta{dot}ema>`__.
 
-This script will produce a compilation error::
+This script will produce a compilation error:
+
+::
 
     //@version=5
     indicator("")
@@ -83,12 +85,25 @@ There are five arithmetic operators in Pine Script™:
 The arithmetic operators above are all binary (means they need two *operands* — or values — to work on, like in ``1 + 2``). 
 The ``+`` and ``-`` also serve as unary operators (means they work on one operand, like ``-1`` or ``+1``).
 
-If both operands are numbers but at least one of these is of "float" type, the result will also be a "float". 
-If both operands are of "int" type, the result will also be an "int".
+If both operands are numbers but at least one of these is of `float <https://www.tradingview.com/pine-script-reference/v5/#op_float>`__ type, 
+the result will also be a `float <https://www.tradingview.com/pine-script-reference/v5/#op_float>`__. 
+If both operands are of `int <https://www.tradingview.com/pine-script-reference/v5/#op_int>`__ type, 
+the result will also be an `int <https://www.tradingview.com/pine-script-reference/v5/#op_int>`__.
 If at least one operand is `na <https://www.tradingview.com/pine-script-reference/v5/#var_na>`__, 
 the result is also `na <https://www.tradingview.com/pine-script-reference/v5/#var_na>`__.
 
 The ``+`` operator also serves as the concatenation operator for strings. ``"EUR"+"USD"`` yields the ``"EURUSD"`` string.
+
+The ``%`` operator calculates the modulo by rounding down the quotient to the lowest possible value. 
+Here is an easy example that helps illustrate how the modulo is calculated behind the scenes:
+
+::
+
+  //@version=5
+  indicator("Modulo function")
+  modulo(series int a, series int b) =>
+      a - b * math.floor(nz(a/b))
+  plot(modulo(-1, 100))
 
 
 
@@ -116,7 +131,9 @@ There are six comparison operators in Pine Script™:
 Comparison operations are binary. If both operands have a numerical value, the result will be of type *bool*, i.e., ``true``, ``false`` or 
 `na <https://www.tradingview.com/pine-script-reference/v5/#var_na>`__.
 
-Examples::
+Examples
+
+::
 
     1 > 2  // false
     1 != 1 // false

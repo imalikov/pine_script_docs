@@ -39,8 +39,23 @@ The easiest method would be to add your lines or boxes to an `array <https://www
 
 ::
 
-    for line in line_array
-        line.set_x2(line, bar_index)
+    //@version=5
+    indicator("", "", true)
+    int activeLevelsInput = input(10)
+    int pivotLegsInput = input(5)
+
+    // Save pivot prices.
+    float pHi = ta.pivothigh(pivotLegsInput, pivotLegsInput)
+    var pivotLines = array.new<line>(activeLevelsInput)
+    if not na(pHi)
+        line newPivotLine = line.new(bar_index - pivotLegsInput, pHi, bar_index, pHi)
+        array.push(pivotLines, newPivotLine)
+        line.delete(array.shift(pivotLines))
+
+    // Draw lines
+    if barstate.islast
+        for pivotLine in pivotLines
+            line.set_x2(pivotLine, bar_index)
 
 
 

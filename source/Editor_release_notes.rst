@@ -36,6 +36,15 @@ This color preview window will allow you to quickly and easily change any color 
 
 The new editor will now store your code locally, so no more losing unsaved code with an accidental page refresh! 
 
+Users can now change all code indentations from tabs to spaces and vice versa. 
+A unique hidden bonus is deciding the number of spaces if you want something different than the standard four spaces. Here is how you do that:
+
+ - Hit the ``F1`` key.
+ - Type ``Indent`` into the Command Palette search box.
+ - Use the ``Up arrow`` or ``Down arrow`` to navigate within the dropdown list.
+ - Press the ``Enter`` key to select ``Indent using spaces`` or ``Indent using tabs``.
+ - Choose what indentation size you would prefer instead.
+
 
 
 Changes
@@ -48,3 +57,8 @@ Changes
 ``Ctrl + Backspace`` or ``Ctrl + Delete`` used to remove the word to the left and right, respectively, but now there are no matching keyboard shortcuts in the new editor.
 
 The multi-cursor feature that can be accessed on either editor using ``Ctrl + Alt + (Up or Down)`` won't work correctly on lines that use a color swatch.
+
+``Ctrl + Delete`` used to first delete any space between the cursor and the word to the right and you would have to use this combo again to delete the word to the right. 
+In the new editor, the space and the word are deleted the first time.
+
+The added functionality of the new editor will sometimes cause it to take more time to respond compared to the previous editor.

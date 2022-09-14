@@ -117,10 +117,33 @@ but to reach them you will need to use a third party execution engine to relay o
 Can my Pine Script™ strategy or indicator scripts place automated orders?
 -------------------------------------------------------------------------
 
+No, your strategy or indicator scripts can't place automated orders at this time, but possible workarounds are available. 
+We will discuss two popular options below: how to send your real-time alerts to a Discord or Telegram channel. 
 
+.. image:: images/Faq-Strategies-01.pressing
 
-Can I connect my strategies to my paper trading account?
---------------------------------------------------------
+To send alerts to a Discord channel, you first need to add your script to the chart, then create an alert for your script by clicking on the alarm clock icon.
+Make sure that you add your webhook URL into the webhook textbox and make sure the message textbox only displays 
+``{{strategy.order.alert_message}}`` so the example below will work correctly. If you followed the steps perfectly, you should now receive live Discord alerts!
+
+::
+
+    //@strategy_alert_message {"content": "{{strategy.order.alert_message}}" }
+    //@version=5
+    strategy("Discord alerts example", overlay = true)
+    float ma = ta.wma(hlcc4, 14)
+    bool buySig = close > ma
+    bool sellSig = close <= ma
+    string alertTxt = "{{strategy.order.action}} order filled for {{strategy.position_size}} shares of {{ticker}} @ {{strategy.order.price}}."
+
+    if buySig
+        strategy.entry("Long entry", strategy.long, alert_message = alertTxt)
+    if sellSig
+        strategy.entry("Short entry", strategy.short, alert_message = alertTxt)
+
+Sending alerts to a Telegram channel is a much more complicated process, so we would recommend checking out this 
+`excellent guide on Telegram alerts <https://www.tradingview.com/chart/ETHUSD/uQCb82ML-How-to-create-simple-web-hook-to-send-alerts-to-Telegram/>`__ 
+which was created by HeWhoMustNotBeNamed.
 
 
 

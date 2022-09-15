@@ -165,7 +165,8 @@ Below we have an example showing how historical references inside loops don't wo
     plot(sum1)
     plot(sum2)
 
-.. note:: In the above code, even if the ``temp`` variable in a loop has values from 1-10, ``temp[1]`` will always be 10 (value of ``temp`` in last iteration). Hence, sum1 will calculate to be 100 instead of the correct 45.
+.. note:: In the above code, even if the ``temp`` variable in a loop has values from 1-10, ``temp[1]`` will always be 10 (value of ``temp`` in last iteration). 
+.. note:: Hence, sum1 will calculate to be 100 instead of the correct 45.
 
 
 

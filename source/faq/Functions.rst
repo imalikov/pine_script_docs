@@ -290,7 +290,8 @@ Use the `math.random() <https://www.tradingview.com/pine-script-reference/v5/#fu
 How can I evaluate a filter I am planning to use?
 -------------------------------------------------
 
-
+See the `Filter Information Box - PineCoders FAQ script <>`__ by alexgrover. You can add your filter code to it; 
+the script will then evaluate its impulse response and display your filter’s characteristics.
 
 
 

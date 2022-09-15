@@ -21,10 +21,19 @@ Techniques FAQ
 How do I prevent the ‘x1 is too far from the current bar_index’ error?
 ----------------------------------------------------------------------
 
-Make sure that you don't draw anything farther than 10000 bars away from the bar where you create the drawing itself. 
+Make sure that you don't draw anything too far away from the bar where you create the drawing itself. 
 Alternatively, you can use `xloc.bar_time <https://www.tradingview.com/pine-script-reference/v5/#var_xloc{dot}bar_time>`__ for the ``xloc`` parameter and pass 
-`time <https://www.tradingview.com/pine-script-reference/v5/#var_time>`__ instead of `bar_index <https://www.tradingview.com/pine-script-reference/v5/#var_bar_index>`__; 
+`time <https://www.tradingview.com/pine-script-reference/v5/#var_time>`__ instead of 
+`bar_index <https://www.tradingview.com/pine-script-reference/v5/#var_bar_index>`__ for the ``x`` parameter; 
 the `time <https://www.tradingview.com/pine-script-reference/v5/#var_time>`__ variable has no such limitations.
+
+::
+
+    //@version=5
+    indicator("X1 is too far away example", overlay = true)
+
+    if barstate.islast
+        label.new(time + 60000000, close, "My label", xloc.bar_time)
 
 
 

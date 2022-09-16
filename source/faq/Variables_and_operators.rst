@@ -23,8 +23,8 @@ What is the variable name for the current price?
 The `close <https://www.tradingview.com/pine-script-reference/v5/#var_close>`__ variable holds both the price at the 
 `close <https://www.tradingview.com/pine-script-reference/v5/#var_close>`__ of historical bars and the current price when an indicator is running on the realtime bar. 
 If the script is a strategy running on the realtime bar, by default it runs only at the bar’s `close <https://www.tradingview.com/pine-script-reference/v5/#var_close>`__. 
-If the ``calc_on_every_tick`` parameter of the `strategy() <https://www.tradingview.com/pine-script-reference/v5/#fun_strategy>`__ declaration statement is set to true, 
-the strategy will behave as an indicator and run on every price change of the realtime bar.
+If the ``calc_on_every_tick`` parameter of the `strategy() <https://www.tradingview.com/pine-script-reference/v5/#fun_strategy>`__ declaration statement is set to 
+`true <https://www.tradingview.com/pine-script-reference/v5/#op_true>`__, the strategy will behave as an indicator and run on every price change of the realtime bar.
 
 To access the `close <https://www.tradingview.com/pine-script-reference/v5/#var_close>`__ of the previous bar’s 
 `close <https://www.tradingview.com/pine-script-reference/v5/#var_close>`__ in Pine Script™, use ``close[1]``. 
@@ -35,7 +35,8 @@ In Pine Script™, brackets are used as the history-referencing operator.
 Why and when should the keyword ‘var’ be used together with a variable? 
 -----------------------------------------------------------------------
 
-
+The `var <https://www.tradingview.com/pine-script-reference/v5/#op_var>`__ keyword is ideal for when you want to save data between bars. 
+Typically if you declare a variable without using the `var <https://www.tradingview.com/pine-script-reference/v5/#op_var>`__ keyword then it will have data saved for each bar. 
 
 What is the meaning of the keyword ‘nz’?
 ----------------------------------------
@@ -54,7 +55,8 @@ What is the code for an up bar?
 
     upBar = close > open
 
-Once you have defined the ``upBar`` variable, if you wanted a boolean variable to be `true <https://www.tradingview.com/pine-script-reference/v5/#op_true>`__ when the last three bars were up bars, you could write:
+Once you have defined the ``upBar`` variable, if you wanted a boolean variable to be `true <https://www.tradingview.com/pine-script-reference/v5/#op_true>`__ 
+when the last three bars were up bars, you could write:
 
 ::
 

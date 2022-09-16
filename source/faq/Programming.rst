@@ -173,6 +173,31 @@ Below we have an example showing how historical references inside loops don't wo
 Is Pine Script™ an object-oriented language?
 --------------------------------------------
 
+Pine Script™ is not a formal object-oriented language, but with the addition of the new `type <https://demo-alerts.xstaging.tv/pine-script-reference/v5/#op_type>`__ keyword, 
+you can now create user-defined types that other scripts can use. However, user-defined types are an advanced topic that isn't recommended for inexperienced users.
+Here is a straightforward example showing how you can use the `export <https://www.tradingview.com/pine-script-reference/v5/#op_export>`__ keyword to allow a script to 
+`import <https://www.tradingview.com/pine-script-reference/v5/#op_import>`__ your user-defined 
+`type <https://demo-alerts.xstaging.tv/pine-script-reference/v5/#op_type>`__ and how to use it.
+
+::
+
+    //@version=5
+    library("Point user-defined type")
+
+    export type Point
+        int x
+        float y
+        bool isHigh
+
+::
+
+    //@version=5
+    indicator("User-defined type example")
+    import tv_username/Point/1 as pnt
+
+    new_point = pnt.Point.new(bar_index, close, true)
+    plot(new_point.y)
+
 
 
 

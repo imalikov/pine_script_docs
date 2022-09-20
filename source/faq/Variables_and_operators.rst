@@ -32,19 +32,56 @@ In Pine Script™, brackets are used as the history-referencing operator.
 
 
 
-Why and when should the keyword ‘var’ be used together with a variable? 
+Why and when should the ‘var’ keyword be used together with a variable? 
 -----------------------------------------------------------------------
 
 The `var <https://www.tradingview.com/pine-script-reference/v5/#op_var>`__ keyword is ideal for when you want to save data between bars. 
-Typically if you declare a variable without using the `var <https://www.tradingview.com/pine-script-reference/v5/#op_var>`__ keyword then it will have data saved for each bar. 
+If you declare a variable without using the `var <https://www.tradingview.com/pine-script-reference/v5/#op_var>`__ keyword then it won't save the data between each bar. 
+For the example below, we are illustrating how you could plot an all-time `high <https://www.tradingview.com/pine-script-reference/v5/#var_high>`__ using the 
+`var <https://www.tradingview.com/pine-script-reference/v5/#op_var>`__ keyword compared to a typical 
+`float <https://www.tradingview.com/pine-script-reference/v5/#op_float>`__ variable.
 
-What is the meaning of the keyword ‘nz’?
-----------------------------------------
+::
+
+    //@version=5
+    indicator("Var float vs regular float example")
+
+    float maxFloat = high
+    var float maxVar = high
+
+    if high > maxFloat
+        maxFloat := high
+        
+    if high > maxVar
+        maxVar := high
+        
+    plot(maxFloat, color = color.red)
+    plot(maxVar, color = color.blue)
 
 
 
 What is a ‘varip’?
 ------------------
+
+The `varip <https://www.tradingview.com/pine-script-reference/v5/#op_varip>`__ keyword is virtually identical to the 
+`var <https://www.tradingview.com/pine-script-reference/v5/#op_var>`__ keyword with one notable exception: the variable declared with the 
+`varip <https://www.tradingview.com/pine-script-reference/v5/#op_varip>`__ keyword will remember its value across multiple updates as well as multiple bars. 
+Here is an example displaying that the only difference between both keywords is that the `varip <https://www.tradingview.com/pine-script-reference/v5/#op_varip>`__ 
+variable will increase between bars using real-time data while the `var <https://www.tradingview.com/pine-script-reference/v5/#op_var>`__ variable doesn't change.
+
+::
+
+    //@version=5
+    indicator("Varip vs var example")
+
+    var int varCount = -1
+    varCount := varCount + 1
+
+    varip int varipCount = -1
+    varipCount := varipCount + 1
+        
+    plot(varCount, color = color.red)
+    plot(varipCount, color = color.blue)
 
 
 
@@ -55,8 +92,8 @@ What is the code for an up bar?
 
     upBar = close > open
 
-Once you have defined the ``upBar`` variable, if you wanted a boolean variable to be `true <https://www.tradingview.com/pine-script-reference/v5/#op_true>`__ 
-when the last three bars were up bars, you could write:
+Once you have defined the ``upBar`` variable, if you wanted a `bool <https://www.tradingview.com/pine-script-reference/v5/#op_bool>`__ variable to be 
+`true <https://www.tradingview.com/pine-script-reference/v5/#op_true>`__ when the last three bars were up bars, you could write:
 
 ::
 

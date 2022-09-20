@@ -295,6 +295,27 @@ the script will then evaluate its impulse response and display your filter’s c
 
 
 
+What does \`nz()\` do?
+--------------------
+
+The `nz() <https://www.tradingview.com/pine-script-reference/v5/#fun_nz>`__ function replaces any ``NaN`` value with either the default of 0 or the user-defined value. 
+This function is helpful for different circumstances, such as doing a calculation on the first bar when there is no previous data, such as the code below.
+
+::
+
+    range = close - nz(close[1], open)
+
+On the first bar, the ``close[1]`` would be returned as ``NaN, `` so the `nz() <https://www.tradingview.com/pine-script-reference/v5/#fun_nz>`__ 
+function replaces the ``close[1]`` with the `open <https://www.tradingview.com/pine-script-reference/v5/#var_open>`__ value instead. 
+The `nz() <https://www.tradingview.com/pine-script-reference/v5/#fun_nz>`__ function will also protect against any divide by zero errors, so the code below won't throw an error.
+
+::
+
+    dbzTest = nz(close / (close - close))
+
+
+
+
 .. image:: /images/TradingView-Logo-Block.svg
     :width: 200px
     :align: center

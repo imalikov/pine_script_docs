@@ -21,16 +21,14 @@ How can I access the built-in indicators' source code?
 ------------------------------------------------------
 
 From the Pine Script™ Editor, go to the Open menu, click on the New built-in script option, and then select the built-in you want to work with. 
-Please note that some built-ins like the Volume Profile indicators are not written in Pine Script™ and so their behavior cannot be reproduced in Pine Script™.
-
+Please note that some built-ins like the Volume Profile indicators are not written in Pine Script™, so Pine Script™ cannot reproduce their behavior.
 
 
 
 How can I make the console appear in the editor?
 ------------------------------------------------
 
-Use the CTRL + ` (grave accent) keyboard shortcut or right click on the script’s name and choose Show Console.
-
+Use the CTRL + ` (grave accent) keyboard shortcut or right-click on the script’s name and choose Show Console.
 
 
 
@@ -38,20 +36,19 @@ How can I convert a script from one version to another?
 -------------------------------------------------------
 
 * v1 to v2
-    Select all code and then delete it. There is no reason why you should still have v1 code.
+    Select all code and then delete it. There is no reason why you should still have any v1 code.
 * v2 to v3
-    Converting from v2 is fairly complicated and can't be easily converted like in later versions. 
-    For more information, you should read this `conversion article <https://www.tradingview.com/pine-script-docs/en/v5/migration_guides/To_Pine_version_3.html>`__.
+    Converting from v2 is relatively complicated and can't be easily converted like in later versions. 
+    You should read this `conversion article for more information <https://www.tradingview.com/pine-script-docs/en/v5/migration_guides/To_Pine_version_3.html>`__.
 * v3 to v4 or v4 to v5
-    Simply click on the three dots to the right of the Publish script button and you will see an option that says Convert to v4 or v5 depending on the current version of the script.
-
+    Click on the three dots to the right of the Publish script button, and you will see an option that says Convert to v4 or v5, depending on the current version of the script.
 
 
 
 How can I examine the value of a string in my script?
 -----------------------------------------------------
 
-See the this section of the Pine Script™ User Manual on `debugging strings <https://www.tradingview.com/pine-script-docs/en/v5/writing/Debugging.html#displaying-strings>`__.
+See this section of the Pine Script™ User Manual on `debugging strings <https://www.tradingview.com/pine-script-docs/en/v5/writing/Debugging.html#displaying-strings>`__.
 
 This example shows how you can print custom data on a chart using different colored lines:
 
@@ -84,32 +81,30 @@ This example shows how you can print custom data on a chart using different colo
 
 
 
-
 How can I plot numeric values so that they do not disrupt the indicator’s scale?
 --------------------------------------------------------------------------------
 
-See the this section of the Pine Script™ User Manual on `displaying numeric values when the script’s scale must be 
+See this section of the Pine Script™ User Manual on `displaying numeric values when the script’s scale must be 
 preserved <https://www.tradingview.com/pine-script-docs/en/v5/writing/Debugging.html#when-the-script-s-scale-must-be-preserved>`__.
-
 
 
 
 How can I visualize my script’s conditions on the chart?
 --------------------------------------------------------
 
-See the this section of the Pine Script™ User Manual on `debugging compound conditions <https://www.tradingview.com/pine-script-docs/en/v5/writing/Debugging.html#compound-conditions>`__.
-
+See this section of the Pine Script™ User Manual on `debugging compound conditions <https://www.tradingview.com/pine-script-docs/en/v5/writing/Debugging.html#compound-conditions>`__.
 
 
 
 What does scope mean?
 ---------------------
 
-There are only two types of scope: global and local. Some people will prefer using the terminology of local blocks instead of local scopes but it means the same thing. 
-In the latest version of Pine Script™, the easiest way to remember the difference between global and local is that a local block is indented using a tab or 4 spaces. 
+There are only two types of scope: global and local. Some people will prefer using the terminology of local blocks instead of local scopes, but it means the same thing. 
+In the latest version of Pine Script™, the easiest way to remember the difference between global and local is that a local block is indented using a tab or four spaces. 
 For a more in-depth overview of scopes, please read `this article <https://www.tradingview.com/pine-script-docs/en/v5/language/Script_structure.html#code>`__.
 
 ::
+
     //@version=5
     indicator("Scope example")
 
@@ -124,18 +119,16 @@ For a more in-depth overview of scopes, please read `this article <https://www.t
     plot(cond2) // Undeclared identifier error for trying to access a local scope when you are using the global scope
 
 Please note that:
-    * You are allowed to access variables declared in a global scope from anywhere but can only access variables declared in a local scope inside the local scope.
-    * We can declare the ``cond2`` variable in the global scope and only change the value in a local scope to get this code to compile properly.
+    * You can access variables declared in a global scope from anywhere but can only access variables declared in a local scope inside the local scope.
+    * We can declare the ``cond2`` variable in the global scope and only change the value in the local scope to get this code to compile correctly.
     
-
 
 
 Can I access the source code of ‘Invite-Only’ or ‘closed source’ scripts?
 -------------------------------------------------------------------------
 
-No. Closed source scripts are called that because the source will always be closed to everyone but the creator. 
-Invite-Only scripts are also closed source but they differ because they have an additional restriction that only users on the invite list can add the script to their charts.
-
+No. Closed source scripts are called that because the source will permanently be closed to everyone but the creator. 
+Invite-Only scripts are also closed source, but they differ because they have an additional restriction: only users on the invite list can add the script to their charts.
 
 
 
@@ -166,7 +159,7 @@ Below we have an example showing how historical references inside loops don't wo
     plot(sum2)
 
 .. note:: In the above code, even if the ``temp`` variable in a loop has values from 1-10, ``temp[1]`` will always be 10 (value of ``temp`` in last iteration). 
-.. note:: Hence, sum1 will calculate to be 100 instead of the correct 45.
+.. note:: Hence, ``sum1`` will calculate to be 100 instead of the correct 45.
 
 
 

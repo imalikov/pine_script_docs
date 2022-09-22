@@ -23,8 +23,8 @@ How can I get the time of the first bar in the dataset?
 
 The following code will save the time of the dataset’s first bar. 
 When we declare a variable using the `var <https://www.tradingview.com/pine-script-reference/v5/#op_var>`__ keyword, it is only initialized on the first bar. 
-We use that here to save the value of ``time``, which returns the `time <https://www.tradingview.com/pine-script-reference/v5/#var_time>`__ in Unix format, i.e., 
-the number of milliseconds that have elapsed since 00:00:00 UTC, 1 January 1970:
+We use that here to save the value of ``time``, which returns the `time <https://www.tradingview.com/pine-script-reference/v5/#var_time>`__ 
+in Unix format, i.e., the number of milliseconds that have elapsed since 00:00:00 UTC, 1 January 1970:
 
 ::
 
@@ -116,9 +116,9 @@ How can I plot a value starting X months/years back?
 ----------------------------------------------------
 
 The `timestamp() <https://www.tradingview.com/pine-script-reference/v5/#fun_timestamp>`__ function allows the use of negative argument values and will convert them 
-into the proper date. Using a negative month value, for example, will subtract the proper number of months from the result. 
+into the proper date. For example, a negative month value will subtract the appropriate number of months from the result. 
 We use this feature here to allow us to look back on an arbitrary number of months or years. 
-A choice is given to identify the first of the target month, or go back from the current date and time.
+A choice is given to identify the first of the target month or return the result from the current date and time.
 
 ::
 
@@ -144,7 +144,7 @@ How can I track highs/lows for a specific timeframe?
 ----------------------------------------------------
 
 This code shows how to do that without using `request.security() <https://www.tradingview.com/pine-script-reference/v5/#fun_request{dot}security>`__ calls, 
-which slow down your script. The source used to calculate the highs/lows can be selected in the script’s ``Inputs``, as well as the period after which the high/low must be reset.
+which slow down your script. The source used to calculate the highs/lows can be selected in the script’s ``Inputs``and the period after which the high/low must be reset.
 
 ::
 
@@ -275,20 +275,20 @@ How can I detect a specific date/time?
 We will be using the `year <https://www.tradingview.com/pine-script-reference/v5/#var_year>`__, `month <https://www.tradingview.com/pine-script-reference/v5/#var_month>`__, 
 `dayofmonth <https://www.tradingview.com/pine-script-reference/v5/#var_dayofmonth>`__, `hour <https://www.tradingview.com/pine-script-reference/v5/#var_hour>`__, 
 `minute <https://www.tradingview.com/pine-script-reference/v5/#var_minute>`__, and `second <https://www.tradingview.com/pine-script-reference/v5/#var_second>`__ 
-built-in variables to achieve this here. All of these variables return their value converted to the exchange's timezone at the bar the script is running on, 
-as it is documented `here <https://www.tradingview.com/pine-script-docs/en/v5/concepts/Time.html#time-built-ins>`__ in the Pine Script™ User Manual. 
-So in order for the target date/time you will enter in the script’s Settings/Inputs to match the date/time on the chart, 
+built-in variables to achieve this here. All of these variables return their value converted to the exchange's timezone at the bar the script is running on, as it is documented 
+`here <https://www.tradingview.com/pine-script-docs/en/v5/concepts/Time.html#time-built-ins>`__ in the Pine Script™ User Manual. 
+So for the target date/time, you will enter in the script’s Settings/Inputs to match the date/time on the chart, 
 you will need to ensure your chart’s time is set to display the exchange’s timezone, as is shown in step 1 in the chart. 
 Once that is done, step 2 shows how the chart will automatically display the exchange’s timezone at the bottom.
 
-In this chart we have set the hour to ``12`` and the minute to ``30`` in the script’s inputs. 
+In this chart, we have set the hour to ``12`` and the minute to ``30`` in the script’s inputs. 
 The bright green bar shows when our target time is reached, and the lighter green bars show the bars where the condition we are testing is true, i.e., 
 since we haven’t entered a specific date, the cycle repeats while our time threshold has been reached each day. You can test for either condition in your script. 
 You can see at step 3 on the chart that the time matches ``12:30``, which would not be the case if the chart’s time had not been set to the exchange’s timezone.
 
-Pine Script™ programmers often want to save a value on the transition to the target time. 
-We show here how one could save the `open <https://www.tradingview.com/pine-script-reference/v5/#var_open>`__ every time the target date/time is reached. 
-Note how, when plotting the saved value, we test for transitions when applying color to the plot, so that we do not plot any color on transitions. 
+Pine Script™ programmers often want to save values on the transition to the target time. 
+We show how one could save the `open <https://www.tradingview.com/pine-script-reference/v5/#var_open>`__ every time the target date/time is reached. 
+Note how, when plotting the saved value, we test for transitions when applying color to the plot so that we do not plot any color on transitions. 
 This prevents the inelegant steps from showing on the plot:
 
 ::
@@ -338,7 +338,7 @@ where the highest/lowest value was found. Those `ta.highestbars() <https://www.t
 so we need to change its sign before using it as a value with the [] history-referencing operator.
 
 Once we have the offset, we can use it with the overloaded version of the `dayofmonth() <https://www.tradingview.com/pine-script-reference/v5/#fun_dayofmonth>`__ 
-built-in which allows it to be used with a specific `time <https://www.tradingview.com/pine-script-reference/v5/#var_time>`__ at the offset returned by the 
+built-in, which allows it to be used with a specific `time <https://www.tradingview.com/pine-script-reference/v5/#var_time>`__ at the offset returned by the 
 `ta.highestbars() <https://www.tradingview.com/pine-script-reference/v5/#fun_ta{dot}highestbars>`__ call, with its sign changed from negative to positive:
 
 ::
@@ -378,8 +378,8 @@ This code shows three methods to detect bars opening at 18h00:
 Can I time the duration of a condition?
 ---------------------------------------
 
-This shows how to use our ``secondsSince(cond, resetCond)`` function to calculate how many seconds has passed since the condition was true. 
-Keep in mind that this is designed to work on realtime data only.
+This example script shows how to use our ``secondsSince(cond, resetCond)`` function to calculate how many seconds have passed since the true condition. 
+Keep in mind that this is designed to work on real-time data only.
 
 ::
 
@@ -441,7 +441,7 @@ This shows how to use our ``nthDayOfWeekInMonth(nth, dayNo)`` function to detect
 How can I implement a countdown timer?
 --------------------------------------
 
-This code will work on intraday and ``1D`` timeframes. It would require more discerning logic for it to work on timeframes higher than that:
+This code will work on intraday and ``1D`` timeframes. However, it would require more discerning logic for it to work on timeframes higher than that:
 
 ::
 

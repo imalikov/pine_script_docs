@@ -21,7 +21,7 @@ Techniques FAQ
 How do I prevent the ‘x1 is too far from the current bar_index’ error?
 ----------------------------------------------------------------------
 
-Make sure that you don't draw anything too far away from the bar where you create the drawing itself. 
+Make sure you don't draw anything too far away from the bar where you create the drawing. 
 Alternatively, you can use `xloc.bar_time <https://www.tradingview.com/pine-script-reference/v5/#var_xloc{dot}bar_time>`__ for the ``xloc`` parameter and pass 
 `time <https://www.tradingview.com/pine-script-reference/v5/#var_time>`__ instead of 
 `bar_index <https://www.tradingview.com/pine-script-reference/v5/#var_bar_index>`__ for the ``x`` parameter; 
@@ -130,7 +130,8 @@ How can my script identify what chart type is active?
     indicator("Chart's type", "", true)
 
     var table tbl = table.new(position.top_right, 1, 1)
-    string chartType = chart.is_heikinashi ? "Heikin Ashi" : chart.is_renko ? "Renko" : chart.is_linebreak ? "Line Break" : chart.is_kagi ? "Kagi" : chart.is_pnf ? "Point & Figure" : chart.is_range ? "Range" : "Standard"
+    string chartType = chart.is_heikinashi ? "Heikin Ashi" : chart.is_renko ? "Renko" : chart.is_linebreak ? "Line Break" : chart.is_kagi ? "Kagi" : 
+     chart.is_pnf ? "Point & Figure" : chart.is_range ? "Range" : "Standard"
 
     if barstate.isfirst
         table.cell(tbl, 0, 0, "", bgcolor = color.yellow)
@@ -169,11 +170,11 @@ How can I remember when the last time a condition occurred?
 
 The `ta.barssince() <https://www.tradingview.com/pine-script-reference/v5/#fun_ta{dot}barssince>`__ built-in function is the simplest way of doing it, 
 as is done in Method 1 in the following script. Method 2 shows an alternate way to achieve the same result as 
-`ta.barssince() <https://www.tradingview.com/pine-script-reference/v5/#fun_ta{dot}barssince>`__. In Method 2 we watch for the condition as the script is executing 
-on each successive bar, initialize our distance to 0 when we encounter the condition, and until we encounter the condition again, add 1 to the distance at each bar. 
-In method 3 we save the bar’s index when the condition occurs, and we then use the difference between the current bar’s index and that one to derive the distance between the two.
+`ta.barssince() <https://www.tradingview.com/pine-script-reference/v5/#fun_ta{dot}barssince>`__. In Method 2, we watch for the condition as the script is executing 
+on each successive bar and initialize our distance to 0 when we encounter the condition. Add one to the distance at each bar until we reencounter the condition. 
+In method 3, we save the bar’s index when the condition occurs, and we then use the difference between the current bar’s index and that one to derive the distance between the two.
 
-In all cases the resulting value can be used as an index with the[] 
+In all cases, the resulting value can be used as an index with the[] 
 `history-referencing operator <https://www.tradingview.com/pine-script-docs/en/v5/language/Operators.html#history-referencing-operator>`__ 
 because it accepts a series value, i.e., a value that can change on each bar.
 
@@ -243,15 +244,15 @@ This script shows how to keep track of the number of bars since the last cross u
 How can I plot the previous and current day’s open?
 ---------------------------------------------------
 
-We define a period through the script’s Settings/Inputs, in this case 1 day. 
+We define a period through the script’s Settings/Inputs, in this case, one day. 
 Then we use the `time() <https://www.tradingview.com/pine-script-reference/v5/#fun_time>`__ function to detect changes in the period, and when it changes, 
-save the running `open <https://www.tradingview.com/pine-script-reference/v5/#var_open>`__ in the the previous day’s variable, 
+save the running `open <https://www.tradingview.com/pine-script-reference/v5/#var_open>`__ in the previous day’s variable, 
 and get the current `open <https://www.tradingview.com/pine-script-reference/v5/#var_open>`__.
 
 Note the plots using a choice of lines or circles. When using the lines, rather than use 
 `plot.style_linebr <https://www.tradingview.com/pine-script-reference/v5/#var_plot{dot}style_linebr>`__ and plot 
-`na <https://www.tradingview.com/pine-script-reference/v5/#var_na>`__ on changes so we don’t get a diagonal plot between the levels, we simply don’t use a color on changes, 
-which leaves a void of one bar rather the void of 2 bars used when we plot an `na <https://www.tradingview.com/pine-script-reference/v5/#var_na>`__ value.
+`na <https://www.tradingview.com/pine-script-reference/v5/#var_na>`__ on changes, so we don’t get a diagonal plot between the levels, we don’t use a color on changes, 
+which leaves a void of one bar instead the void of two bars used when we plot a `na <https://www.tradingview.com/pine-script-reference/v5/#var_na>`__ value.
 
 .. image:: images/Faq-Techniques-05.png
 
@@ -281,16 +282,16 @@ The built-in `math.sum() <https://www.tradingview.com/pine-script-reference/v5/#
 but its length (the number of last bars in your sample) can't be a series float or int. This script shows three different ways of achieving the count:
 
  - Method 1 uses the `math.sum() <https://www.tradingview.com/pine-script-reference/v5/#fun_math{dot}sum>`__ built-in function.
- - Method 2 uses a technique that is also efficient, but not as efficient as the built-in. It has the advantage of accepting a series float or int as a length.
- - Method 3 also accepts a series float or int as a length, but is very inefficient because it uses a `for <https://www.tradingview.com/pine-script-reference/v5/#op_for>`__ 
-   loop to go back on past bars at every bar. Examining all length bars at every bar is unnecessary since all of them except the last bar have already been examined previously 
-   when the script first executed on them. This makes for slower code and will be detrimental to the chart loading time.
+ - Method 2 uses a technique that is also efficient, but not as efficient as the built-in. However, it has the advantage of accepting a series float or int as a length.
+ - Method 3 also accepts a series float or int as a length but is very inefficient because it uses a `for <https://www.tradingview.com/pine-script-reference/v5/#op_for>`__ 
+   loop to go back on past bars at every bar. Examining all length bars at every bar is unnecessary since all of them except the last bar have already been reviewed previously 
+   when the script was first executed on them. This makes for slower code and will affect the chart loading time.
 
-Method 2 is a very good example of the Pine Script™ way of doing calculations by taking advantage of series and a good understanding of the Pine Script™ runtime environment 
-to code our scripts. While it is useful to count occurrences of a condition in the last x bars, it is also worth studying because the technique it uses will 
+Method 2 is a perfect example of the Pine Script™ way of calculating by taking advantage of series and a good understanding of the Pine Script™ runtime environment 
+to code our scripts. While it is helpful to count condition occurrences in the last x bars, it is also worth studying because the technique will 
 allow you to write much more efficient Pine Script™ code than one using a `for <https://www.tradingview.com/pine-script-reference/v5/#op_for>`__ loop when applied to other 
-situations. There are situations when using a `for <https://www.tradingview.com/pine-script-reference/v5/#op_for>`__ loop is the only way to realize what we want, 
-but in most cases they can be avoided. `for <https://www.tradingview.com/pine-script-reference/v5/#op_for>`__ loops are the only way to achieve some types of backward analysis 
+situations. For example, there are situations when using a `for <https://www.tradingview.com/pine-script-reference/v5/#op_for>`__ loop is the only way to realize what we want, 
+but in most cases, they can be avoided. `for <https://www.tradingview.com/pine-script-reference/v5/#op_for>`__ loops are the only way to achieve some types of backward analysis 
 when the criteria used are only known after the bars used to analyze the data have elapsed.
 
 ::
@@ -447,11 +448,11 @@ One way to do it is by using `ta.barssince() <https://www.tradingview.com/pine-s
 Can I merge two or more indicators into one?
 --------------------------------------------
 
-Sure, but start by looking at the scale each one is using. If you’re thinking of merging a moving average indicator designed to plot on top of candles and in relation to them, 
-you are going to have problems if you also want to include an indicator showing volume bars in the same script because their values are not using the same scale.
+Sure, but start by looking at the scale each one is using. If you’re thinking of merging a moving average indicator designed to plot on top of candles and concerning them, 
+You will have problems if you also want to include an indicator showing volume bars in the same script because their values are not using the same scale.
 
 Once you’ve made sure your scaling will be compatible (or you have devised a way of normalizing/re-scaling them), 
-it’s a matter of gathering the code from all indicators into one script and removing any variable name collisions so each indicator’s calculations retain their independence 
+gather the code from all indicators into one script and remove any variable name collisions. Hence, each indicator’s calculations retain their independence 
 and integrity. You may need to convert some code from one version of Pine Script™ to another, so pay attention to the version used in each script.
 
 .. note:: If the indicators you’ve merged are CPU intensive, you may run into runtime limitations when executing the compound script.
@@ -469,14 +470,14 @@ While this is an imperfect solution since the minimum/maximum need to be discove
 `ta.lowest() <https://www.tradingview.com/pine-script-reference/v5/#fun_ta{dot}lowest>`__ and 
 `ta.highest() <https://www.tradingview.com/pine-script-reference/v5/#fun_ta{dot}highest>`__ over a fixed period because it uses the minimum/maximum values for the complete set 
 of elapsed bars rather than a subset of fixed length. 
-The ideal solution would be to know in advance the minimum/maximum values for the whole series prior to beginning the normalization process, 
+The ideal solution would be to know in advance the minimum/maximum values for the whole series before beginning the normalization process, 
 but this is currently not possible in Pine.
 
 If you know the minimum/maximum values of the series (RSI, Stoch, etc.), then you should use the ``rescale()`` function, 
 which only translates the values into another space without changing their relative proportion.
 
 Here, we show how to present `ta.rsi() <https://www.tradingview.com/pine-script-reference/v5/#fun_ta{dot}rsi>`__ and 
-`volume <https://www.tradingview.com/pine-script-reference/v5/#var_volume>`__ in one part of our our indicator’s pane, in the -100/100 range. 
+`volume <https://www.tradingview.com/pine-script-reference/v5/#var_volume>`__ in one part of our indicator’s pane, in the -100/100 range. 
 As `ta.rsi() <https://www.tradingview.com/pine-script-reference/v5/#fun_ta{dot}rsi>`__ is a bounded indicator with known values between 0/100, 
 we can rescale it to the -100/100 and not lose any of its information. `Volume <https://www.tradingview.com/pine-script-reference/v5/#var_volume>`__, however, is another story. 
 As it is unbounded, we need to normalize it to the same -100/100 scale because we want its plot line to be constrained to the same space as our rescaled 
@@ -488,9 +489,9 @@ In addition to `ta.rsi() <https://www.tradingview.com/pine-script-reference/v5/#
 `ta.cci() <https://www.tradingview.com/pine-script-reference/v5/#fun_ta{dot}cci>`__ which is an unbounded indicator. 
 While 75% of its values should lie in the -100/100 space, there are no fixed upper/lower bounds for 
 `ta.cci() <https://www.tradingview.com/pine-script-reference/v5/#fun_ta{dot}cci>`__ since it is unbounded. We will thus need to normalize the value. 
-We choose to present it in the 100/500 space of our indicator. 
+We choose to present it in our indicator's 100/500 space. 
 `ta.cci() <https://www.tradingview.com/pine-script-reference/v5/#fun_ta{dot}cci>`__ is normally displayed with lines at -100 and 100, 
-but in the 100/500 bounded space where we are normalizing it, there is no precise equivalent for the -100 and 100 levels, so we arbitraly decided on 200/400:
+but in the 100/500 bounded space where we are normalizing it, there is no precise equivalent for the -100 and 100 levels, so we arbitrarily decided on 200/400:
 
 .. image:: images/Faq-Techniques-04.png
 
@@ -560,7 +561,7 @@ How can I calculate my script's run time?
 -----------------------------------------
 
 Use the code from the `PineCoders Script Stopwatch <>`__. 
-You will be able to time your script execution time so you can explore different scenarios when developing code and see for yourself which version performs the best.
+You can time your script execution time to explore different scenarios when developing code and see which version performs the best.
 
 
 
@@ -570,7 +571,7 @@ How can I save a value when an event occurs?
 The key to this technique is declaring a variable using the `var <https://www.tradingview.com/pine-script-reference/v5/#op_var>`__ keyword. 
 While there are other ways to accomplish our task in Pine Script™, this is the simplest. 
 When you declare a variable using the `var <https://www.tradingview.com/pine-script-reference/v5/#op_var>`__ keyword, the variable is initialized only once at bar_index zero, 
-rather than on each bar. This has the effect of preserving the variable’s value without the explicit re-assignement that was required in earlier versions of Pine Script™ 
+rather than on each bar. This has the effect of preserving the variable’s value without the explicit re-assignment that was required in earlier versions of Pine Script™ 
 where you would see code like this:
 
 ::
@@ -579,7 +580,7 @@ where you would see code like this:
     priceAtCross := nz(priceAtCross[1])
 
 This was required because the variable was reassigned the value 0 at the beginning of each bar, so to remember its last value, 
-it had to be manually reset to its last bar’s value on each bar. 
+it had to be manually reset to its previous bar’s value on each bar. 
 This is now unnecessary with the `var <https://www.tradingview.com/pine-script-reference/v5/#op_var>`__ keyword and makes for cleaner code:
 
 ::
@@ -609,12 +610,12 @@ This is now unnecessary with the `var <https://www.tradingview.com/pine-script-r
 How can I count touches of a specific level?
 --------------------------------------------
 
-This technique shows one way to count touches of a level that is known in advance (the median in this case). 
-We keep a separate tally of up and down bar touches, and account for gaps across the median. Every time a touch occurs, we simply save a 1 value in a series. 
+This technique shows one way to count touches of a known level in advance (the median in this case). 
+We keep a separate tally of up and down bar touches and account for gaps across the median. Then, every time a touch occurs, we save a one value in a series. 
 We can then use the `math.sum() <https://www.tradingview.com/pine-script-reference/v5/#fun_math{dot}sum>`__ function to count the number of ones in 
 that series in the last ``lookBackTouches`` bars.
 
-Note that the script can be used in overlay mode to show the median and touches on the chart, or in pane mode to show the counts. 
+Note that the script can be used in overlay mode to show the median and touches on the chart or in pane mode to show the counts. 
 Change the setting of the overlay variable accordingly and re-add the indicator to the chart to implement the change.
 
 .. image:: images/Faq-Techniques-03.png
@@ -674,11 +675,12 @@ Change the setting of the overlay variable accordingly and re-add the indicator 
 How can I know if something is happening for the first time since the beginning of the day?
 -------------------------------------------------------------------------------------------
 
-We show 3 techniques to do it. In the first, we use `ta.barssince() <https://www.tradingview.com/pine-script-reference/v5/#fun_ta{dot}barssince>`__ to check if the number 
+We show three techniques to do it. In the first, we use `ta.barssince() <https://www.tradingview.com/pine-script-reference/v5/#fun_ta{dot}barssince>`__ to check if the number 
 of bars since the last condition, plus one, is greater than the number of bars since the beginning of the new day.
 
-In the second and third methods we track the condition manually, foregoing the need for `ta.barssince() <https://www.tradingview.com/pine-script-reference/v5/#fun_ta{dot}barssince>`__. 
-Method 2 is more readable. Method 3 is a more concise method.
+In the second and third methods, we track the condition manually, foregoing the need for 
+`ta.barssince() <https://www.tradingview.com/pine-script-reference/v5/#fun_ta{dot}barssince>`__. 
+Method 2 is more readable. Method 3 is more straightforward.
 
 ::
 
@@ -712,30 +714,30 @@ Method 2 is more readable. Method 3 is a more concise method.
 How can I optimize Pine Script™ code?
 -------------------------------------
 
-The most important factor in writing fast Pine Script™ code is to structure your code so that it maximizes the combined power of the Pine Script™ runtime model and series.
-This requires a good understanding of what’s going on when your script executes. These User Manual sections on the 
+An essential factor in writing fast Pine Script™ code is structuring your code to maximize the combined power of the Pine Script™ runtime model and series.
+This requires a good understanding of what’s happening when your script executes. These User Manual sections on the 
 `execution model <https://www.tradingview.com/pine-script-docs/en/v5/language/Execution_model.html>`__ and 
 `time series <https://www.tradingview.com/pine-script-docs/en/v5/language/Time_series.html>`__ will get you started.
 
 
- - Only use strategy scripts when you need to. Indicator scripts run much faster and consume less resources.
+ - Only use strategy scripts when you need to. Indicator scripts run much faster and consume fewer resources.
  - Use built-in functions whenever you can to calculate values.
  - Structure your code to do things on the fly, taking advantage of the bar-by-bar progression to avoid having to look back whenever you can.
  - Minimize the use of `for loops <https://www.tradingview.com/pine-script-reference/v5/#op_for>`__. 
- - `For loops <https://www.tradingview.com/pine-script-reference/v5/#op_for>`__ are only necessary when values required to derive calculations are not available when 
-   your script is executed bar by bar. In many cases they can be avoided if you understand how the Pine Script™ runtime works. 
-   If you use `for loops <https://www.tradingview.com/pine-script-reference/v5/#op_for>`__, do everything you can to minimize the number of iterations and the 
-   number of statements in loops.
+ - `For loops, <https://www.tradingview.com/pine-script-reference/v5/#op_for>`__ is only necessary when values required to derive calculations are unavailable when 
+   your script is executed bar by bar. In many cases, they can be avoided if you understand how the Pine Script™ runtime works. 
+   If you use `for loops <https://www.tradingview.com/pine-script-reference/v5/#op_for>`__, 
+   do everything you can to minimize the number of iterations and the number of statements in loops.
  - Minimize `request.security() <https://www.tradingview.com/pine-script-reference/v5/#fun_request{dot}security>`__ calls. 
    If you are using multiple calls to fetch different values from the same symbol/TF, 
-   using tuples to return multiple values with one call will slightly reduce the script’s overhead.
+   using tuples to return multiple values with one call slightly reduces the script’s overhead.
  - Use label/line.set_*() functions to modify drawings created only once, instead of deleting/recreating them.
  - Only use ``max_bars_back`` when needed, and when you do, keep its value to the strict minimum required. 
    See this `Help Center article <https://www.tradingview.com/support/solutions/43000587849>`__ on ``max_bars_back``.
  - Isolating sections of large code bases in functions will also often improve performance, but you will need a good understanding of global/local scope constraints.
- - Use the `var <https://www.tradingview.com/pine-script-reference/v5/#op_var>`__ keyword to declare variables when their initializing code takes a reasonable of time to execute, 
+ - Use the `var <https://www.tradingview.com/pine-script-reference/v5/#op_var>`__ keyword to declare variables when their initializing code takes a reasonable time to execute, 
    e.g., complex functions or string manipulations.
- - String concatenations can be slow so try to minimize their use. Some constant evaluations like ``s = "foo" + "bar"`` are optimized to ``s = "foobar"``, but others aren’t.
+ - String concatenations can be slow, so try to minimize their use. Some constant evaluations like ``s = "foo" + "bar"`` are optimized to ``s = "foobar"``, but others aren’t.
  - If your script does not use `request.security() <https://www.tradingview.com/pine-script-reference/v5/#fun_request{dot}security>`__, 
    consider using the `PineCoders Script Stopwatch <>`__to measure your script’s execution time.
 
@@ -748,14 +750,14 @@ There are three ways:
 
  - Using the `request.financial() <https://www.tradingview.com/pine-script-reference/v5/#fun_request{dot}financial>`__ function.
  - Using the `request.security() <https://www.tradingview.com/pine-script-reference/v5/#fun_request{dot}security>`__ function, 
-   you can access information on earnings, splits and dividends using the techniques illustrated in 
+   you can access information on earnings, splits, and dividends using the techniques illustrated in 
    `this script <https://www.tradingview.com/script/XUX5VVN0-Earnings-Splits-Dividends>`__. 
    Note that this method is not officially supported by TradingView and may not work in the future.
  - Fundamental information is available through the Financials button on your chart. This information appears on the chart as an indicator. 
-   Using an external input, your script will be able to access information from one of those Financial indicators at a time. This will require the following setup:
+   Using an external input, your script can access information from one of those Financial indicators at a time. This will require the following setup:
 
  - Your script will need to allow for an external input.
- - Both your script and the required Financial indicators will need to be loaded on the chart.
+ - Your script and the required Financial indicators will need to be loaded on the chart.
  - The selection of the Financials indicator’s output as an input into your indicator will need to be done manually through your script’s Settings/Inputs.
 
 
@@ -763,11 +765,10 @@ There are three ways:
 How can I find the maximum value among the last pivots?
 -------------------------------------------------------
 
-We will be finding the highest value of the last 3 `high <https://www.tradingview.com/pine-script-reference/v5/#var_high>`__ pivots here, 
+We will find the highest value of the last three `high <https://www.tradingview.com/pine-script-reference/v5/#var_high>`__ pivots here, 
 but the technique can be extended to any number of pivots. We will be using `ta.valuewhen() <https://www.tradingview.com/pine-script-reference/v5/#fun_ta{dot}valuewhen>`__ 
 to fetch the value from the nth occurrence of a `high <https://www.tradingview.com/pine-script-reference/v5/#var_high>`__ pivot, 
-remembering to offset the value we are retrieving with number of right legs used to detect the pivot, 
-as a pivot is only detected after than number of bars has elapsed from the actual pivot bar.
+remembering to offset the value we are retrieving with the number of right legs used to detect the pivot, as a pivot is only detected after the number of bars has elapsed from the actual pivot bar.
 
 ::
 
@@ -784,7 +785,9 @@ as a pivot is only detected after than number of bars has elapsed from the actua
     plotchar(newPH, "newPH", "•", location.abovebar, offset = -legs)
     plotchar(newPH, "newPH", "▲", location.top)
 
-.. note:: We use ``not na(pH)`` to detect a new pivot, rather than the more common way of simply relying on the fact that pH will be different from zero or na—so true—when a pivot is found. While the common technique will work most of the time, it will not work when a pivot is found at a value of zero, because zero is evaluated as false in a conditional expression. Our method is thus more robust, and the recommended way to test for a pivot.
+.. note:: We use ``not na(pH)`` to detect a new pivot, rather than the more familiar way of simply relying on the fact that pH will be different from zero or 
+.. note:: na—so true—when a pivot is found. While the common technique will work most of the time, it will not work when a pivot is located at a value of zero 
+.. note:: because zero is evaluated as false in a conditional expression. Our method is thus more robust and recommended to test for a pivot.
 
 
 
@@ -792,7 +795,7 @@ How can I access normal bar OHLC values on a non-standard chart?
 ----------------------------------------------------------------
 
 You need to use the `request.security() <https://www.tradingview.com/pine-script-reference/v5/#fun_request{dot}security>`__ function. 
-This script allows you to view normal candles on the chart, although depending on the non-standard chart type you use, this may or may not make much sense:
+This script allows you to view standard candles on the chart, although depending on the non-standard chart type you use, this may or may not make much sense:
 
 ::
 
@@ -845,9 +848,9 @@ How can I initialize a series on specific dates using external data?
 How can I display plot values in the chart’s scale?
 ---------------------------------------------------
 
-To achieve this effect with your indicator, you need to check 2 checkboxes in the Scales tab inside the Chart Settings menu: 
+To achieve this effect with your indicator, you need to check two checkboxes in the Scales tab inside the Chart Settings menu: 
 ``Indicators and financials name labels`` and ``Indicators and financials value labels``. 
-You reach the Chart Settings menu by right-clicking on the chart or by using the cog wheel in the chart’s upper-left icons.
+You reach the Chart Settings menu by right-clicking or using the cog wheel in the chart’s upper-left icons.
 
 If you display the indicator’s name, the ``shorttitle`` will be used if there is one. If not, as is the case here, the title will be used. 
 The plot’s name will also appear in the `label <https://www.tradingview.com/pine-script-reference/v5/#op_label>`__:
@@ -869,7 +872,7 @@ How can I reset a sum on a condition?
 -------------------------------------
 
 We first need a variable whose value is preserved bar to bar, so we will use the `var <https://www.tradingview.com/pine-script-reference/v5/#op_var>`__ keyword to 
-initialize our ``vol`` variable on the first bar only. We then need to define the resetting condition, in this case a MACD cross. 
+initialize our ``vol`` variable on the first bar only. We then need to define the resetting condition, in this case, a MACD cross. 
 We then add the `volume <https://www.tradingview.com/pine-script-reference/v5/#var_volume>`__ to our ``vol`` variable on each bar, except when a cross occurs, 
 in which case we reset our sum to zero. We also plot a dot on crosses for debugging purposes:
 
@@ -899,9 +902,9 @@ Our triggers are ``beginUp`` and ``beginDn``.
 We then declare the two variables that will hold our cumulative `volume <https://www.tradingview.com/pine-script-reference/v5/#var_volume>`__, one for each state. 
 Since only one state can be active at any given moment, when we are cumulating for one state (using ``volUp`` for an uptrend, for example), 
 the other variable (``volDn`` in this case) will hold the `na <https://www.tradingview.com/pine-script-reference/v5/#var_na>`__ value. 
-We use the `var <https://www.tradingview.com/pine-script-reference/v5/#op_var>`__ keyword when declaring the variables so they preserve their value bar to bar.
+We use the `var <https://www.tradingview.com/pine-script-reference/v5/#op_var>`__ keyword when declaring the variables, so they preserve their value bar to bar.
 
-The third and last step in our logic is to determine what value to set our cumulative variables with. We will use ``volUp`` in this discussion, so this line:
+The third and last step in our logic is determining what value to set our cumulative variables with. We will use ``volUp`` in this discussion, so this line:
 
 ::
 
@@ -910,13 +913,13 @@ The third and last step in our logic is to determine what value to set our cumul
 We must distinguish between three outcomes:
 
 When a counter signal (``beginDn``) occurs, we set ``volUp`` to `na <https://www.tradingview.com/pine-script-reference/v5/#var_na>`__ as 
-`volume <https://www.tradingview.com/pine-script-reference/v5/#var_volume>`__ will then start accumulating in the variable’s counterpart: ``beginDn ? na``
-If we encounter a trigger (``beginUp``) and we are currently cumulating for a trend in the other direction (and ``na(volUp)``) then start a new cumulative count: 
+`volume <https://www.tradingview.com/pine-script-reference/v5/#var_volume>`__ will start accumulating in the variable’s counterpart: ``beginDn ? na``
+If we encounter a trigger (``beginUp``) and we are currently cumulating for a trend in the other direction (and ``na(volUp)``), then start a new cumulative count: 
 ``: beginUp and na(volUp) ? volume``
-Otherwise we are already accumulating in that trend direction, so add the current `volume <https://www.tradingview.com/pine-script-reference/v5/#var_volume>`__ to the total: 
+Otherwise, we are already accumulating in that trend direction, so add the current `volume <https://www.tradingview.com/pine-script-reference/v5/#var_volume>`__ to the total: 
 ``: volUp + volume``
 
-Here we display the cumulative count in Weis Wave fashion. We also display the occurrences of triggers for debugging purposes:
+Here we display the cumulative count in Weis Wave fashion. We also show the occurrences of triggers for debugging purposes:
 
 .. image:: images/Faq-Techniques-02.png
 
@@ -945,38 +948,38 @@ How can I organize my script’s inputs in the Settings/Inputs tab?
 The script below shows you how to organize your inputs using the following tricks:
 
  - Create separators using boolean checkboxes. Make their default value `true <https://www.tradingview.com/pine-script-reference/v5/#op_true>`__ so users are less prone to 
-   trying them out to see what they do, as they will most often do nothing. If your separators actually do something, make this clear in their wording.
+   trying them out to see what they do, as they will most often do nothing. If your separators do something, make this clear in their wording.
  - Indent sub-sections using Unicode white space characters. Choose one that shows up in the Pine Script™ Editor as a visible character. 
-   We like to use the Em space ( ): 8195 (0x2003).
+   We like to use the Em space ( ): 8195 (0x2003).
 
 Notes
 =====
 
  - We cannot indent checkboxes, so your sections will look cleaner if you use the `input() <https://www.tradingview.com/pine-script-reference/v5/#fun_input>`__ 
    options parameter to provide selections via dropdowns rather than checkboxes.
- - For separators to align neatly a hair to the left of the rightmost edge of dropdowns, start by creating the longest 
+ - For separators to align a hair neatly to the left of the rightmost edge of dropdowns, start by creating the longest 
    `input() <https://www.tradingview.com/pine-script-reference/v5/#fun_input>`__ title you will be using, as it determines the width of the dropdown. 
-   This way you will avoid the tedious task of re-balancing the line characters on each side of your separator’s name because of changes 
+   This way, you will avoid the tedious task of re-balancing the line characters on each side of your separator’s name because of changes 
    in the dropdown's width when you add an `input() <https://www.tradingview.com/pine-script-reference/v5/#fun_input>`__ with a title longer than previous ones.
  - If your longest `input() <https://www.tradingview.com/pine-script-reference/v5/#fun_input>`__ title turns out to be shorter than you had first planned and you want to avoid 
-   re-balancing separators, you can use Unicode white space to artificially make it longer, as we demonstrate for input ``f4`` in our code example.
+   re-balancing separators, you can use Unicode white space to make it longer artificially, as we demonstrate for input ``f4`` in our code example.
  - Use ASCII characters 205 or 196 for continuous separator lines. The dash (ASCII 45) or Em dash (ASCII 151) do not join properly; they are thus less visually appealing.
- - For better visual effect, ensure all of your separator titles are centered vertically throughout all of your Inputs. 
+ - For better visual effect, ensure all separator titles are centered vertically throughout your Inputs. 
    This requires trial and error, as the MS Trebuchet font used for TradingView text is proportionally spaced.
 
 Tips
 ====
 
- - Your script’s plots and inputs constitute their user interface. Inputs thus play a key role in the user experience. The more options you provide, 
-   the more important the design of your Inputs dialog box becomes, especially when users don’t read script descriptions or if your description is lacking.
- - Design the sequence of inputs with the user in mind; not with the order you use them in your calculations. Place the most important/frequent selections in a descending order.
- - Never use two checkboxes for mutually exclusive selections. Use dropdowns instead; they allow you to include as many useful options as you see fit.
+ - Your script’s plots and inputs constitute their user interface. Inputs thus play a vital role in the user experience. The more options you provide, 
+   the more critical the design of your Inputs dialog box becomes, especially when users don’t read script descriptions or if your description is lacking.
+ - Design the sequence of inputs with the user in mind, not with the order you use them in your calculations. Place the most important/frequent selections in descending order.
+ - Never use two checkboxes for mutually exclusive selections. Use dropdowns instead; they allow you to include as many applicable options as you see fit.
  - Do not be stingy when naming option selections. The dropdown widget can accommodate long strings.
  - Remember not to use ampersands in option arguments, as your boolean expressions will not work with them.
  - Choose your default values wisely.
  - Provide adequate min and max values for numeric values, selecting the proper `float <https://www.tradingview.com/pine-script-reference/v5/#op_float>`__ or 
    `int <https://www.tradingview.com/pine-script-reference/v5/#op_int>`__ type.
- - When needed, customize step values to the particular use of each inputs.
+ - When needed, customize step values to the particular use of each input.
 
 ::
 
@@ -1007,7 +1010,7 @@ How can I find the nth highest/lowest value in the last bars?
 
 The ``nthHighest()`` and ``nthLowest()`` functions in this script use an `array <https://www.tradingview.com/pine-script-reference/v5/#op_array>`__ 
 to hold the values of the last x bars and sort a copy of that `array <https://www.tradingview.com/pine-script-reference/v5/#op_array>`__ on each bar to search for the 
-nth highest/lowest value. The distinct parameter allows you to determine if you allow similar values to count or not:
+nth highest/lowest value. In addition, the distinct parameter allows you to determine if you enable similar values to count or not:
 
 ::
 

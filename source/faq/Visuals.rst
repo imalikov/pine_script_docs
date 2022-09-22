@@ -21,10 +21,10 @@ Visuals FAQ
 Why can’t I use a plot in an if or for statement?
 -------------------------------------------------
 
-It’s not allowed in Pine Script™ but you can use many different conditions to control plotting and the color of plots, 
-but these must be controlled from within the `plot() <https://www.tradingview.com/pine-script-reference/v5/#fun_plot>`__ call.
+It’s not allowed in Pine Script™, but you can use many different conditions to control plotting and the color of plots, 
+but these must be managed from within the `plot() <https://www.tradingview.com/pine-script-reference/v5/#fun_plot>`__ call.
 
-For example, you want to plot a highlight when 2 moving averages are a certain multiple of ``ATR`` away from each other, you first need to define your condition, 
+For example, if you want to plot a highlight when two moving averages are a certain multiple of ``ATR`` away from each other, you first need to define your condition, 
 then plot on that condition only:
 
 .. image:: images/Faq-Visuals-01.png
@@ -71,9 +71,9 @@ Note the `plot() <https://www.tradingview.com/pine-script-reference/v5/#fun_plot
 `na <https://www.tradingview.com/pine-script-reference/v5/#var_na>`__ and the ``style = plot.style_linebr parameter`` to avoid plotting a continuous line, 
 which would produce inelegant joins between different levels.
 
-Also note how `plotchar() <https://www.tradingview.com/pine-script-reference/v5/#fun_plotchar>`__ is used to plot debugging information revealing the states of the 
-boolean building blocks we use in our logic. These plots are not necessary in the final product; 
-they are used to ensure your code is doing what you expect and can save you a lot of time when you are writing your own code.
+Also, note how `plotchar() <https://www.tradingview.com/pine-script-reference/v5/#fun_plotchar>`__ is used to plot debugging information revealing the states of the 
+boolean building blocks we use in our logic. These plots are not necessary for the final product; 
+They ensure your code is doing what you expect and can save you a lot of time when you are writing your code.
 
 ::
 
@@ -112,7 +112,7 @@ How do I plot a support or a trend line?
 To plot a continuous line in Pine Script™, you need to either:
 
  - Look back into elapsed bars to find an occurrence that will return the same value over consecutive bars so you can plot it.
- - Find levels and save them so that you can plot them. In this case your saving mechanism will determine how many levels you can save.
+ - Find levels and save them so that you can plot them. In this case, your saving mechanism will determine how many levels you can keep.
  - You may also use the `line.new() <https://www.tradingview.com/pine-script-reference/v5/#fun_line{dot}new>`__ function.
 
 These are some examples:
@@ -129,20 +129,22 @@ How can I use colors in my indicator plots?
 
 See `Working with colours <https://kodify.net/tradingview/colours/>`__ by Kodify. 
 Our Resources page has a `list of color pickers <https://www.pinecoders.com/resources/#color-pickers-or-tools>`__ to help you choose colors. 
-midtownsk8rguy has a complete set of custom colors in `Pine Color Magic and Chart Theme Simulator <https://www.tradingview.com/script/yyDYIrRQ-Pine-Color-Magic-and-Chart-Theme-Simulator/>`__.
+midtownsk8rguy has a complete set of custom colors in 
+`Pine Color Magic and Chart Theme Simulator <https://www.tradingview.com/script/yyDYIrRQ-Pine-Color-Magic-and-Chart-Theme-Simulator/>`__.
 
 
 
 How do I make my indicator plot over the chart?
 -----------------------------------------------
 
-Use ``overlay = true`` in `strategy() <https://www.tradingview.com/pine-script-reference/v5/#fun_strategy>`__ or `indicator() <https://www.tradingview.com/pine-script-reference/v5/#fun_indicator>`__ declaration statement, e.g.,:
+Use ``overlay = true`` in the `strategy() <https://www.tradingview.com/pine-script-reference/v5/#fun_strategy>`__ or 
+`indicator() <https://www.tradingview.com/pine-script-reference/v5/#fun_indicator>`__ declaration statement, e.g.,:
 
 ::
 
     indicator("My Script", overlay = true)
 
-If your indicator was already added to your chart before applying this change, you will need to use ``Add to Chart`` again for the change to take effect.
+If your indicator was already added to your chart before applying this change, you would need to use ``Add to Chart`` again for the change to take effect.
 
 If your script only works correctly in overlay mode and you want to prevent users from moving it to a separate pane, you can add ``linktoseries = true`` to your 
 `strategy() <https://www.tradingview.com/pine-script-reference/v5/#fun_strategy>`__ or 
@@ -183,8 +185,8 @@ How can I toggle hline() plots on and off?
 How can I plot color gradients?
 -------------------------------
 
-There are no built-in functions to generate color gradients in Pine Script™ yet. Gradients progressing horizontally across bars are much easier to implement and run faster. 
-These are a few examples:
+There are no built-in functions to generate color gradients in Pine Script™ yet. 
+As a result, gradients progressing horizontally across bars are much easier to implement and run faster. These are a few examples:
 
  - `Color Gradient (16 colors) Framework - PineCoders FAQ <>`__
  - `Color Gradient Framework - PineCoders FAQ <>`__
@@ -192,8 +194,8 @@ These are a few examples:
  - `[RS]Color Gradient Function <https://www.tradingview.com/script/nUq3gvD5-RS-Color-Gradient-Function/>`__
  - `[RS]Function - RGB Color (low resolution) <https://www.tradingview.com/script/nUq3gvD5-RS-Color-Gradient-Function/>`__
 
-To produce gradients progressing in vertical space on the same bar you will need to use a progession of plots, each with a different color. 
-Doing so requires many plot statements and scripts using this technique will run slower than ones producing horizontal gradients. Examples:
+To produce gradients progressing in vertical space on the same bar, you will need to use a progression of plots, each with a different color. 
+Doing so requires many plot statements, and scripts using this technique will run slower than ones producing horizontal gradients. Examples:
 
  - `Trend Following Bar <https://www.tradingview.com/script/UGgNcgNi-Trend-Following-Bar/>`__
  - `Angled Volume Profile [feeble] <https://www.tradingview.com/script/OGwqa3DI-Angled-Volume-Profile-feeble/>`__
@@ -214,9 +216,9 @@ How can I keep only the last x labels or lines?
 -----------------------------------------------
 
 The easiest way is to manage an array containing the ids of the labels or lines. We will manage the array in such a way that it emulates a queue, i.e., 
-new ids come in from the end and each time a new id comes in, we remove one from the beginning of the array, which contains the oldest id. 
+new ids come in from the end, and each time a new id comes in; we remove one from the beginning of the array, which contains the oldest id. 
 The technique is explained in the Pine Script™ User Manual’s `page on arrays <https://www.tradingview.com/pine-script-docs/en/v5/language/Arrays.html#using-an-array-as-a-queue>`__, 
-but we will use a function which allows us to save lines:
+but we will use a function that allows us to save lines:
 
 ::
 

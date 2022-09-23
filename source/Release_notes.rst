@@ -13,7 +13,7 @@ Release notes
 =============
 
 .. contents:: :local:
-    :depth: 3
+    :depth: 2
 
 This page contains release notes of notable changes in Pine Script™.
 

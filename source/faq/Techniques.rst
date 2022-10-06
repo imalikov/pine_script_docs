@@ -184,7 +184,7 @@ because it accepts a series value, i.e., a value that can change on each bar.
     indicator("Track distance from condition", "", true)
     // Plot the high/low from bar where condition occurred the last time.
 
-    // Conditions.
+    // Conditions
     bool upBar   = close > open
     bool dnBar   = close < open
     bool up3Bars = dnBar and upBar[1] and upBar[2] and upBar[3]
@@ -197,8 +197,8 @@ because it accepts a series value, i.e., a value that can change on each bar.
     plotchar(ta.barssince(dn3Bars), "1. barssince(dn3Bars)", "", location.top)
 
     // Method 2, doing manually the equivalent of "ta.barssince()".
-    var barsFromUp = 0
-    var barsFromDn = 0
+    var barsFromUp = int(na)
+    var barsFromDn = int(na)
     barsFromUp := up3Bars ? 0 : barsFromUp + 1
     barsFromDn := dn3Bars ? 0 : barsFromDn + 1
     plot(high[barsFromUp])

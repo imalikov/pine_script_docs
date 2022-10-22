@@ -545,9 +545,9 @@ They cannot be used in ternaries, however, because the return values of a ternar
 .. _PageTypeSystem_UserDefinedTypes:
 
 User-defined types
-------------------
+""""""""""""""""""
 
-The `type` keyword allows the creation of user-defined types (UDTs) from which objects can be created. UDTs are composite types; they contain an arbitrary number of fields that can be of any type. The syntax to define a user-defined type is:
+The `type <>`__ keyword allows the creation of *user-defined types* (UDTs) from which objects can be created. UDTs are composite types; they contain an arbitrary number of *fields* that can be of any type. The syntax to define a *user-defined type* is:
 
 .. code-block:: text
 
@@ -556,12 +556,12 @@ The `type` keyword allows the creation of user-defined types (UDTs) from which o
 
 where:
 
-- [export] is used to export UDTs from libraries.
-- <type_identifier> is the name of the type.
-- <field_type> is the type of a field. It is mandatory.
-- <expression> is an optional default value for the field, which will be assigned to it when new objects of that UDT are created. The field's default is `na <https://www.tradingview.com/pine-script-reference/v5/#var_na>`__ if none is specified. 
+- ``[export]`` is used to export UDTs from libraries.
+- ``<type_identifier>`` is the name of the type.
+- ``<field_type>`` is the type of a field. It is mandatory.
+- ``<expression>`` is an optional default value for the *field*, which will be assigned to it when new objects of that UDT are created. The field's default is `na <https://www.tradingview.com/pine-script-reference/v5/#var_na>`__ if none is specified. 
 
-In this example, we create a UDT containing two fields to hold pivot information, the `time <https://www.tradingview.com/pine-script-reference/v5/#var_time>`__ of the bar and its `close <https://www.tradingview.com/pine-script-reference/v5/#var_close>`__:
+In this example, we create a UDT containing two *fields* to hold pivot information, the `time <https://www.tradingview.com/pine-script-reference/v5/#var_time>`__ of the bar and its `close <https://www.tradingview.com/pine-script-reference/v5/#var_close>`__:
 
 ::
 
@@ -569,7 +569,7 @@ In this example, we create a UDT containing two fields to hold pivot information
         int openTime
         float level
 
-User-defined types can be embedded, so a field can be of the same type as the UDT it belongs to. Here, we add a field to our previous `pivotPoint` type that will hold the pivot information for another pivot point:
+*User-defined types* can be embedded, so a *field* can be of the same type as the UDT it belongs to. Here, we add a *field* to our previous ``pivotPoint`` type that will hold the pivot information for another pivot point:
 
 ::
 

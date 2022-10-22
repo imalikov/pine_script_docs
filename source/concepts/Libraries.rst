@@ -160,6 +160,120 @@ However, because arguments are by default cast to the "series" form, using the
 
 
 
+Exporting And Importing Objects
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+NOTE: You can learn more about *user-defined types* and Pine Script™ objects in :ref:`the Objects page <PageObjects>`.
+
+*User-defined types* can be used in libraries and imported into other scripts. 
+To export a *user-defined type*, add the `export <https://www.tradingview.com/pine-script-reference/v5/#op_export>`__ keyword before the `type <>`__ keyword. The signature is:
+
+.. code-block:: text
+
+  export type <type_indentifier>
+    <variable_type> <variable_name> (= expression)
+
+Here is an easy example for how to create your first *user-defined type*:
+
+::
+
+  //@version=5
+  library("Point")
+
+  export type Point
+      int x
+      float y
+      bool isHigh
+	
+To utilize your *user-defined type* in an indicator script, you will need to import the `library <https://www.tradingview.com/pine-script-reference/v5/#fun_library>`__ where it is located. 
+When a *user-defined type* is imported into a script, it has two built-in functions, ``.new()`` and ``.copy()``, that are always included by default. 
+To create an object from a *user-defined type*, one would first reference the alias of the imported 
+`library <https://www.tradingview.com/pine-script-reference/v5/#fun_library>`__, and then the identifier of the `type <>`__, and then use the `.new()` function:
+
+::
+
+  // NOTE: This code is conceptual; it will not work because the user `TradingView` does not have a library `Point` published.
+  //@version=5
+  indicator("Pivots")
+
+  import TradingView/Point/1 as pnt
+  // new_point = <lib_alias>.<type_identifier>.new()
+  new_point = pnt.Point.new()
+
+  if new_point.isHigh
+      label.new(new_point.x, new_point.y, text = "High pivot here")
+
+
+Functions that use custom objects can be exported from a `library <https://www.tradingview.com/pine-script-reference/v5/#fun_library>`__, but with a number of limitations:
+- If the function requests a *user-defined type* as one of its parameters, that `type <>`__ must also be exported.
+- If the function returns a *user-defined type*, that `type <>`__ must also be exported.
+
+::
+
+  //@version=5
+  library("Point")
+
+  type Point
+      int x
+      float y
+      bool isHigh
+
+  // This exported function is not valid because it expects an object of the `Point` type as its parameter, which is not exported.
+  export displayPriceAsLabel(Point _point) =>
+      label.new(_point.x, _point.y, text = str.tostring(_point.y))
+
+  // This exported function is not valid because it returns an object of the `Point` type, which is not exported.
+  export roundCurrPrice() =>
+      var currClose = Point.new(bar_index, math.round(close))
+      currClose
+
+If the `type <>`__ is only used inside the function and is neither requested nor returned, it does not have to be exported. 
+In the example below, we export the `drawPivotLabel()` function. While it uses the user-defined ``Point`` `type <>`__, 
+it requests two `int <https://www.tradingview.com/pine-script-reference/v5/#op_int>`__ values and returns `na <https://www.tradingview.com/pine-script-reference/v5/#var_na>`__, 
+so we don't need to export ``Point`` for the `library <https://www.tradingview.com/pine-script-reference/v5/#fun_library>`__ to work.
+
+::
+
+  //@version=5
+  library("drawPivotLabels")
+
+  // We use Point in the library, but we don’t request it or return it in exported functions, so we don’t have to export the type itself
+  type Point
+      int x
+      float y
+      bool isHigh
+
+  fillPivotsArray(left, right) =>
+      var pivotArray = array.new<Point>()
+      arrSize = array.size(pivotArray)
+      pivotHigh = ta.pivothigh(left, right)
+
+      if pivotHigh
+          foundPoint = Point.new(bar_index[right], pivotHigh)
+          array.push(pivotArray, foundPoint)
+      pivotArray
+      
+      
+  export drawPivotLabel(int left, int right) =>
+      pointsArray = fillPivotsArray(left, right)
+      for point in pointsArray
+          label.new(point.x, point.y, text = str.tostring(point.y, format.mintick))
+
+
+Here is how we would use the exported ``drawPivotLabel()`` function from our example above:
+
+::
+
+  // NOTE: This code is conceptual; it will not work because the user `TradingView` does not have a library `drawPivotLabels` published.
+  //@version=5
+  indicator("Pivot Points High")
+
+  import TradingView/drawPivotLabels/1 as dpl
+
+  dpl.drawPivotLabel(10, 10)
+
+
+
 Publishing a library
 --------------------
 

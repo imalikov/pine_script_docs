@@ -547,7 +547,10 @@ They cannot be used in ternaries, however, because the return values of a ternar
 User-defined types
 """"""""""""""""""
 
-The `type <>`__ keyword allows the creation of *user-defined types* (UDTs) from which objects can be created. UDTs are composite types; they contain an arbitrary number of *fields* that can be of any type. The syntax to define a *user-defined type* is:
+The `type <https://www.tradingview.com/pine-script-reference/v5/#op_type>`__ 
+keyword allows the creation of *user-defined types* (UDTs) from which objects can be created. 
+UDTs are composite types; they contain an arbitrary number of *fields* that can be of any type. 
+The syntax to define a *user-defined type* is:
 
 .. code-block:: text
 

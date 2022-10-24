@@ -567,11 +567,11 @@ where:
 - ``<field_type>`` is the type of the field.
 - ``<field_name>`` is the name of the field.
 - ``<expression>`` is an optional default value for the field, which will be assigned to it when new objects of that UDT are created. 
-  The field's default value is `na <https://www.tradingview.com/pine-script-reference/v5/#var_na>`__ if none is specified. 
+  The field's default value will be `na <https://www.tradingview.com/pine-script-reference/v5/#var_na>`__ if none is specified. 
 
 In this example, we create a UDT containing two fields to hold pivot information, 
 the `time <https://www.tradingview.com/pine-script-reference/v5/#var_time>`__ of the pivot's bar 
-and its `close <https://www.tradingview.com/pine-script-reference/v5/#var_close>`__:
+and its price level:
 
 ::
 

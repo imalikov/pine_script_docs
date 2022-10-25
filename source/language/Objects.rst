@@ -208,7 +208,9 @@ you can use the `array<> <https://www.tradingview.com/pine-script-reference/v5/#
 Let's use what we have learned to create a script that detects high pivot points. 
 The script first collects historical pivot information in an array. 
 On the last historical bar it then loops through the array, 
-creating a label for each pivot and connecting them with a line:
+creating a label for each pivot and connecting the pivots with a line:
+
+.. image:: images/Objects-CollectingObjects-1.png
 
 ::
 

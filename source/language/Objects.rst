@@ -277,7 +277,7 @@ Changing ``pivot2.x`` will thus also change ``pivot1.x`` as both refer to the ``
 
 To create a copy of an object that is independent of the original, the ``copy()`` built-in method can be used with any UDT.
 In the following example, we create a new ``pivot2`` object that is copy of ``pivot1``.
-The two are from that point on independent entities, so ``pivot2``'s fields can be changed without affecting ``pibvot1``:
+The two are from that point on independent entities, so ``pivot2``'s fields can be changed without affecting ``pivot1``:
 
 ::
 
@@ -301,9 +301,9 @@ Shadowing
 
 To avoid potential conflicts in the eventuality where namespaces added to Pine Script™ in the future 
 would collide with UDTs or object names in existing scripts, as a rule, UDTs and object names shadow the language's namespaces.
-For example, a UDT or object can use the name built-in types such as  
+For example, a UDT or object can use the name of built-in types such as 
 `line <https://www.tradingview.com/pine-script-reference/v5/#op_line>__` or 
-`table <https://www.tradingview.com/pine-script-reference/v5/#op_table>__`).
+`table <https://www.tradingview.com/pine-script-reference/v5/#op_table>__`.
 
 Only the language's five primitive types cannot be used to name UDTs or objects: 
 `int <https://www.tradingview.com/pine-script-reference/v5/#op_int>__`, 

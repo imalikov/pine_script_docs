@@ -202,17 +202,17 @@ A script importing that library and creating an object from its ``point`` UDT wo
 
 Note that:
 
-- This code won't compile because no "Point" library is published.
+- This code won't compile because no "Point" library is published and it doesn't display anything.
 - ``userName`` would need to be replaced by the TradingView user name of the library's publisher.
 - We use the built-in ``new()`` method to create an object from the ``point`` UDT.
 - We prefix the reference to the library's ``point`` UDT with the ``pt`` alias defined in the 
-  `import <https://www.tradingview.com/pine-script-reference/v5/#op_import>`__ statement 
+  `import <https://www.tradingview.com/pine-script-reference/v5/#op_import>`__ statement, 
   just like we would when using a function from an imported library.
 
-UDTs used in libraries **must** be exported if any of its exported functions uses a parameter or returns a result of that user-defined type.
+UDTs used in a library **must** be exported if any of its exported functions uses a parameter or returns a result of that user-defined type.
 
 When a library only makes internal use of a UDT, it does not have to be exported. The following library uses the ``point`` UDT internally,
-but only its ``drawPivotLabel()`` function is exported, which does not use a parameter of ``point`` type, nor return a result of that type:
+but only its ``drawPivotLabel()`` function is exported, which does not use a parameter nor return a result of ``point`` type:
 
 ::
 
@@ -278,6 +278,12 @@ but only its ``drawPivotLabel()`` function is exported, which does not use a par
                   textcolor = eachPoint.wasBreached ? color.silver : color.white)
 
 
+    // @function        Displays a label for each of the last `qtyLabels` pivots.
+    //                  Colors high pivots in green, low pivots in red, and breached pivots in gray.
+    // @param qtyLabels (simple int) Quantity of last labes to display.
+    // @param leftLegs  (simple int) Left pivot legs.
+    // @param rightLegs (simple int) Right pivot legs.
+    // @returns         Nothing.
     export drawPivots(int qtyLabels, int leftLegs, int rightLegs) =>
         // Gather pivots as they occur.
         pointsArray = fillPivotsArray(qtyLabels, leftLegs, rightLegs)
@@ -289,6 +295,8 @@ but only its ``drawPivotLabel()`` function is exported, which does not use a par
         if barstate.islastconfirmedhistory
             drawLabels(pointsArray)
 
+
+    // Example use of the function.
     drawPivotLabel(20, 10, 5)
 
 If the above library was published by the TradingView user, it could thus be used like this:

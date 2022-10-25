@@ -192,7 +192,6 @@ keyword just as you would to export a function:
         bool wasBreached = false
 
 A script importing that library and creating an object from its ``point`` UDT would look somewhat like this:
-  // new_point = <lib_alias>.<type_identifier>.new()
 
 ::
 

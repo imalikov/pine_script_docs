@@ -117,7 +117,7 @@ Reading And Modifying Objects' Fields
 
 When created, each object reserves its own namespace based on the name given to that object. This namespace is used to reference the particular object's fields, either to request their value or to change it. 
 
-The easiest way to assign a value to an object's field is during the object creation. You can pass a value directly to the `.new()` method, and the field can be referenced both by position and by name. 
+The easiest way to assign a value to an object's field is during the object creation. You can pass a value directly to the ``.new()`` method, and the field can be referenced both by position and by name. 
 In the example below, we pass ``time[10]`` as a value to our ``x`` field (implicitly, because ``x`` is the first field our object has), and then we assign ``pivotHighPrice`` to the ``y`` field explicitly, 
 by referencing the field by its name. The ``xloc`` field is not specified at all, so the default value of the field, `xloc.bar_time <https://www.tradingview.com/pine-script-reference/v5/#var_xloc{dot}bar_time>`__, is assigned to it.
 
@@ -161,7 +161,8 @@ This can be done by using the `array.new<>()` or `matrix.new<>()` functions and 
 
     var pivotHighArray = array.new<pivotPoint>()
 
-If you want to explicitly typify the variable as an array or a matrix of a custom type, you can use the `array<> <https://www.tradingview.com/pine-script-reference/v5/#op_array>__` and `matrix<> <https://www.tradingview.com/pine-script-reference/v5/#op_matrix>__` keywords, e.g.:
+If you want to explicitly typify the variable as an `array <https://www.tradingview.com/pine-script-reference/v5/#op_array>__` or a `matrix <https://www.tradingview.com/pine-script-reference/v5/#op_matrix>__` of a custom type, 
+you can use the `array<> <https://www.tradingview.com/pine-script-reference/v5/#op_array>__` and `matrix<> <https://www.tradingview.com/pine-script-reference/v5/#op_matrix>__` keywords, e.g.:
 
 ::
 

@@ -85,57 +85,73 @@ After which the ``foundPoint`` object's ``x`` field will contain the value of th
 ``y`` will contain the value of `high <https://www.tradingview.com/pine-script-reference/v5/#var_na>__`
 and the ``xloc`` field will contain its default value of 
 `xloc.bar_time <https://www.tradingview.com/pine-script-reference/v5/#var_xloc{dot}bar_time>`__
-because no explicit value was defined for it.
+because no explicit value was defined for it when creating the object.
 
-In the example below, we wait for a new High-based pivot point to be found, and once it is, 
-we create a new object of the ``pivotPoint`` type by calling the ``pivotPoint.new()`` function:
-
-::
-
-    // The ta.pivothigh() function returns a price value when a pivot is found, `na` otherwise.
-    pivotHighPrice = ta.pivothigh(10, 10)
-    if not na(pivotHighPrice)
-        foundPoint = pivotPoint.new()
-	
-Once created with `pivotPoint.new()`, our object has three fields. However, only one of these has an actual value 
-(not `na <https://www.tradingview.com/pine-script-reference/v5/#var_na>__` <>) assigned to it: 
-the `xloc` field, which we have as `xloc.bar_time <https://www.tradingview.com/pine-script-reference/v5/#var_xloc{dot}bar_time>`__ by default. 
-The two other fields will return `na <https://www.tradingview.com/pine-script-reference/v5/#var_na>__` 
-until we modify them by assigning them a more fitting value.
-
-If you want to create a variable of the chosen type without calling the ``.new()`` function, 
-you can do so by assigning `na <https://www.tradingview.com/pine-script-reference/v5/#var_na>__` to it. 
-In that case, you also need to specify the variable type before its name. The syntax is:
-
-.. code-block:: text
-
-    <type_identifier> <variable_name> = na
-
-The example above could be rewritten to use this method:
+Object placeholders can also be created by declaring `na` object names using:
 
 ::
 
-    pivotHighPrice = ta.pivothigh(10, 10)
-    if not na(pivotHighPrice)
-        pivotPoint foundPoint = na
-        foundPoint := pivotPoint.new()
+    pivotPoint foundPoint = na
 
-If an object is created with the `var <https://www.tradingview.com/pine-script-reference/v5/#op_var>__` or 
+
+This example displays a label where high pivots are detected. 
+The pivots are detected ``legsInput`` bars after they occur, so we must plot the label in the past for it to appear on the pivot:
+
+::
+
+    //@version=5
+    indicator("Pivot labels", overlay = true)
+    int legsInput = input(10)
+
+    // Define a new `pivotPoint` type.
+    type pivotPoint
+        int x
+        float y
+        string xloc = xloc.bar_time
+
+    // Detect high pivots.
+    pivotHighPrice = ta.pivothigh(legsInput, legsInput)
+    if not na(pivotHighPrice)
+        // A new high pivot was found, display a label where it occurred `legsInput` bars back.
+        foundPoint = pivotPoint.new(time[legsInput], pivotHighPrice)
+        label.new(
+        foundPoint.x,
+        foundPoint.y,
+        str.tostring(foundPoint.y, format.mintick),
+        foundPoint.xloc,
+        textcolor = color.white)
+
+Note that the line:
+
+::
+    foundPoint = pivotPoint.new(time[legsInput], pivotHighPrice)
+
+Could also be written using:
+
+::
+    pivotPoint foundPoint = na
+    foundPoint := pivotPoint.new(time[legsInput], pivotHighPrice)
+
+When objects are created using the `var <https://www.tradingview.com/pine-script-reference/v5/#op_var>__` or 
 `varip <https://www.tradingview.com/pine-script-reference/v5/#op_varip>__` keywords, 
-all its fields will behave as if they were created with the keyword in question:
+that property applies to all the object's fields:
 
 ::
 
+    //@version=5
+    indicator("")
     type barInfo
-        int _index = bar_index
-        int _time = time
-        float _close = close
+        int i = bar_index
+        int t = time
+        float c = close
 
-    var firstBar = barInfo.new() // Created on bar 0
-    currentBar = barInfo.new() // Created on every bar
+    // Created on bar zero.
+    var firstBar = barInfo.new()
+    // Created on every bar.
+    currentBar = barInfo.new()
 
-    plot(firstBar._index)
-    plot(currentBar._index)
+    plot(firstBar.i)
+    plot(currentBar.i)
 
 
 

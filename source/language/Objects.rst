@@ -109,7 +109,7 @@ The pivots are detected ``legsInput`` bars after they occur, so we must plot the
     indicator("Pivot labels", overlay = true)
     int legsInput = input(10)
 
-    // Define a new `pivotPoint` type.
+    // Define the `pivotPoint` UDT.
     type pivotPoint
         int x
         float y
@@ -178,6 +178,7 @@ This line of our previous example:
 Could be written using:
 
 ::
+
     foundPoint = pivotPoint.new()
     foundPoint.x := time[legsInput]
     foundPoint.y := pivotHighPrice
@@ -187,57 +188,60 @@ Could be written using:
 Collecting objects
 ------------------
 
-Objects of user-defined types can be used with Pine Script™ structures like arrays and matrices. 
-However, when creating such structures, you also need to specify the type in the function that creates the structure itself. 
-This can be done by using the `array.new<>()` or `matrix.new<>()` functions and specifying the name of our type inside the triangular brackets. 
-In the example below, we create an `array <https://www.tradingview.com/pine-script-reference/v5/#op_array>__` for our ``pivotPoint`` objects:
+Arrays and matrices can contain objects. To declare them, use UDT names in *type templates* which are constructed by using angle brackets.
+This declares an empty array that will contain objects of the ``pivotPoint`` UDT and initializes the ``pivotHighArray`` variable with its ID:
 
 ::
 
-    var pivotHighArray = array.new<pivotPoint>()
+    pivotHighArray = array.new<pivotPoint>()
 
-If you want to explicitly typify the variable as an `array <https://www.tradingview.com/pine-script-reference/v5/#op_array>__` or a `matrix <https://www.tradingview.com/pine-script-reference/v5/#op_matrix>__` of a custom type, 
-you can use the `array<> <https://www.tradingview.com/pine-script-reference/v5/#op_array>__` and `matrix<> <https://www.tradingview.com/pine-script-reference/v5/#op_matrix>__` keywords, e.g.:
+To explicitly declare the type of a variable as an `array <https://www.tradingview.com/pine-script-reference/v5/#op_array>__` or 
+a `matrix <https://www.tradingview.com/pine-script-reference/v5/#op_matrix>__` of a user-defined type, 
+you can use the `array<> <https://www.tradingview.com/pine-script-reference/v5/#op_array>__` and 
+`matrix<> <https://www.tradingview.com/pine-script-reference/v5/#op_matrix>__` keywords, e.g.:
 
 ::
 
     var array<pivotPoint> pivotHighArray = na
     pivotHighArray := array.new<pivotPoint>()
 
-Using the examples we went through above, 
-we create a script that connects historical Pivot High points by going over an array of ``pivotPoint`` objects:
+Let's use what we have learned to create a script that detects high pivot points. 
+The script first collects historical pivot information in an array. 
+On the last historical bar it then loops through the array, 
+creating a label for each pivot and connecting them with a line:
 
 ::
 
     //@version=5
     indicator("Pivot Points High", overlay = true)
-    
+
     int legsInput = input(10)
-    
-    // Define a new `pivotPoint` type containing the time and price of pivots.
+
+    // Define the `pivotPoint` UDT containing the time and price of pivots.
     type pivotPoint
         int openTime
         float level
-    
+
     // Create an empty array of pivot points.
     var pivotHighArray = array.new<pivotPoint>()
-    
+
     // Detect new pivots (`na` is returned when no pivot is found).
     pivotHighPrice = ta.pivothigh(legsInput, legsInput)
-    
-    // Save new pivot information and display a label for each new pivot.
+
+    // Create an object for each new pivot and add it to the end of the array.
     if not na(pivotHighPrice)
-        // A new pivot is found; create a new object of type `pivotPoint` with the pivot's time and price.
+        // A new pivot is found; create a new object of `pivotPoint` type, setting its `openTime` and `level` fields.
         newPivot = pivotPoint.new(time[legsInput], pivotHighPrice)
-        // Display a label at the pivot point.
-        label.new(newPivot.openTime, newPivot.level, str.tostring(newPivot.level, format.mintick), xloc = xloc.bar_time)
-        // Add the new pivot to the array of pivots.
+        // Add the new pivot object to the array.
         array.push(pivotHighArray, newPivot)
-    
-    // On the last historical bar, connect the pivots using lines.
+
+    // On the last historical bar, draw pivot labels and connecting lines.
     if barstate.islastconfirmedhistory
         var pivotPoint previousPoint = na
         for eachPivot in pivotHighArray
+            // Display a label at the pivot point.
+            label.new(eachPivot.openTime, eachPivot.level, str.tostring(eachPivot.level, format.mintick), xloc.bar_time, textcolor = color.white)
+            // Create a line between pivots.
             if not na(previousPoint)
                 // Only create a line starting at the loop's second iteration because lines connect two pivots.
                 line.new(previousPoint.openTime, previousPoint.level, eachPivot.openTime, eachPivot.level, xloc = xloc.bar_time)

@@ -62,14 +62,14 @@ Note that:
 - ``y`` is a "float" because it will hold the pivot's price.
 - ``xloc`` is a field that will specify the units of ``x``:
   `xloc.bar_index <https://www.tradingview.com/pine-script-reference/v5/#var_xloc{dot}bar_index>__` or
-  .  coordinate is expressed in: bar index or bar time. 
-This field is present in many existing Pine Script™ drawings, like lines, 
-and it is always set to `xloc.bar_index <https://www.tradingview.com/pine-script-reference/v5/#var_xloc{dot}bar_index>__` by default, 
-but we set its default to `xloc.bar_time <https://www.tradingview.com/pine-script-reference/v5/#var_xloc{dot}bar_time>`__ 
-by using the ``=`` operator to assign a default value to the field.
+  `xloc.bar_time <https://www.tradingview.com/pine-script-reference/v5/#var_xloc{dot}bar_time>`__.
+  We set its default value to `xloc.bar_time <https://www.tradingview.com/pine-script-reference/v5/#var_xloc{dot}bar_time>`__ 
+  by using the ``=`` operator. When an object is created from that UDT, its ``xloc`` field will thus be set to that value.
 
-In the same way, declaring a function does not execute any code, and the function needs to be called to see its effects; 
-declaring a type by itself does not do anything -- you need to create objects of that type to use the new functionality. 
+Now that our ``pivotPoint`` UDT is defined, we can proceed to creating objects from it.
+
+The same way that declaring a function does not execute any code until the function is called later in the script,
+declaring a type by itself does not do anything; you need to create objects of that type to use the new functionality. 
 In this regard, user-created objects largely follow the same logic that existing Pine Script™ built-ins use. 
 To create a new object, we need to call the ``<type_indentifier>.new()`` function inherent to every custom type. 
 Once called, it creates an object of our custom type with the specified number of fields.
@@ -132,13 +132,9 @@ Reading and modifying object fields
 When created, each object reserves its own namespace based on the name given to that object. 
 This namespace is used to reference the particular object's fields, either to request their value or to change it. 
 
-The easiest way to assign a value to an object's field is during the object creation. 
-You can pass a value directly to the `.new()` method, and the field can be referenced both by position and by name. 
-In the example below, we pass ``time[10]`` as a value to our ``x`` field (implicitly, because ``x`` is the first field our object has), 
-and then we assign ``pivotHighPrice`` to the ``y`` field explicitly, 
-by referencing the field by its name. 
-The ``xloc`` field is not specified at all, so the default value of the field, 
-`xloc.bar_time <https://www.tradingview.com/pine-script-reference/v5/#var_xloc{dot}bar_time>`__, is assigned to it.
+The easiest way to assign a value to an object's field is during the object creation. You can pass a value directly to the ``.new()`` method, and the field can be referenced both by position and by name. 
+In the example below, we pass ``time[10]`` as a value to our ``x`` field (implicitly, because ``x`` is the first field our object has), and then we assign ``pivotHighPrice`` to the ``y`` field explicitly, 
+by referencing the field by its name. The ``xloc`` field is not specified at all, so the default value of the field, `xloc.bar_time <https://www.tradingview.com/pine-script-reference/v5/#var_xloc{dot}bar_time>`__, is assigned to it.
 
 ::
 
@@ -190,9 +186,8 @@ In the example below, we create an `array <https://www.tradingview.com/pine-scri
 
     var pivotHighArray = array.new<pivotPoint>()
 
-If you want to explicitly typify the variable as an array or a matrix of a custom type, 
-you can use the `array<> <https://www.tradingview.com/pine-script-reference/v5/#op_array>__` and 
-`matrix<> <https://www.tradingview.com/pine-script-reference/v5/#op_matrix>__` keywords, e.g.:
+If you want to explicitly typify the variable as an `array <https://www.tradingview.com/pine-script-reference/v5/#op_array>__` or a `matrix <https://www.tradingview.com/pine-script-reference/v5/#op_matrix>__` of a custom type, 
+you can use the `array<> <https://www.tradingview.com/pine-script-reference/v5/#op_array>__` and `matrix<> <https://www.tradingview.com/pine-script-reference/v5/#op_matrix>__` keywords, e.g.:
 
 ::
 

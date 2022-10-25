@@ -256,32 +256,43 @@ Copying objects
 ---------------
 
 Pine Script™ objects are assigned by reference, which means that when we assign an existing object to a new variable, 
-both the old and the new variable point to the same object. 
-In the example below, we create a ``pivot1`` object and set its ``x`` to 1000. 
-After that, we create a ``pivot2`` object by equating it to ``pivot1``. 
-Changing ``pivot2.x`` changes ``pivot1.x`` too, because both these variables point to the same underlying object:
+both point to the same object. In the example below, we create a ``pivot1`` object and set its ``x`` field to 1000. 
+After that, we declare a ``pivot2`` variable containing the reference to the ``pivot1`` object, so both variables point to the same object. 
+Changing ``pivot2.x`` will thus also change ``pivot1.x`` as both refer to the ``x`` field of the same object:
 
 ::
 
-    var pivot1 = pivotPoint.new()
+    //@version=5
+    indicator("")
+    type pivotPoint
+        int x
+        float y
+    pivot1 = pivotPoint.new()
     pivot1.x := 1000
     pivot2 = pivot1
     pivot2.x := 2000
-    plot(pivot1.x) // 2000
-    plot(pivot2.x) // 2000
+    // Both plot the value 2000.
+    plot(pivot1.x)
+    plot(pivot2.x)
 
-To create an independent copy of any object, we can use the `.copy()` function that is inherent to every user-created object. 
-In the following example, we copy ``pivot1`` with the ``pivotPoint.copy()`` function, 
-which creates a separate object that can be changed without affecting ``pivot1``:
+To create a copy of an object that will be independent of the original, the `copy()` built-in method can be used with any UDT.
+In the following example, we create a new ``pivot2`` object that is copy of ``pivot1``.
+The two are from that point on independent entities, so ``pivot2``'s fields can be changed without affecting ``pibvot1``:
 
 ::
 
-    var pivot1 = pivotPoint.new()
+    //@version=5
+    indicator("")
+    type pivotPoint
+        int x
+        float y
+    pivot1 = pivotPoint.new()
     pivot1.x := 1000
     pivot2 = pivotPoint.copy(pivot1)
-    Pivot2.x := 2000
-    plot(pivot1.x) // 1000
-    plot(pivot2.x) // 2000
+    pivot2.x := 2000
+    // Plots 1000 and 2000.
+    plot(pivot1.x)
+    plot(pivot2.x)
 
 
 

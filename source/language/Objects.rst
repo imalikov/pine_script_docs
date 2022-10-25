@@ -66,13 +66,26 @@ Note that:
   We set its default value to `xloc.bar_time <https://www.tradingview.com/pine-script-reference/v5/#var_xloc{dot}bar_time>`__ 
   by using the ``=`` operator. When an object is created from that UDT, its ``xloc`` field will thus be set to that value.
 
-Now that our ``pivotPoint`` UDT is defined, we can proceed to creating objects from it.
+Now that our ``pivotPoint`` UDT is defined, we can proceed to creating objects from it. 
+We create objects by using the ``new()`` built-in method on the UDT.
+To create a new ``foundPoint`` object from our ``pivotPoint`` UDT, we use:
 
-The same way that declaring a function does not execute any code until the function is called later in the script,
-declaring a type by itself does not do anything; you need to create objects of that type to use the new functionality. 
-In this regard, user-created objects largely follow the same logic that existing Pine Script™ built-ins use. 
-To create a new object, we need to call the ``<type_indentifier>.new()`` function inherent to every custom type. 
-Once called, it creates an object of our custom type with the specified number of fields.
+::
+
+    foundPoint = pivotPoint.new()
+
+We can also specify field values for the created object using:
+
+::
+
+    foundPoint = pivotPoint.new(time, high)
+
+After which the ``foundPoint`` object's ``x`` field will contain the value of the
+`time <https://www.tradingview.com/pine-script-reference/v5/#var_time>__` built-in when it is created, 
+``y`` will contain the value of `high <https://www.tradingview.com/pine-script-reference/v5/#var_na>__`
+and the ``xloc`` field will contain its default value of 
+`xloc.bar_time <https://www.tradingview.com/pine-script-reference/v5/#var_xloc{dot}bar_time>`__
+because no explicit value was defined for it.
 
 In the example below, we wait for a new High-based pivot point to be found, and once it is, 
 we create a new object of the ``pivotPoint`` type by calling the ``pivotPoint.new()`` function:

@@ -275,7 +275,7 @@ Changing ``pivot2.x`` will thus also change ``pivot1.x`` as both refer to the ``
     plot(pivot1.x)
     plot(pivot2.x)
 
-To create a copy of an object that will be independent of the original, the `copy()` built-in method can be used with any UDT.
+To create a copy of an object that is independent of the original, the ``copy()`` built-in method can be used with any UDT.
 In the following example, we create a new ``pivot2`` object that is copy of ``pivot1``.
 The two are from that point on independent entities, so ``pivot2``'s fields can be changed without affecting ``pibvot1``:
 
@@ -299,23 +299,19 @@ The two are from that point on independent entities, so ``pivot2``'s fields can 
 Shadowing
 ---------
 
-As one 
-Due to the fact that objects create their own namespaces, 
-there might be potential conflicts when an object is created with the same name as an existing namespace. 
-For backwards compatibility, the user-created objects and types shadow the existing ones, 
-which means that if we were to add a new type or namespace to Pine Script™ and you already have a script with the type with the same name, 
-your script will be unaffected. The specific behavior is as follows:
+To avoid potential conflicts in the eventuality where namespaces added to Pine Script™ in the future 
+would collide with UDTs or object names in existing scripts, as a rule, UDTs and object names shadow the language's namespaces.
+For example, a UDT or object can use the name built-in types such as  
+`line <https://www.tradingview.com/pine-script-reference/v5/#op_line>__` or 
+`table <https://www.tradingview.com/pine-script-reference/v5/#op_table>__`).
 
-A user-defined type or object cannot share the name of any of the five primitive types in Pine Script™: 
+Only the language's five primitive types cannot be used to name UDTs or objects: 
 `int <https://www.tradingview.com/pine-script-reference/v5/#op_int>__`, 
 `float <https://www.tradingview.com/pine-script-reference/v5/#op_float>__`, 
 `string <https://www.tradingview.com/pine-script-reference/v5/#op_string>__`, 
 `bool <https://www.tradingview.com/pine-script-reference/v5/#op_bool>__`, and 
 `color <https://www.tradingview.com/pine-script-reference/v5/#op_color>__`.
 
-A user-defined type or object can use the name of any other built-in type 
-(e.g., `line <https://www.tradingview.com/pine-script-reference/v5/#op_line>__` or 
-`table <https://www.tradingview.com/pine-script-reference/v5/#op_table>__`).
 
 
 

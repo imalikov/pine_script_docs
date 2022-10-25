@@ -19,29 +19,31 @@ Objects
 Introduction
 ------------
 
-Pine Script™ objects are instantiations of *user-defined types* (UDTs). They are an advanced feature; newcomers to Pine Script™ will want to explore the basics before tackling objects.
+Pine Script™ objects are instantiations of *user-defined types* (UDTs). 
+They are the equivalent of variables containing different parts called *fields*,
+each able to contain independent values that can be of different types.
+They are an advanced feature of the language; 
+newcomers to Pine Script™ will want to explore the basics before tackling UDTs and objects.
 
-How to create *user-defined types* is explained in the :ref:`Type system <PageTypeSystem>` section. Using objects, you can quickly and conveniently transfer large amounts of information of various types. 
-However, objects are an advanced feature, and beginner Pine Script™ programmers are recommended to learn other, more accessible features first.
+How to create user-defined types is explained in the :ref:`Type system <PageTypeSystem_UserDefinedTypes>` page. 
+Experienced programmers can think of UDTs as method-less classes. 
+They allow you to create custom types which group different values under one logical entity.
+As arrays and matrices can be defined to contain objects of user-defined types,
+you can add virtual dimensions to those data structures.
+
+Like drawing objects such as labels, lines, boxes or tables, objects created from UDTs are assigned by reference,
+which entails that you must use explicit syntax to copy them.
 
 
 
-Declaring User-Defined Types
-----------------------------
+Creating objects
+----------------
 
-Before creating an object, we need to specify what fields that object can have. This is done by creating a *user-defined type*, a blueprint for future objects. 
-Types are declared with the `type <>__` keyword, and the fields that this type can have are specified in the local scope of the type. So, for example, the following syntax can be used:
+Before an object can be created, its type must be defined. 
+The :ref:`User-defined types <PageTypeSystem_UserDefinedTypes>` section of the 
+:ref:`Type system <PageTypeSystem_UserDefinedTypes>` page explains how to do so.
 
-.. code-block:: text
-
-    type <type_indentifier>
-        <variable_type> <variable_name> (= expression)
-
-Each field must be preceded by a type of that field, e.g., `int <https://www.tradingview.com/pine-script-reference/v5/#op_int>__`, ``array<string>``. 
-In addition, a field can have a set default value, which is specified by assigning the value with the ``=`` operator. 
-If no default value is assigned to the field, it defaults to `na <https://www.tradingview.com/pine-script-reference/v5/#var_na>__`.
-
-In the example below, we create a type ``pivotPoint``:
+Let's define a ``pivotPoint`` type to hold pivot information:
 
 ::
 
@@ -50,23 +52,30 @@ In the example below, we create a type ``pivotPoint``:
         float y
         string xloc = xloc.bar_time
 
- In our case:
-- the ``x`` field, created to save the x-coordinate of the point, is declared as `int <https://www.tradingview.com/pine-script-reference/v5/#op_int>__` because it carries a timestamp, which in Pine Script™ is always an integer.
-- ``y`` is a 'float' because price, the y-coordinate, can be a floating point number.
-- ``xloc`` is a field that specifies what the ``x`` coordinate is expressed in: bar index or bar time. 
-This field is present in many existing Pine Script™ drawings, like lines, and it is always set to `xloc.bar_index <https://www.tradingview.com/pine-script-reference/v5/#var_xloc{dot}bar_index>__` by default, 
-but we set its default to `xloc.bar_time <https://www.tradingview.com/pine-script-reference/v5/#var_xloc{dot}bar_time>`__ by using the ``=`` operator to assign a default value to the field.
+Note that:
 
+- We use the `type <https://www.tradingview.com/pine-script-reference/v5/#op_type>__` keyword to declare the creation of a UDT.
+- We name our new UDT ``pivotPoint``.
+- After the first line, we create a local block containing the type and name of each field.
+- The ``x`` field will hold the x-coordinate of the pivot. 
+  It is declared as an "int" because it will hold either a timestamp or a bar index, which are of "int" type.
+- ``y`` is a "float" because it will hold the pivot's price.
+- ``xloc`` is a field that will specify the units of ``x``:
+  `xloc.bar_index <https://www.tradingview.com/pine-script-reference/v5/#var_xloc{dot}bar_index>__` or
+  .  coordinate is expressed in: bar index or bar time. 
+This field is present in many existing Pine Script™ drawings, like lines, 
+and it is always set to `xloc.bar_index <https://www.tradingview.com/pine-script-reference/v5/#var_xloc{dot}bar_index>__` by default, 
+but we set its default to `xloc.bar_time <https://www.tradingview.com/pine-script-reference/v5/#var_xloc{dot}bar_time>`__ 
+by using the ``=`` operator to assign a default value to the field.
 
-
-Creating Objects
-----------------
-
-In the same way, declaring a function does not execute any code, and the function needs to be called to see its effects; declaring a type by itself does not do anything -- you need to create objects of that type to use the new functionality. 
+In the same way, declaring a function does not execute any code, and the function needs to be called to see its effects; 
+declaring a type by itself does not do anything -- you need to create objects of that type to use the new functionality. 
 In this regard, user-created objects largely follow the same logic that existing Pine Script™ built-ins use. 
-To create a new object, we need to call the ``<type_indentifier>.new()`` function inherent to every custom type. Once called, it creates an object of our custom type with the specified number of fields.
+To create a new object, we need to call the ``<type_indentifier>.new()`` function inherent to every custom type. 
+Once called, it creates an object of our custom type with the specified number of fields.
 
-In the example below, we wait for a new High-based pivot point to be found, and once it is, we create a new object of the ``pivotPoint`` type by calling the ``pivotPoint.new()`` function:
+In the example below, we wait for a new High-based pivot point to be found, and once it is, 
+we create a new object of the ``pivotPoint`` type by calling the ``pivotPoint.new()`` function:
 
 ::
 
@@ -75,11 +84,14 @@ In the example below, we wait for a new High-based pivot point to be found, and 
     if not na(pivotHighPrice)
         foundPoint = pivotPoint.new()
 	
-Once created with `pivotPoint.new()`, our object has three fields. However, only one of these has an actual value (not `na <https://www.tradingview.com/pine-script-reference/v5/#var_na>__` <>) assigned to it: 
+Once created with `pivotPoint.new()`, our object has three fields. However, only one of these has an actual value 
+(not `na <https://www.tradingview.com/pine-script-reference/v5/#var_na>__` <>) assigned to it: 
 the `xloc` field, which we have as `xloc.bar_time <https://www.tradingview.com/pine-script-reference/v5/#var_xloc{dot}bar_time>`__ by default. 
-The two other fields will return `na <https://www.tradingview.com/pine-script-reference/v5/#var_na>__` until we modify them by assigning them a more fitting value.
+The two other fields will return `na <https://www.tradingview.com/pine-script-reference/v5/#var_na>__` 
+until we modify them by assigning them a more fitting value.
 
-If you want to create a variable of the chosen type without calling the ``.new()`` function, you can do so by assigning `na <https://www.tradingview.com/pine-script-reference/v5/#var_na>__` to it. 
+If you want to create a variable of the chosen type without calling the ``.new()`` function, 
+you can do so by assigning `na <https://www.tradingview.com/pine-script-reference/v5/#var_na>__` to it. 
 In that case, you also need to specify the variable type before its name. The syntax is:
 
 .. code-block:: text
@@ -95,7 +107,9 @@ The example above could be rewritten to use this method:
         pivotPoint foundPoint = na
         foundPoint := pivotPoint.new()
 
-If an object is created with the `var <https://www.tradingview.com/pine-script-reference/v5/#op_var>__` or `varip <https://www.tradingview.com/pine-script-reference/v5/#op_varip>__` keywords, all its fields will behave as if they were created with the keyword in question:
+If an object is created with the `var <https://www.tradingview.com/pine-script-reference/v5/#op_var>__` or 
+`varip <https://www.tradingview.com/pine-script-reference/v5/#op_varip>__` keywords, 
+all its fields will behave as if they were created with the keyword in question:
 
 ::
 
@@ -112,14 +126,19 @@ If an object is created with the `var <https://www.tradingview.com/pine-script-r
 
 
 
-Reading And Modifying Objects' Fields
--------------------------------------
+Reading and modifying object fields
+-----------------------------------
 
-When created, each object reserves its own namespace based on the name given to that object. This namespace is used to reference the particular object's fields, either to request their value or to change it. 
+When created, each object reserves its own namespace based on the name given to that object. 
+This namespace is used to reference the particular object's fields, either to request their value or to change it. 
 
-The easiest way to assign a value to an object's field is during the object creation. You can pass a value directly to the `.new()` method, and the field can be referenced both by position and by name. 
-In the example below, we pass ``time[10]`` as a value to our ``x`` field (implicitly, because ``x`` is the first field our object has), and then we assign ``pivotHighPrice`` to the ``y`` field explicitly, 
-by referencing the field by its name. The ``xloc`` field is not specified at all, so the default value of the field, `xloc.bar_time <https://www.tradingview.com/pine-script-reference/v5/#var_xloc{dot}bar_time>`__, is assigned to it.
+The easiest way to assign a value to an object's field is during the object creation. 
+You can pass a value directly to the `.new()` method, and the field can be referenced both by position and by name. 
+In the example below, we pass ``time[10]`` as a value to our ``x`` field (implicitly, because ``x`` is the first field our object has), 
+and then we assign ``pivotHighPrice`` to the ``y`` field explicitly, 
+by referencing the field by its name. 
+The ``xloc`` field is not specified at all, so the default value of the field, 
+`xloc.bar_time <https://www.tradingview.com/pine-script-reference/v5/#var_xloc{dot}bar_time>`__, is assigned to it.
 
 ::
 
@@ -128,12 +147,20 @@ by referencing the field by its name. The ``xloc`` field is not specified at all
         foundPoint = pivotPoint.new(time[10], y = pivotHighPrice)
 
 
-Alternatively, the fields can be assigned after the object is was created. In Pine Script™, the ``:=`` operator is used when a new value needs to be assigned to a variable that already was declared with a specific certain value. 
-With objects, we only ever use ``:=`` to change the object's fields because all fields are declared when the object itself is created (if the value for the field is not explicitly specified, it will be `na <https://www.tradingview.com/pine-script-reference/v5/#var_na>__`).
+Alternatively, the fields can be assigned after the object is was created. 
+In Pine Script™, the ``:=`` operator is used when a new value needs to be assigned to a variable 
+that already was declared with a specific certain value. 
+With objects, we only ever use ``:=`` to change the object's fields because all fields are declared when the object itself is created 
+(if the value for the field is not explicitly specified, it will be `na <https://www.tradingview.com/pine-script-reference/v5/#var_na>__`).
 
-Continuing our example indicator, we assign each field of our newly created ``foundPoint`` object a new value inside of the ``pivotPoint.new()`` function. 
-E.g., we assign the ``x`` field the value of ``time[10]`` -- because the `ta.pivothigh() <https://www.tradingview.com/pine-script-reference/v5/#fun_ta{dot}pivothigh>__` function waits for several (in our case, 10) bars to confirm that the pivot has been found.
-Once all values are assigned, we pass them to the `label.new() <https://www.tradingview.com/pine-script-reference/v5/#fun_label{dot}new>__` function to create a `label <https://www.tradingview.com/pine-script-reference/v5/#op_label>__` at the coordinates where the pivot was found.
+Continuing our example indicator, we assign each field of our newly created ``foundPoint`` object 
+a new value inside of the ``pivotPoint.new()`` function. 
+E.g., we assign the ``x`` field the value of ``time[10]`` -- 
+because the `ta.pivothigh() <https://www.tradingview.com/pine-script-reference/v5/#fun_ta{dot}pivothigh>__` function 
+waits for several (in our case, 10) bars to confirm that the pivot has been found.
+Once all values are assigned, we pass them to the 
+`label.new() <https://www.tradingview.com/pine-script-reference/v5/#fun_label{dot}new>__` function 
+to create a `label <https://www.tradingview.com/pine-script-reference/v5/#op_label>__` at the coordinates where the pivot was found.
 
 ::
 
@@ -151,24 +178,29 @@ Once all values are assigned, we pass them to the `label.new() <https://www.trad
 	
 	
 
-Collecting Objects
+Collecting objects
 ------------------
 
-Objects of user-defined types can be used with Pine Script™ structures like arrays and matrices. However, when creating such structures, you also need to specify the type in the function that creates the structure itself. 
-This can be done by using the `array.new<>()` or `matrix.new<>()` functions and specifying the name of our type inside the triangular brackets. In the example below, we create an `array <https://www.tradingview.com/pine-script-reference/v5/#op_array>__` for our ``pivotPoint`` objects:
+Objects of user-defined types can be used with Pine Script™ structures like arrays and matrices. 
+However, when creating such structures, you also need to specify the type in the function that creates the structure itself. 
+This can be done by using the `array.new<>()` or `matrix.new<>()` functions and specifying the name of our type inside the triangular brackets. 
+In the example below, we create an `array <https://www.tradingview.com/pine-script-reference/v5/#op_array>__` for our ``pivotPoint`` objects:
 
 ::
 
     var pivotHighArray = array.new<pivotPoint>()
 
-If you want to explicitly typify the variable as an array or a matrix of a custom type, you can use the `array<> <https://www.tradingview.com/pine-script-reference/v5/#op_array>__` and `matrix<> <https://www.tradingview.com/pine-script-reference/v5/#op_matrix>__` keywords, e.g.:
+If you want to explicitly typify the variable as an array or a matrix of a custom type, 
+you can use the `array<> <https://www.tradingview.com/pine-script-reference/v5/#op_array>__` and 
+`matrix<> <https://www.tradingview.com/pine-script-reference/v5/#op_matrix>__` keywords, e.g.:
 
 ::
 
     var array<pivotPoint> pivotHighArray = na
     pivotHighArray := array.new<pivotPoint>()
 
-Using the examples we went through above, we create a script that connects historical Pivot High points by going over an array of ``pivotPoint`` objects:
+Using the examples we went through above, 
+we create a script that connects historical Pivot High points by going over an array of ``pivotPoint`` objects:
 
 ::
 
@@ -209,11 +241,14 @@ Using the examples we went through above, we create a script that connects histo
  
 
 
-Copying Objects
+Copying objects
 ---------------
 
-Pine Script™ objects are assigned by reference, which means that when we assign an existing object to a new variable, both the old and the new variable point to the same object. 
-In the example below, we create a ``pivot1`` object and set its ``x`` to 1000. After that, we create a ``pivot2`` object by equating it to ``pivot1``. Changing ``pivot2.x`` changes ``pivot1.x`` too, because both these variables point to the same underlying object:
+Pine Script™ objects are assigned by reference, which means that when we assign an existing object to a new variable, 
+both the old and the new variable point to the same object. 
+In the example below, we create a ``pivot1`` object and set its ``x`` to 1000. 
+After that, we create a ``pivot2`` object by equating it to ``pivot1``. 
+Changing ``pivot2.x`` changes ``pivot1.x`` too, because both these variables point to the same underlying object:
 
 ::
 
@@ -224,7 +259,9 @@ In the example below, we create a ``pivot1`` object and set its ``x`` to 1000. A
     plot(pivot1.x) // 2000
     plot(pivot2.x) // 2000
 
-To create an independent copy of any object, we can use the `.copy()` function that is inherent to every user-created object. In the following example, we copy ``pivot1`` with the ``pivotPoint.copy()`` function, which creates a separate object that can be changed without affecting ``pivot1``:
+To create an independent copy of any object, we can use the `.copy()` function that is inherent to every user-created object. 
+In the following example, we copy ``pivot1`` with the ``pivotPoint.copy()`` function, 
+which creates a separate object that can be changed without affecting ``pivot1``:
 
 ::
 
@@ -241,13 +278,22 @@ Shadowing
 ---------
 
 As one 
-Due to the fact that objects create their own namespaces, there might be potential conflicts when an object is created with the same name as an existing namespace. For backwards compatibility, the user-created objects and types shadow the existing ones, 
-which means that if we were to add a new type or namespace to Pine Script™ and you already have a script with the type with the same name, your script will be unaffected. The specific behavior is as follows:
+Due to the fact that objects create their own namespaces, 
+there might be potential conflicts when an object is created with the same name as an existing namespace. 
+For backwards compatibility, the user-created objects and types shadow the existing ones, 
+which means that if we were to add a new type or namespace to Pine Script™ and you already have a script with the type with the same name, 
+your script will be unaffected. The specific behavior is as follows:
 
-A user-defined type or object cannot share the name of any of the five primitive types in Pine Script™: `int <https://www.tradingview.com/pine-script-reference/v5/#op_int>__`, `float <https://www.tradingview.com/pine-script-reference/v5/#op_float>__`, 
-`string <https://www.tradingview.com/pine-script-reference/v5/#op_string>__`, `bool <https://www.tradingview.com/pine-script-reference/v5/#op_bool>__`, and `color <https://www.tradingview.com/pine-script-reference/v5/#op_color>__`.
+A user-defined type or object cannot share the name of any of the five primitive types in Pine Script™: 
+`int <https://www.tradingview.com/pine-script-reference/v5/#op_int>__`, 
+`float <https://www.tradingview.com/pine-script-reference/v5/#op_float>__`, 
+`string <https://www.tradingview.com/pine-script-reference/v5/#op_string>__`, 
+`bool <https://www.tradingview.com/pine-script-reference/v5/#op_bool>__`, and 
+`color <https://www.tradingview.com/pine-script-reference/v5/#op_color>__`.
 
-A user-defined type or object can use the name of any other built-in type (e.g., `line <https://www.tradingview.com/pine-script-reference/v5/#op_line>__` or `table <https://www.tradingview.com/pine-script-reference/v5/#op_table>__`).
+A user-defined type or object can use the name of any other built-in type 
+(e.g., `line <https://www.tradingview.com/pine-script-reference/v5/#op_line>__` or 
+`table <https://www.tradingview.com/pine-script-reference/v5/#op_table>__`).
 
 
 

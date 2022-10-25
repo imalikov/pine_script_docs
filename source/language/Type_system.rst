@@ -568,6 +568,8 @@ where:
 - ``<field_name>`` is the name of the field.
 - ``<expression>`` is an optional default value for the field, which will be assigned to it when new objects of that UDT are created. 
   The field's default value will be `na <https://www.tradingview.com/pine-script-reference/v5/#var_na>`__ if none is specified. 
+  The same rules as those governing the default values of parameters in function signatures apply to the default values of fields.
+  For example, the `[] <https://www.tradingview.com/pine-script-reference/v5/#op_[]>`__ history-referencing operator cannot be used with them.
 
 In this example, we create a UDT containing two fields to hold pivot information, 
 the `time <https://www.tradingview.com/pine-script-reference/v5/#var_time>`__ of the pivot's bar 

@@ -102,24 +102,24 @@ The pivots are detected ``legsInput`` bars after they occur, so we must plot the
     //@version=5
     indicator("Pivot labels", overlay = true)
     int legsInput = input(10)
-
+    
     // Define a new `pivotPoint` type.
     type pivotPoint
         int x
         float y
         string xloc = xloc.bar_time
-
+    
     // Detect high pivots.
     pivotHighPrice = ta.pivothigh(legsInput, legsInput)
     if not na(pivotHighPrice)
         // A new high pivot was found, display a label where it occurred `legsInput` bars back.
         foundPoint = pivotPoint.new(time[legsInput], pivotHighPrice)
         label.new(
-        foundPoint.x,
-        foundPoint.y,
-        str.tostring(foundPoint.y, format.mintick),
-        foundPoint.xloc,
-        textcolor = color.white)
+          foundPoint.x,
+          foundPoint.y,
+          str.tostring(foundPoint.y, format.mintick),
+          foundPoint.xloc,
+          textcolor = color.white)
 
 Note that the line:
 

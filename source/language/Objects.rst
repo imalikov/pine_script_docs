@@ -80,7 +80,13 @@ We can also specify field values for the created object using:
 
     foundPoint = pivotPoint.new(time, high)
 
-After which the ``foundPoint`` object's ``x`` field will contain the value of the
+Or the equivalent:
+
+::
+
+    foundPoint = pivotPoint.new(x = time, y = high)
+
+At this point, the ``foundPoint`` object's ``x`` field will contain the value of the
 `time <https://www.tradingview.com/pine-script-reference/v5/#var_time>__` built-in when it is created, 
 ``y`` will contain the value of `high <https://www.tradingview.com/pine-script-reference/v5/#var_na>__`
 and the ``xloc`` field will contain its default value of 
@@ -102,13 +108,13 @@ The pivots are detected ``legsInput`` bars after they occur, so we must plot the
     //@version=5
     indicator("Pivot labels", overlay = true)
     int legsInput = input(10)
-    
+
     // Define a new `pivotPoint` type.
     type pivotPoint
         int x
         float y
         string xloc = xloc.bar_time
-    
+
     // Detect high pivots.
     pivotHighPrice = ta.pivothigh(legsInput, legsInput)
     if not na(pivotHighPrice)

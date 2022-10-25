@@ -17,8 +17,65 @@ Release notes
 
 This page contains release notes of notable changes in Pine Script™.
 
+2022
+----
+
+October 2022
+^^^^^^^^^^^^
+
+Pine Script™ now has a new, more powerful and better-integrated editor. Read `our blog <https://www.tradingview.com/blog/en/new-vsc-style-pine-script-editor-34159/>`_ to find out everything to know about all the new features and upgrades.
+
+New overload for the `fill() <https://www.tradingview.com/pine-script-reference/v5/#fun_fill>`_ function was added. Now it can create vertical gradients. More info about it in the `blog post <https://www.tradingview.com/blog/en/pine-script-vertical-gradients-33586/>`_.
+
+September 2022
+^^^^^^^^^^^^^^
+
+The ``text_font_family`` parameter now allows the selection of a monospace font in `label.new() <https://www.tradingview.com/pine-script-reference/v5/#fun_label{dot}new>`_, `box.new() <https://www.tradingview.com/pine-script-reference/v5/#fun_box{dot}new>`_ and `table.cell() <https://www.tradingview.com/pine-script-reference/v5/#fun_table{dot}cell>`_ function calls, which makes it easier to align text vertically. Its arguments can be:
+
+* `font.family_default <https://www.tradingview.com/pine-script-reference/v5/#var_font{dot}family_default>`_ - Specifies the default font.
+* `font.family_monospace <https://www.tradingview.com/pine-script-reference/v5/#var_font{dot}family_monospace>`_ - Specifies a monospace font.
+
+The accompanying setter functions are:
+
+* `label.set_text_font_family() <https://www.tradingview.com/pine-script-reference/v5/#fun_label{dot}set_text_font_family>`_  - The function sets the font family of the text inside the label.
+* `box.set_text_font_family() <https://www.tradingview.com/pine-script-reference/v5/#fun_box{dot}set_text_font_family>`_ - The function sets the font family of the text inside the box.
+* `table.cell_set_text_font_family() <https://www.tradingview.com/pine-script-reference/v5/#fun_table{dot}cell_set_text_font_family>`_ - The function sets the font family of the text inside the cell.
+
+August 2022
+^^^^^^^^^^^
+
+A new label style `label.style_text_outline <https://www.tradingview.com/pine-script-reference/v5/#var_label{dot}style_text_outline>`_ was added.
+
+A new parameter for the `ta.pivot_point_levels() <https://www.tradingview.com/pine-script-reference/v5/#fun_ta{dot}pivot_point_levels>`_ function was added:
+
+* ``developing`` - If ``false``, the values are those calculated the last time the anchor condition was true. They remain constant until the anchor condition becomes true again. If ``true``, the pivots are developing, i.e., they constantly recalculate on the data developing between the point of the last anchor (or bar zero if the anchor condition was never true) and the current bar. Cannot be ``true`` when ``type`` is set to ``"Woodie"``.
+
+A new parameter for the `box.new() <https://www.tradingview.com/pine-script-reference/v5/#fun_box{dot}new>`_ function was added:
+
+* ``text_wrap`` - It defines whether the text is presented in a single line, extending past the width of the box if necessary, or wrapped so every line is no wider than the box itself.
+
+This parameter supports two arguments:
+
+* `text.wrap_none <https://www.tradingview.com/pine-script-reference/v5/#var_text{dot}wrap_none>`_ - Disabled wrapping mode for `box.new <https://www.tradingview.com/pine-script-reference/v5/#fun_box{dot}new>`_ and `box.set_text_wrap <https://www.tradingview.com/pine-script-reference/v5/#fun_box{dot}set_text_wrap>`_ functions.
+
+* `text.wrap_auto <https://www.tradingview.com/pine-script-reference/v5/#var_text{dot}wrap_auto>`_ - Automatic wrapping mode for `box.new <https://www.tradingview.com/pine-script-reference/v5/#fun_box{dot}new>`_ and `box.set_text_wrap <https://www.tradingview.com/pine-script-reference/v5/#fun_box{dot}set_text_wrap>`_ functions.
+
+New built-in functions were added:
+
+* `ta.min() <https://www.tradingview.com/pine-script-reference/v5/#fun_ta{dot}min>`_ - Returns the all-time low value of ``source`` from the beginning of the chart up to the current bar.
+* `ta.max() <https://www.tradingview.com/pine-script-reference/v5/#fun_ta{dot}max>`_ - Returns the all-time high value of ``source`` from the beginning of the chart up to the current bar.
+
+A new annotation ``//@strategy_alert_message`` was added. If the annotation is added to the strategy, the text written after it will be automatically set as the default alert message in the `Create Alert` window. 
+::
+
+
+    //@version=5
+    // @strategy_alert_message My Default Alert Message
+    strategy("My Strategy")
+    plot(close)
+
 July 2022
----------
+^^^^^^^^^
 
 It is now possible to fine-tune where a script's plot values are displayed through the introduction of 
 new arguments for the ``display`` parameter of the 
@@ -51,7 +108,7 @@ The ``display`` parameter supports the addition and subtraction of its arguments
 - ``display.price_scale + display.status_line`` will display the plot in the price scale and status line only.
 
 June 2022
----------
+^^^^^^^^^
 
 The behavior of the argument used with the ``qty_percent`` parameter of `strategy.exit() <https://www.tradingview.com/pine-script-reference/v5/#fun_strategy{dot}exit>`__ has changed. Previously, the percentages used on successive exit orders of the same position were calculated from the remaining position at any given time. Instead, the percentages now always apply to the initial position size. When executing the following strategy, for example::
 
@@ -86,7 +143,7 @@ New built-in variables were added:
 
 
 May 2022
---------
+^^^^^^^^
 
 `Matrix <https://www.tradingview.com/pine-script-reference/v5/#op_matrix>`__ support has been added to the `request.security() <https://www.tradingview.com/pine-script-reference/v5/#fun_request{dot}security>`__ function.
 
@@ -129,11 +186,8 @@ Added new ``comment`` and ``alert`` message parameters for the `strategy.exit() 
 * ``alert_loss`` - text that will replace the ``'{{strategy.order.alert_message}}'`` placeholder if the exit was triggered by crossing ``stop`` or ``loss`` specifically.
 * ``alert_trailing`` - text that will replace the ``'{{strategy.order.alert_message}}'`` placeholder if the exit was triggered by crossing ``trail_offset`` specifically. 
 
-
-
-
 April 2022
--------------
+^^^^^^^^^^
 
 Added the ``display`` parameter to the following functions: `barcolor <https://www.tradingview.com/pine-script-reference/v5/#fun_barcolor>`__, `bgcolor <https://www.tradingview.com/pine-script-reference/v5/#fun_bgcolor>`__, `fill <https://www.tradingview.com/pine-script-reference/v5/#fun_fill>`__, `hline <https://www.tradingview.com/pine-script-reference/v5/#fun_hline>`__.
 
@@ -209,7 +263,7 @@ Added a new parameter for the `strategy() <https://www.tradingview.com/pine-scri
 * ``risk_free_rate`` - The risk-free rate of return is the annual percentage change in the value of an investment with minimal or zero risk, used to calculate the Sharpe and Sortino ratios.
 
 March 2022
--------------
+^^^^^^^^^^
 
 New array functions were added:
 
@@ -228,14 +282,14 @@ Added a new optional ``nth`` parameter for the `array.min() <https://www.trading
 Added ``index`` in `for..in <https://www.tradingview.com/pine-script-reference/v5/#op_for{dot}{dot}{dot}in>`__ operator. It tracks the current iteration's index.
 
 Table merging and cell tooltips
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 * It is now possible to merge several cells in a table. A merged cell doesn't have to be a header: you can merge cells in any direction, as long as the resulting cell doesn't affect any already merged cells and doesn't go outside of the table's bounds. Cells can be merged with the new  `table.merge_cells() <https://www.tradingview.com/pine-script-reference/v5/#fun_table{dot}merge_cells>`__ function.
 
 * Tables now support tooltips, floating labels that appear when you hover over a table's cell. To add a tooltip, pass a string to the ``tooltip`` argument of the `table.cell() <https://www.tradingview.com/pine-script-reference/v5/#fun_table{dot}cell>`__ function or use the new `table.cell_set_tooltip() <https://www.tradingview.com/pine-script-reference/v5/#fun_table{dot}cell_set_tooltip>`__ function.
 
 February 2022
--------------
+^^^^^^^^^^^^^
 
 Added templates and the ability to create arrays via templates. Instead of using one of the ``array.new_*()`` functions, a template function `array.new<type> <https://www.tradingview.com/pine-script-reference/v5/#fun_array%7Bdot%7Dnew%3Ctype%3E>`__ can be used. In the example below, we use this functionality to create an array filled with ``float`` values::
 
@@ -261,7 +315,7 @@ New functions were added:
 * `strategy.opentrades.entry_id() <https://www.tradingview.com/pine-script-reference/v5/#fun_strategy{dot}opentrades{dot}entry_id>`__ - returns the id of the open trade's entry.
 
 January 2022
--------------
+^^^^^^^^^^^^
 
 Added new functions to clone drawings:
 
@@ -269,11 +323,16 @@ Added new functions to clone drawings:
 * `label.copy() <https://www.tradingview.com/pine-script-reference/v5/#fun_label{dot}copy>`__ 
 * `box.copy() <https://www.tradingview.com/pine-script-reference/v5/#fun_box{dot}copy>`__ 
 
+
+
+2021
+----
+
 December 2021
--------------
+^^^^^^^^^^^^^
 
 Linefills
-^^^^^^^^^
+~~~~~~~~~
 The space between lines drawn in Pine Script™ can now be filled! We’ve added a new ``linefill`` drawing type, along with a number of functions dedicated to manipulating it. 
 Linefills are created by passing two lines and a color to the ``linefill.new()`` function, and their behavior is based on the lines they're tied to: 
 they extend in the same direction as the lines, move when their lines move, and are deleted when one of the two lines is deleted.
@@ -291,7 +350,7 @@ New linefill-related functions:
 
 
 New functions for string manipulation
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Added a number of new functions that provide more ways to process strings, and introduce regular expressions to Pine Script™:
 
@@ -308,7 +367,7 @@ Added a number of new functions that provide more ways to process strings, and i
 
 
 Textboxes
-^^^^^^^^^
+~~~~~~~~~
 
 Box drawings now supports text. The `box.new() <https://www.tradingview.com/pine-script-reference/v5/#fun_box{dot}new>`__ function has five new parameters for text manipulation: 
 ``text``, ``text_size``, ``text_color``, ``text_valign``, and ``text_halign``. Additionally, five new functions to set the text properties of existing boxes were added:
@@ -320,7 +379,7 @@ Box drawings now supports text. The `box.new() <https://www.tradingview.com/pine
 * `box.set_text_halign() <https://www.tradingview.com/pine-script-reference/v5/#fun_box{dot}set_text_halign>`__
 
 New built-in variables
-^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~
 
 Added new built-in variables that return the ``bar_index`` and ``time`` values of the last bar in the dataset. Their values are known at the beginning of the script's calculation:
 
@@ -332,10 +391,10 @@ New built-in ``source`` variable:
 * `hlcc4 <https://www.tradingview.com/pine-script-reference/v5/#var_hlcc4>`__ - A shortcut for ``(high + low + close + close)/4``. It averages the high and low values with the double-weighted close.
 
 November 2021
--------------
+^^^^^^^^^^^^^
 
 for...in
-^^^^^^^^
+~~~~~~~~
 
 Added a new `for...in <https://www.tradingview.com/pine-script-reference/v5/#op_for{dot}{dot}{dot}in>`__ operator to iterate over all elements of an array::
 
@@ -353,7 +412,7 @@ Added a new `for...in <https://www.tradingview.com/pine-script-reference/v5/#op_
 	plot(highest(a1))
 	
 Function overloads
-^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~
 Added function overloads. Several functions in a script can now share the same name, as long one of the following conditions is true:
 
 * Each overload has a different number of parameters::
@@ -399,7 +458,7 @@ Added function overloads. Several functions in a script can now share the same n
 	plot(mult(7, 4, 2))
 
 Currency conversion
-^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~
 Added a new `currency` argument to most ``request.*()`` functions. If specified, price values returned by the function will be converted from the source currency to the target currency. 
 The following functions are affected:
 
@@ -411,14 +470,14 @@ The following functions are affected:
 .. _PageReleaseNotes_October2021:
 
 October 2021
---------------
+^^^^^^^^^^^^
 Pine Script™ v5 is here! 
 This is a list of the **new** features added to the language, and a few of the **changes** made.
 See the :ref:`Migration guide to Pine Script™ v5 <PageToPineVersion5>` for a complete list of the **changes** in v5.
 
 
 New features
-^^^^^^^^^^^^^
+~~~~~~~~~~~~
 Libraries are a new type of publication. They allow you to create custom functions for reuse in other scripts. See this manual's page on :ref:`Libraries <PageLibraries>`.
 
 Pine Script™ now supports `switch <https://www.tradingview.com/pine-script-reference/v5/#op_switch>`__ structures!
@@ -477,7 +536,7 @@ now includes the systematic mention of the form and type (e.g., "simple int") re
 The :ref:`User Manual <IndexUserManual>` was reorganized and new content was added.
 
 Changes
-^^^^^^^
+~~~~~~~
 Many built-in variables, functions and function arguments were renamed or moved to new namespaces in v5. 
 The venerable ``study()``, for example, is now `indicator() <https://www.tradingview.com/pine-script-reference/v5/#fun_indicator>`__,
 and ``security()`` is now `request.security() <https://www.tradingview.com/pine-script-reference/v5/#fun_request{dot}security>`__.
@@ -489,14 +548,14 @@ See the :ref:`Migration guide to Pine Script™ v5 <PageToPineVersion5>` for a c
 .. _PageReleaseNotes_September2021:
 
 September 2021
----------
+^^^^^^^^^^^^^^
 New parameter has been added for the ``dividends()``, ``earnings()``, ``financial()``, ``quandl()``, ``security()``, and ``splits()`` functions:
 
 * ``ignore_invalid_symbol`` - determines the behavior of the function if the specified symbol is not found: if ``false``, the script will halt and return a runtime error; if ``true``, the function will return ``na`` and execution will continue.
 
 
 July 2021
----------
+^^^^^^^^^
 ``tostring`` now accepts "bool" and "string" types.
 
 New argument for ``time`` and ``time_close`` functions was added:
@@ -511,7 +570,7 @@ New argument for ``study`` and ``strategy`` functions was added:
 
 
 June 2021
----------
+^^^^^^^^^
 New variable was added:
 
 * ``barstate.islastconfirmedhistory`` - returns ``true`` if script is executing on the dataset's last bar when market is closed, or script is executing on the bar immediately preceding the real-time bar, if market is open. Returns ``false`` otherwise.
@@ -528,7 +587,7 @@ Expanded ``tostring()`` functionality. The function now accepts three new format
 
 
 May 2021
---------
+^^^^^^^^
 Improved backtesting functionality by adding the Leverage mechanism.
 
 Added support for table drawings and functions for working with them. 
@@ -550,7 +609,7 @@ The ``color.new`` function can now accept series and input arguments, in which c
 
 
 April 2021
-----------
+^^^^^^^^^^
 New math constants were added: 
 
 * ``math.pi`` - is a named constant for Archimedes' constant. It is equal to 3.1415926535897932.
@@ -578,7 +637,7 @@ New functions were added:
 
 
 March 2021
-----------
+^^^^^^^^^^
 New assignment operators were added:
 
 * ``+=``  - addition assignment
@@ -617,7 +676,7 @@ New arguments for the study() function were added:
 
 
 February 2021
--------------
+^^^^^^^^^^^^^
 New variable was added:
 
 * ``time_tradingday`` - the beginning time of the trading day the current bar belongs to.
@@ -625,7 +684,7 @@ New variable was added:
 
 
 January 2021
-------------
+^^^^^^^^^^^^
 The following functions now accept a series length parameter:
 
 * `bb() <https://www.tradingview.com/pine-script-reference/v4/#fun_bb>`__

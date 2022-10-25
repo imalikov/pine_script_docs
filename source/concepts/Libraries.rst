@@ -299,15 +299,13 @@ but only its ``drawPivotLabel()`` function is exported, which does not use a par
     // Example use of the function.
     drawPivotLabel(20, 10, 5)
 
-If the above library was published by the TradingView user, it could thus be used like this:
+If the above library was published by the TradingView user, it could be used like this:
 
 ::
 
   //@version=5
-  indicator("Pivot Points High")
-
+  indicator("")
   import TradingView/PivotLabels/1 as dpl
-
   dpl.drawPivots(20, 10, 10)
 
 
@@ -319,6 +317,8 @@ Before you or other Pine Script™ programmers can reuse any library, it must be
 If you want to share your library with all TradingViewers, publish it publicly. To use it privately, use a private publication. 
 As with indicators or strategies, the active chart when you publish a library will appear in both its widget 
 (the small placeholder denoting libraries in the TradingView scripts stream) and script page (the page users see when they click on the widget).
+
+Private libraries can be used in public Protected or Invite-only scripts.
 
 After adding our example library to the chart and setting up a clean chart showing our library plots the way we want them, 
 we use the Pine Editor's "Publish Script" button. The "Publish Library" window comes up:

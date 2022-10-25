@@ -163,52 +163,25 @@ that property applies to all the object's fields:
 
 
 
-Reading and modifying object fields
------------------------------------
+Changing field values
+---------------------
 
-When created, each object reserves its own namespace based on the name given to that object. 
-This namespace is used to reference the particular object's fields, either to request their value or to change it. 
+The value of an object's fields can be changed using the 
+:ref:`:= <PageOperators_ReassignmentOperator>` reassignment operator.
 
-The easiest way to assign a value to an object's field is during the object creation. You can pass a value directly to the ``.new()`` method, and the field can be referenced both by position and by name. 
-In the example below, we pass ``time[10]`` as a value to our ``x`` field (implicitly, because ``x`` is the first field our object has), and then we assign ``pivotHighPrice`` to the ``y`` field explicitly, 
-by referencing the field by its name. The ``xloc`` field is not specified at all, so the default value of the field, `xloc.bar_time <https://www.tradingview.com/pine-script-reference/v5/#var_xloc{dot}bar_time>`__, is assigned to it.
+This line of our previous example:
 
 ::
 
-    pivotHighPrice = ta.pivothigh(10, 10)
-    if not na(pivotHighPrice)
-        foundPoint = pivotPoint.new(time[10], y = pivotHighPrice)
+    foundPoint = pivotPoint.new(time[legsInput], pivotHighPrice)
 
-
-Alternatively, the fields can be assigned after the object is was created. 
-In Pine Script™, the ``:=`` operator is used when a new value needs to be assigned to a variable 
-that already was declared with a specific certain value. 
-With objects, we only ever use ``:=`` to change the object's fields because all fields are declared when the object itself is created 
-(if the value for the field is not explicitly specified, it will be `na <https://www.tradingview.com/pine-script-reference/v5/#var_na>__`).
-
-Continuing our example indicator, we assign each field of our newly created ``foundPoint`` object 
-a new value inside of the ``pivotPoint.new()`` function. 
-E.g., we assign the ``x`` field the value of ``time[10]`` -- 
-because the `ta.pivothigh() <https://www.tradingview.com/pine-script-reference/v5/#fun_ta{dot}pivothigh>__` function 
-waits for several (in our case, 10) bars to confirm that the pivot has been found.
-Once all values are assigned, we pass them to the 
-`label.new() <https://www.tradingview.com/pine-script-reference/v5/#fun_label{dot}new>__` function 
-to create a `label <https://www.tradingview.com/pine-script-reference/v5/#op_label>__` at the coordinates where the pivot was found.
+Could be written using:
 
 ::
+    foundPoint = pivotPoint.new()
+    foundPoint.x := time[legsInput]
+    foundPoint.y := pivotHighPrice
 
-    pivotHighPrice = ta.pivothigh(10, 10)
-    if not na(pivotHighPrice)
-        foundPoint = pivotPoint.new(time[10], pivotHighPrice)
-
-        // Also a good valid way to create an object and assign values to its fields:
-        // foundPoint = pivotPoint.new()
-        // foundPoint.x := bar_index[10]
-        // foundPoint.y := pivotHighPrice
-
-        // Passing various `foundPoint` values to the `label.new() function to create a label based on them
-        label.new(foundPoint.x, foundPoint.y, text = "Pivot High", xloc = foundPoint.xloc)
-	
 	
 
 Collecting objects

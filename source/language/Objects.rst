@@ -21,17 +21,17 @@ Introduction
 
 Pine Script™ objects are instantiations of *user-defined types* (UDTs). 
 They are the equivalent of variables containing different parts called *fields*,
-each able to contain independent values that can be of different types.
+each able to hold independent values that can be of various types.
 They are an advanced feature of the language; 
 newcomers to Pine Script™ will want to explore the basics before tackling UDTs and objects.
 
 How to create user-defined types is explained in the :ref:`Type system <PageTypeSystem_UserDefinedTypes>` page. 
-Experienced programmers can think of UDTs as method-less classes. 
-They allow you to create custom types which group different values under one logical entity.
+Experienced programmers can think of UDTs as methodless classes. 
+They allow you to create custom types that organize different values under one logical entity.
 As arrays and matrices can be defined to contain objects of user-defined types,
 you can add virtual dimensions to those data structures.
 
-Like drawing objects such as labels, lines, boxes or tables, objects created from UDTs are assigned by reference,
+Like drawing objects such as labels, lines, boxes, or tables, objects created from UDTs are assigned by reference,
 which entails that you must use explicit syntax to copy them.
 
 
@@ -58,7 +58,7 @@ Note that:
 - We name our new UDT ``pivotPoint``.
 - After the first line, we create a local block containing the type and name of each field.
 - The ``x`` field will hold the x-coordinate of the pivot. 
-  It is declared as an "int" because it will hold either a timestamp or a bar index, which are of "int" type.
+  It is declared as an "int" because it will hold either a timestamp or a bar index of "int" type.
 - ``y`` is a "float" because it will hold the pivot's price.
 - ``xloc`` is a field that will specify the units of ``x``:
   `xloc.bar_index <https://www.tradingview.com/pine-script-reference/v5/#var_xloc{dot}bar_index>__` or
@@ -66,15 +66,15 @@ Note that:
   We set its default value to `xloc.bar_time <https://www.tradingview.com/pine-script-reference/v5/#var_xloc{dot}bar_time>`__ 
   by using the ``=`` operator. When an object is created from that UDT, its ``xloc`` field will thus be set to that value.
 
-Now that our ``pivotPoint`` UDT is defined, we can proceed to creating objects from it. 
-We create objects by using the ``new()`` built-in method on the UDT.
+Now that our ``pivotPoint`` UDT is defined, we can proceed to create objects from it. 
+We create objects using the UDT's ``new()`` built-in method.
 To create a new ``foundPoint`` object from our ``pivotPoint`` UDT, we use:
 
 ::
 
     foundPoint = pivotPoint.new()
 
-We can also specify field values for the created object using:
+We can also specify field values for the created object using the following:
 
 ::
 
@@ -91,9 +91,9 @@ At this point, the ``foundPoint`` object's ``x`` field will contain the value of
 ``y`` will contain the value of `high <https://www.tradingview.com/pine-script-reference/v5/#var_na>__`
 and the ``xloc`` field will contain its default value of 
 `xloc.bar_time <https://www.tradingview.com/pine-script-reference/v5/#var_xloc{dot}bar_time>`__
-because no explicit value was defined for it when creating the object.
+because no exact value was defined for it when creating the object.
 
-Object placeholders can also be created by declaring `na` object names using:
+Object placeholders can also be created by declaring `na` object names using the following:
 
 ::
 
@@ -118,7 +118,7 @@ The pivots are detected ``legsInput`` bars after they occur, so we must plot the
     // Detect high pivots.
     pivotHighPrice = ta.pivothigh(legsInput, legsInput)
     if not na(pivotHighPrice)
-        // A new high pivot was found, display a label where it occurred `legsInput` bars back.
+        // A new high pivot was found; display a label where it occurred `legsInput` bars back.
         foundPoint = pivotPoint.new(time[legsInput], pivotHighPrice)
         label.new(
           foundPoint.x,
@@ -133,7 +133,7 @@ Note that the line:
 
     foundPoint = pivotPoint.new(time[legsInput], pivotHighPrice)
 
-Could also be written using:
+It could also be written using the following:
 
 ::
 
@@ -175,7 +175,7 @@ This line of our previous example:
 
     foundPoint = pivotPoint.new(time[legsInput], pivotHighPrice)
 
-Could be written using:
+It could be written using the following:
 
 ::
 
@@ -188,7 +188,7 @@ Could be written using:
 Collecting objects
 ------------------
 
-Arrays and matrices can contain objects. To declare them, use UDT names in *type templates* which are constructed by using angle brackets.
+Arrays and matrices can contain objects. To declare them, use UDT names in *type templates*, which are constructed using angle brackets.
 This declares an empty array that will contain objects of the ``pivotPoint`` UDT and initializes the ``pivotHighArray`` variable with its ID:
 
 ::
@@ -207,7 +207,7 @@ you can use the `array<> <https://www.tradingview.com/pine-script-reference/v5/#
 
 Let's use what we have learned to create a script that detects high pivot points. 
 The script first collects historical pivot information in an array. 
-On the last historical bar it then loops through the array, 
+On the last historical bar, it then loops through the array, 
 creating a label for each pivot and connecting the pivots with a line:
 
 .. image:: images/Objects-CollectingObjects-1.png
@@ -256,7 +256,7 @@ Copying objects
 ---------------
 
 Pine Script™ objects are assigned by reference, which means that when we assign an existing object to a new variable, 
-both point to the same object. In the example below, we create a ``pivot1`` object and set its ``x`` field to 1000. 
+both point to the same object. So, in the example below, we create a ``pivot1`` object and set its ``x`` field to 1000. 
 After that, we declare a ``pivot2`` variable containing the reference to the ``pivot1`` object, so both variables point to the same object. 
 Changing ``pivot2.x`` will thus also change ``pivot1.x`` as both refer to the ``x`` field of the same object:
 
@@ -276,7 +276,7 @@ Changing ``pivot2.x`` will thus also change ``pivot1.x`` as both refer to the ``
     plot(pivot2.x)
 
 To create a copy of an object that is independent of the original, the ``copy()`` built-in method can be used with any UDT.
-In the following example, we create a new ``pivot2`` object that is copy of ``pivot1``.
+In the following example, we create a new ``pivot2`` object that is a copy of ``pivot1``.
 The two are from that point on independent entities, so ``pivot2``'s fields can be changed without affecting ``pivot1``:
 
 ::
@@ -300,8 +300,8 @@ Shadowing
 ---------
 
 To avoid potential conflicts in the eventuality where namespaces added to Pine Script™ in the future 
-would collide with UDTs or object names in existing scripts, as a rule, UDTs and object names shadow the language's namespaces.
-For example, a UDT or object can use the name of built-in types such as 
+would collide with UDTs or object names in existing scripts; as a rule, UDTs and object names shadow the language's namespaces.
+For example, a UDT or object can use the name of built-in types, such as 
 `line <https://www.tradingview.com/pine-script-reference/v5/#op_line>__` or 
 `table <https://www.tradingview.com/pine-script-reference/v5/#op_table>__`.
 

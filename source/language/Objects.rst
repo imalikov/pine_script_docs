@@ -124,11 +124,13 @@ The pivots are detected ``legsInput`` bars after they occur, so we must plot the
 Note that the line:
 
 ::
+
     foundPoint = pivotPoint.new(time[legsInput], pivotHighPrice)
 
 Could also be written using:
 
 ::
+
     pivotPoint foundPoint = na
     foundPoint := pivotPoint.new(time[legsInput], pivotHighPrice)
 

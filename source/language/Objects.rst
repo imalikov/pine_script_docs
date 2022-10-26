@@ -88,12 +88,13 @@ Or the equivalent:
 
 At this point, the ``foundPoint`` object's ``x`` field will contain the value of the
 `time <https://www.tradingview.com/pine-script-reference/v5/#var_time>__` built-in when it is created, 
-``y`` will contain the value of `high <https://www.tradingview.com/pine-script-reference/v5/#var_na>__`
+``y`` will contain the value of `high <https://www.tradingview.com/pine-script-reference/v5/#var_high>__`
 and the ``xloc`` field will contain its default value of 
 `xloc.bar_time <https://www.tradingview.com/pine-script-reference/v5/#var_xloc{dot}bar_time>`__
 because no value was defined for it when creating the object.
 
-Object placeholders can also be created by declaring `na` object names using the following:
+Object placeholders can also be created by declaring 
+`na <https://www.tradingview.com/pine-script-reference/v5/#var_na>__` object names using the following:
 
 ::
 

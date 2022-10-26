@@ -178,7 +178,7 @@ You can export :ref:`user-defined types (UDTs) <PageTypeSystem_UserDefinedTypes>
 and library functions can return :ref:`objects <PageObjects>`.
 
 To export a UDT, prefix its definition with the `export <https://www.tradingview.com/pine-script-reference/v5/#op_export>`__ 
-keyword just as you would to export a function:
+keyword just as you would export a function:
 
 ::
 
@@ -202,16 +202,16 @@ A script importing that library and creating an object from its ``point`` UDT wo
 
 Note that:
 
-- This code won't compile because no "Point" library is published and it doesn't display anything.
+- This code won't compile because no "Point" library is published, and doesn't display anything.
 - ``userName`` would need to be replaced by the TradingView user name of the library's publisher.
 - We use the built-in ``new()`` method to create an object from the ``point`` UDT.
 - We prefix the reference to the library's ``point`` UDT with the ``pt`` alias defined in the 
   `import <https://www.tradingview.com/pine-script-reference/v5/#op_import>`__ statement, 
   just like we would when using a function from an imported library.
 
-UDTs used in a library **must** be exported if any of its exported functions uses a parameter or returns a result of that user-defined type.
+UDTs used in a library **must** be exported if any of its exported functions use a parameter or returns a result of that user-defined type.
 
-When a library only makes internal use of a UDT, it does not have to be exported. The following library uses the ``point`` UDT internally,
+When a library only uses a UDT internally, it does not have to be exported. The following library uses the ``point`` UDT internally,
 but only its ``drawPivotLabel()`` function is exported, which does not use a parameter nor return a result of ``point`` type:
 
 ::
@@ -280,7 +280,7 @@ but only its ``drawPivotLabel()`` function is exported, which does not use a par
 
     // @function        Displays a label for each of the last `qtyLabels` pivots.
     //                  Colors high pivots in green, low pivots in red, and breached pivots in gray.
-    // @param qtyLabels (simple int) Quantity of last labes to display.
+    // @param qtyLabels (simple int) Quantity of last labels to display.
     // @param leftLegs  (simple int) Left pivot legs.
     // @param rightLegs (simple int) Right pivot legs.
     // @returns         Nothing.
@@ -299,7 +299,7 @@ but only its ``drawPivotLabel()`` function is exported, which does not use a par
     // Example use of the function.
     drawPivotLabel(20, 10, 5)
 
-If the above library was published by the TradingView user, it could be used like this:
+If the TradingView user published the above library, it could be used like this:
 
 ::
 

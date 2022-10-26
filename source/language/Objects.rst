@@ -54,14 +54,14 @@ Let's define a ``pivotPoint`` type to hold pivot information:
 
 Note that:
 
-- We use the `type <https://www.tradingview.com/pine-script-reference/v5/#op_type>__` keyword to declare the creation of a UDT.
+- We use the `type <https://www.tradingview.com/pine-script-reference/v5/#op_type>`__ keyword to declare the creation of a UDT.
 - We name our new UDT ``pivotPoint``.
 - After the first line, we create a local block containing the type and name of each field.
 - The ``x`` field will hold the x-coordinate of the pivot. 
   It is declared as an "int" because it will hold either a timestamp or a bar index of "int" type.
 - ``y`` is a "float" because it will hold the pivot's price.
 - ``xloc`` is a field that will specify the units of ``x``:
-  `xloc.bar_index <https://www.tradingview.com/pine-script-reference/v5/#var_xloc{dot}bar_index>__` or
+  `xloc.bar_index <https://www.tradingview.com/pine-script-reference/v5/#var_xloc{dot}bar_index>`__ or
   `xloc.bar_time <https://www.tradingview.com/pine-script-reference/v5/#var_xloc{dot}bar_time>`__.
   We set its default value to `xloc.bar_time <https://www.tradingview.com/pine-script-reference/v5/#var_xloc{dot}bar_time>`__ 
   by using the ``=`` operator. When an object is created from that UDT, its ``xloc`` field will thus be set to that value.
@@ -87,14 +87,14 @@ Or the equivalent:
     foundPoint = pivotPoint.new(x = time, y = high)
 
 At this point, the ``foundPoint`` object's ``x`` field will contain the value of the
-`time <https://www.tradingview.com/pine-script-reference/v5/#var_time>__` built-in when it is created, 
-``y`` will contain the value of `high <https://www.tradingview.com/pine-script-reference/v5/#var_high>__`
+`time <https://www.tradingview.com/pine-script-reference/v5/#var_time>`__ built-in when it is created, 
+``y`` will contain the value of `high <https://www.tradingview.com/pine-script-reference/v5/#var_high>`__
 and the ``xloc`` field will contain its default value of 
 `xloc.bar_time <https://www.tradingview.com/pine-script-reference/v5/#var_xloc{dot}bar_time>`__
 because no value was defined for it when creating the object.
 
 Object placeholders can also be created by declaring 
-`na <https://www.tradingview.com/pine-script-reference/v5/#var_na>__` object names using the following:
+`na <https://www.tradingview.com/pine-script-reference/v5/#var_na>`__ object names using the following:
 
 ::
 
@@ -141,8 +141,8 @@ It could also be written using the following:
     pivotPoint foundPoint = na
     foundPoint := pivotPoint.new(time[legsInput], pivotHighPrice)
 
-When objects are created using the `var <https://www.tradingview.com/pine-script-reference/v5/#op_var>__` or 
-`varip <https://www.tradingview.com/pine-script-reference/v5/#op_varip>__` keywords, 
+When objects are created using the `var <https://www.tradingview.com/pine-script-reference/v5/#op_var>`__ or 
+`varip <https://www.tradingview.com/pine-script-reference/v5/#op_varip>`__ keywords, 
 that property applies to all the object's fields:
 
 ::
@@ -196,10 +196,10 @@ This declares an empty array that will contain objects of the ``pivotPoint`` UDT
 
     pivotHighArray = array.new<pivotPoint>()
 
-To explicitly declare the type of a variable as an `array <https://www.tradingview.com/pine-script-reference/v5/#op_array>__` or 
-a `matrix <https://www.tradingview.com/pine-script-reference/v5/#op_matrix>__` of a user-defined type, 
-you can use the `array<> <https://www.tradingview.com/pine-script-reference/v5/#op_array>__` and 
-`matrix<> <https://www.tradingview.com/pine-script-reference/v5/#op_matrix>__` keywords, e.g.:
+To explicitly declare the type of a variable as an `array <https://www.tradingview.com/pine-script-reference/v5/#op_array>`__ or 
+a `matrix <https://www.tradingview.com/pine-script-reference/v5/#op_matrix>`__ of a user-defined type, 
+you can use the `array<> <https://www.tradingview.com/pine-script-reference/v5/#op_array>`__ and 
+`matrix<> <https://www.tradingview.com/pine-script-reference/v5/#op_matrix>`__ keywords, e.g.:
 
 ::
 
@@ -303,15 +303,15 @@ Shadowing
 To avoid potential conflicts in the eventuality where namespaces added to Pine Script™ in the future 
 would collide with UDTs or object names in existing scripts; as a rule, UDTs and object names shadow the language's namespaces.
 For example, a UDT or object can use the name of built-in types, such as 
-`line <https://www.tradingview.com/pine-script-reference/v5/#op_line>__` or 
-`table <https://www.tradingview.com/pine-script-reference/v5/#op_table>__`.
+`line <https://www.tradingview.com/pine-script-reference/v5/#op_line>`__ or 
+`table <https://www.tradingview.com/pine-script-reference/v5/#op_table>`__.
 
 Only the language's five primitive types cannot be used to name UDTs or objects: 
-`int <https://www.tradingview.com/pine-script-reference/v5/#op_int>__`, 
-`float <https://www.tradingview.com/pine-script-reference/v5/#op_float>__`, 
-`string <https://www.tradingview.com/pine-script-reference/v5/#op_string>__`, 
-`bool <https://www.tradingview.com/pine-script-reference/v5/#op_bool>__`, and 
-`color <https://www.tradingview.com/pine-script-reference/v5/#op_color>__`.
+`int <https://www.tradingview.com/pine-script-reference/v5/#op_int>`__, 
+`float <https://www.tradingview.com/pine-script-reference/v5/#op_float>`__, 
+`string <https://www.tradingview.com/pine-script-reference/v5/#op_string>`__, 
+`bool <https://www.tradingview.com/pine-script-reference/v5/#op_bool>`__, and 
+`color <https://www.tradingview.com/pine-script-reference/v5/#op_color>`__.
 
 
 

@@ -128,7 +128,7 @@ The pivots are detected ``legsInput`` bars after they occur, so we must plot the
           foundPoint.xloc,
           textcolor = color.white)
 
-Note that the line:
+Take note of this line from the above example:
 
 ::
 

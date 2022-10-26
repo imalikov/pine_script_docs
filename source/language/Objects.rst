@@ -134,7 +134,7 @@ Take note of this line from the above example:
 
     foundPoint = pivotPoint.new(time[legsInput], pivotHighPrice)
 
-It could also be written using the following:
+Could also be written using the following:
 
 ::
 

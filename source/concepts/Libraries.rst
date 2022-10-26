@@ -212,7 +212,7 @@ Note that:
 UDTs used in a library **must** be exported if any of its exported functions use a parameter or returns a result of that user-defined type.
 
 When a library only uses a UDT internally, it does not have to be exported. The following library uses the ``point`` UDT internally,
-but only its ``drawPivotLabel()`` function is exported, which does not use a parameter nor return a result of ``point`` type:
+but only its ``drawPivots()`` function is exported, which does not use a parameter nor return a result of ``point`` type:
 
 ::
 
@@ -297,7 +297,7 @@ but only its ``drawPivotLabel()`` function is exported, which does not use a par
 
 
     // Example use of the function.
-    drawPivotLabel(20, 10, 5)
+    drawPivots(20, 10, 5)
 
 If the TradingView user published the above library, it could be used like this:
 

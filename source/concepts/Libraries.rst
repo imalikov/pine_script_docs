@@ -202,7 +202,7 @@ A script importing that library and creating an object from its ``point`` UDT wo
 
 Note that:
 
-- This code won't compile because no "Point" library is published, and doesn't display anything.
+- This code won't compile because no "Point" library is published, and the script doesn't display anything.
 - ``userName`` would need to be replaced by the TradingView user name of the library's publisher.
 - We use the built-in ``new()`` method to create an object from the ``point`` UDT.
 - We prefix the reference to the library's ``point`` UDT with the ``pt`` alias defined in the 

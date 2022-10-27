@@ -176,7 +176,7 @@ This line of our previous example:
 
     foundPoint = pivotPoint.new(time[legsInput], pivotHighPrice)
 
-It could be written using the following:
+Could be written using the following:
 
 ::
 

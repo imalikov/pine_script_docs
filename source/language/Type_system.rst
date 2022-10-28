@@ -592,7 +592,7 @@ Here, we add a field to our previous ``pivotPoint`` type that will hold the pivo
         float level
         pivotPoint nextPivot
 
-Read about creating objects from UDTs in the :ref:`Objects <PageObjects>` page.
+Two built-in methods can be used with a UDT: ``new()`` and ``copy()``. Read about them in the :ref:`Objects <PageObjects>` page.
 
 
 

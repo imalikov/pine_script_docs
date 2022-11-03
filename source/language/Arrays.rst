@@ -611,7 +611,11 @@ Arrays containing "int" or "float" elements can be sorted in either ascending or
 `array.sort() <https://www.tradingview.com/pine-script-reference/v5/#fun_array{dot}sort>`__. 
 The ``order`` parameter is optional and defaults to `order.ascending <https://www.tradingview.com/pine-script-reference/v5/#var_order{dot}ascending>`__. 
 As all ``array.*()`` function arguments, it is of form "series", so can be determined at runtime, as is done here. 
-Note that in the example, which array is sorted is also determined at runtime::
+Note that in the example, which array is sorted is also determined at runtime:
+
+.. image:: images/Arrays-ManipulatingArrays-Sort.png
+
+::
 
     //@version=5
     indicator("`array.sort()`")
@@ -630,7 +634,13 @@ Note that in the example, which array is sorted is also determined at runtime::
           "a " + (barUp ? "is sorted ▲: "   : "is not sorted: ") + str.tostring(a) + "\n\n" +
           "b " + (barUp ? "is not sorted: " : "is sorted ▼: ")   + str.tostring(b), size = size.large)
 
-.. image:: images/Arrays-ManipulatingArrays-Sort.png
+Another useful option for sorting arrays is to use the 
+`array.sort_indices() <https://www.tradingview.com/pine-script-reference/v5/#fun_array{dot}sort_indices>`__ 
+function, which takes a reference to the original array and returns an array containing the indices from the original array. 
+Please note that this function won't modify the original array. The ``order`` parameter is optional and defaults to 
+`order.ascending <https://www.tradingview.com/pine-script-reference/v5/#var_order{dot}ascending>`__. 
+
+
 
 Reversing
 ^^^^^^^^^
@@ -712,6 +722,17 @@ We can also find the last occurrence of a value with
         label.new(bar_index, 0, "a: " + str.tostring(a) + 
           "\nFirst " + str.tostring(valueInput) + (firstIndexFound != -1 ? " value was found at index: " + str.tostring(firstIndexFound) : " value was not found.") +
           "\nLast " + str.tostring(valueInput)  + (lastIndexFound  != -1 ? " value was found at index: " + str.tostring(lastIndexFound) : " value was not found."))
+
+We can also perform a binary search on an array but note that performing a binary search on an array 
+means that the array will first need to be sorted in ascending order only. 
+The `array.binary_search() <https://www.tradingview.com/pine-script-reference/v5/#fun_array{dot}binary_search>`__ 
+function will return the value's index if it was found or -1 if it wasn't. 
+If we want to always return an existing index from the array even if our chosen value wasn't found, 
+then we can use one of the other binary search functions available. 
+The `array.binary_search_leftmost() <https://www.tradingview.com/pine-script-reference/v5/#fun_array{dot}binary_search_leftmost>`__ 
+function, which returns an index if the value was found or the first index to the left where the value would be found. 
+The `array.binary_search_rightmost() <https://www.tradingview.com/pine-script-reference/v5/#fun_array{dot}binary_search_rightmost>`__ 
+function is almost identical and returns an index if the value was found or the first index to the right where the value would be found. 
 
 
 

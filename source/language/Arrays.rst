@@ -194,16 +194,23 @@ Finally, we could use `array.from() <https://www.tradingview.com/pine-script-ref
 	bgcolor(array.get(fillColors, bar_index % array.size(fillColors)))
 
 The `array.fill(id, value, index_from, index_to) <https://www.tradingview.com/pine-script-reference/v5/#fun_array{dot}fill>`__ function 
-can be used to fill contiguous sets of array elements with a value. Used without the last two optional parameters, the function fills the whole array, so::
+can be used to fill contiguous sets of array elements with a value. 
+Used without the last two optional parameters, the function fills the whole array, so:
+
+::
 
     a = array.new_float(10, close)
 
-and::
+and:
+
+::
 
     a = array.new_float(10)
     array.fill(a, close)
 
-are equivalent, but::
+are equivalent, but:
+
+::
 
     a = array.new_float(10)
     array.fill(a, close, 1, 3)
@@ -219,7 +226,9 @@ The remaining elements will hold the ``na`` value, as no intialization value was
 Looping through array elements
 ------------------------------
 
-When looping through array elements when the array's size is unknown, you can use::
+When looping through array elements when the array's size is unknown, you can use:
+
+::
 
     //@version=5
     indicator("Protected `for` loop")
@@ -233,7 +242,9 @@ When looping through array elements when the array's size is unknown, you can us
 This takes advantage of the fact that `for <https://www.tradingview.com/pine-script-reference/v5/#>`__ loops do not execute if the ``to`` expression is 
 `na <https://www.tradingview.com/pine-script-reference/v5/#var_na>`__. Note that the ``to`` value is only evaluated once, upon entry.
 
-A `while <https://www.tradingview.com/pine-script-reference/v5/#op_while>`__ statement can also be used::
+A `while <https://www.tradingview.com/pine-script-reference/v5/#op_while>`__ statement can also be used:
+
+::
 
     //@version=5
     indicator("Protected `while` loop")
@@ -390,7 +401,25 @@ removes the first element from an array and returns its value.
 removes the last element of an array and returns its value.
 
 `array.clear() <https://www.tradingview.com/pine-script-reference/v5/#fun_array{dot}clear>`__ 
-will remove all elements in the array.
+will remove all elements from an array. Note that clearing an array won't delete the underlying data. 
+See the example below which illustrates how this works:
+
+::
+
+    //@version=5
+    indicator("`array.clear()` example", overlay = true)
+
+    // We create a label array and add a label to the array on each new bar
+    var a = array.new_label()
+    label lbl = label.new(bar_index, high, "Text", color = color.red)
+    array.push(a, lbl)
+
+    var table t = table.new(position.top_right, 1, 1)
+    // We clear the array on the last bar which won't delete the individual labels
+    if barstate.islast
+        array.clear(a)
+        table.cell(t, 0, 0, "Array elements count: " + str.tostring(array.size(a)), bgcolor = color.yellow)
+
 
 
 Using an array as a stack
@@ -406,7 +435,9 @@ functions to add and remove elements at the end of the array.
 
 ``array.pop(prices)`` will remove the end element from the ``prices`` array, return its value and decrease the array's size by one.
 
-See how the functions are used here to remember successive lows in rallies::
+See how the functions are used here to remember successive lows in rallies:
+
+::
 
     //@version=5
     indicator("Lows from new highs", "", true)

@@ -519,14 +519,21 @@ but this does not cause runtime errors. Let's look at our code::
 Calculations on arrays
 ----------------------
 
-While series variables can be viewed as a horizontal set of values stretching back in time, Pine Script™'s one-dimensional arrays can be viewed as vertical structures 
-residing on each bar. As an array's set of elements is not a :ref:`time series <PageTypeSystem_TimeSeries>`, Pine Script™'s usual mathematical functions are not allowed on them. Special-purpose functions must be used to operate on all of an array's values. The available functions are: 
+While series variables can be viewed as a horizontal set of values stretching back in time, 
+Pine Script™'s one-dimensional arrays can be viewed as vertical structures 
+residing on each bar. As an array's set of elements is not a :ref:`time series <PageTypeSystem_TimeSeries>`, 
+Pine Script™'s usual mathematical functions are not allowed on them. 
+Special-purpose functions must be used to operate on all of an array's values. The available functions are: 
+`array.abs() <https://www.tradingview.com/pine-script-reference/v5/#fun_array{dot}abs>`__, 
 `array.avg() <https://www.tradingview.com/pine-script-reference/v5/#fun_array{dot}avg>`__, 
 `array.covariance() <https://www.tradingview.com/pine-script-reference/v5/#fun_array{dot}covariance>`__,
 `array.min() <https://www.tradingview.com/pine-script-reference/v5/#fun_array{dot}min>`__, 
 `array.max() <https://www.tradingview.com/pine-script-reference/v5/#fun_array{dot}max>`__, 
 `array.median() <https://www.tradingview.com/pine-script-reference/v5/#fun_array{dot}median>`__, 
 `array.mode() <https://www.tradingview.com/pine-script-reference/v5/#fun_array{dot}mode>`__, 
+`array.percentile_linear_interpolation() <https://www.tradingview.com/pine-script-reference/v5/#fun_array{dot}percentile_linear_interpolation>`__, 
+`array.percentile_nearest_rank() <https://www.tradingview.com/pine-script-reference/v5/#fun_array{dot}percentile_nearest_rank>`__, 
+`array.percentrank() <https://www.tradingview.com/pine-script-reference/v5/#fun_array{dot}percentrank>`__, 
 `array.range() <https://www.tradingview.com/pine-script-reference/v5/#fun_array{dot}range>`__,
 `array.standardize() <https://www.tradingview.com/pine-script-reference/v5/#fun_array{dot}standardize>`__, 
 `array.stdev() <https://www.tradingview.com/pine-script-reference/v5/#fun_array{dot}stdev>`__, 

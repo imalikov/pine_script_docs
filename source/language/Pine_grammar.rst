@@ -17,30 +17,47 @@ Pine Script™ v5 grammar
 
 
 
-``{}`` Curly braces content can be repeated zero or more times: {, <parameter>}
+Introduction
+------------
 
-``[]`` Square brackets content can appear zero or one time: [ by <expression>]
-
-``\``  Backslash escapes one character: \[ means a literal [ in the syntax.
-
-``|``  Pipe means "or".
-
-``<token_name>`` is a token called "token_name".
+This page contains a formal definition of the grammar of Pine Script™. 
+A programming language's grammar expresses how language keywords, special characters and literal values can be combined to form valid programs.
 
 
 
+Conventions
+-----------
 
-<Pine_script>
-    [<version>]
-    <declaration_statement>
-    <statement>
-    {<statement>}
+- ``{}`` Curly braces content can be repeated zero or more times: {, <parameter>}
+- ``[]`` Square brackets content can appear zero or one time: [ by <expression>]
+- ``\``  Backslash escapes one character: ``\[`` means a literal ``[`` in the syntax.
+- ``|``  Pipe means "or".
+- Token names use uppercase: ``TOKEN_NAME``.
+- Lowercase is used for language keywords.
 
-<declaration_statement>
+
+
+
+Grammar
+-------
+
+PINE_SCRIPT
+    [VERSION]
+    DECLARATION_STATEMENT
+    {STATEMENT{,STATEMENT}}
+    DISPLAY_STATEMENT
+
+VERSION
+    //@version = 1 | //@version = 2 | //@version = 3 | //@version = 4 | //@version = 5
+
+DECLARATION_STATEMENT
     indicator() | strategy() | library()
 
-<statement>
+STATEMENT
     <variable_declaration> | <variable_reassignment> | <function_declaration> | <function_call> | <structure>
+
+DISPLAY_STATEMENT
+    plot() | plotcandle() | plotbar() | plotchar() | plotarrow() | label.new() | line.new() | table.cell() | alertcondition()
 
 <variable_initialization>
     <variable_declaration> = <expression> | <structure>

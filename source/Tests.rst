@@ -12,10 +12,16 @@
 
 
 .. |pic1| image:: /images/Pine_Script_logo.svg
-   :width: 45%
+   :alt: Pine Script™ logo
+   :target: https://www.tradingview.com/pine-script-docs/en/v5/Introduction.html
+   :width: 100
+   :height: 100
 
 .. |pic2| image:: /images/Pine_Script_logo.svg
-   :width: 45%
+   :alt: Pine Script™ logo
+   :target: https://www.tradingview.com/pine-script-docs/en/v5/Introduction.html
+   :width: 100
+   :height: 100
 
 |pic1| test |pic2|
 

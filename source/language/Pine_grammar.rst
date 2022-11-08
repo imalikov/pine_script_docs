@@ -41,6 +41,8 @@ Conventions
 Grammar
 -------
 
+::
+
 PINE_SCRIPT
     [VERSION]
     DECLARATION_STATEMENT

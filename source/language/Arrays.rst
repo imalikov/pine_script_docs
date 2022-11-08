@@ -194,16 +194,23 @@ Finally, we could use `array.from() <https://www.tradingview.com/pine-script-ref
 	bgcolor(array.get(fillColors, bar_index % array.size(fillColors)))
 
 The `array.fill(id, value, index_from, index_to) <https://www.tradingview.com/pine-script-reference/v5/#fun_array{dot}fill>`__ function 
-can be used to fill contiguous sets of array elements with a value. Used without the last two optional parameters, the function fills the whole array, so::
+can be used to fill contiguous sets of array elements with a value. 
+Used without the last two optional parameters, the function fills the whole array, so:
+
+::
 
     a = array.new_float(10, close)
 
-and::
+and:
+
+::
 
     a = array.new_float(10)
     array.fill(a, close)
 
-are equivalent, but::
+are equivalent, but:
+
+::
 
     a = array.new_float(10)
     array.fill(a, close, 1, 3)
@@ -219,7 +226,9 @@ The remaining elements will hold the ``na`` value, as no intialization value was
 Looping through array elements
 ------------------------------
 
-When looping through array elements when the array's size is unknown, you can use::
+When looping through array elements when the array's size is unknown, you can use:
+
+::
 
     //@version=5
     indicator("Protected `for` loop")
@@ -233,7 +242,9 @@ When looping through array elements when the array's size is unknown, you can us
 This takes advantage of the fact that `for <https://www.tradingview.com/pine-script-reference/v5/#>`__ loops do not execute if the ``to`` expression is 
 `na <https://www.tradingview.com/pine-script-reference/v5/#var_na>`__. Note that the ``to`` value is only evaluated once, upon entry.
 
-A `while <https://www.tradingview.com/pine-script-reference/v5/#op_while>`__ statement can also be used::
+A `while <https://www.tradingview.com/pine-script-reference/v5/#op_while>`__ statement can also be used:
+
+::
 
     //@version=5
     indicator("Protected `while` loop")
@@ -390,7 +401,25 @@ removes the first element from an array and returns its value.
 removes the last element of an array and returns its value.
 
 `array.clear() <https://www.tradingview.com/pine-script-reference/v5/#fun_array{dot}clear>`__ 
-will remove all elements in the array.
+will remove all elements from an array. Note that clearing an array won't delete the underlying data. 
+See the example below which illustrates how this works:
+
+::
+
+    //@version=5
+    indicator("`array.clear()` example", overlay = true)
+
+    // We create a label array and add a label to the array on each new bar
+    var a = array.new_label()
+    label lbl = label.new(bar_index, high, "Text", color = color.red)
+    array.push(a, lbl)
+
+    var table t = table.new(position.top_right, 1, 1)
+    // We clear the array on the last bar which won't delete the individual labels
+    if barstate.islast
+        array.clear(a)
+        table.cell(t, 0, 0, "Array elements count: " + str.tostring(array.size(a)), bgcolor = color.yellow)
+
 
 
 Using an array as a stack
@@ -406,7 +435,9 @@ functions to add and remove elements at the end of the array.
 
 ``array.pop(prices)`` will remove the end element from the ``prices`` array, return its value and decrease the array's size by one.
 
-See how the functions are used here to remember successive lows in rallies::
+See how the functions are used here to remember successive lows in rallies:
+
+::
 
     //@version=5
     indicator("Lows from new highs", "", true)
@@ -461,7 +492,11 @@ Lastly, we de-queue the oldest label by removing the array's first element using
 `array.shift() <https://www.tradingview.com/pine-script-reference/v5/#fun_array{dot}shift>`__ and deleting the label referenced by that array element's value. 
 As we have now de-queued an element from our queue, the array contains ``pivotCountInput`` elements once again. 
 Note that on the dataset's first bars we will be deleting ``na`` label IDs until the maximum number of labels has been created, 
-but this does not cause runtime errors. Let's look at our code::
+but this does not cause runtime errors. Let's look at our code:
+
+.. image:: images/Arrays-InsertingAndRemovingArrayElements-ShowLastnHighPivots.png
+    
+::
 
     //@version=5
     MAX_LABELS = 100
@@ -482,20 +517,26 @@ but this does not cause runtime errors. Let's look at our code::
     	// De-queue the oldest label ID from the queue and delete the corresponding label.
     	label.delete(array.shift(labelIds))
 
-.. image:: images/Arrays-InsertingAndRemovingArrayElements-ShowLastnHighPivots.png
 
 
 Calculations on arrays
 ----------------------
 
-While series variables can be viewed as a horizontal set of values stretching back in time, Pine Script™'s one-dimensional arrays can be viewed as vertical structures 
-residing on each bar. As an array's set of elements is not a :ref:`time series <PageTypeSystem_TimeSeries>`, Pine Script™'s usual mathematical functions are not allowed on them. Special-purpose functions must be used to operate on all of an array's values. The available functions are: 
+While series variables can be viewed as a horizontal set of values stretching back in time, 
+Pine Script™'s one-dimensional arrays can be viewed as vertical structures 
+residing on each bar. As an array's set of elements is not a :ref:`time series <PageTypeSystem_TimeSeries>`, 
+Pine Script™'s usual mathematical functions are not allowed on them. 
+Special-purpose functions must be used to operate on all of an array's values. The available functions are: 
+`array.abs() <https://www.tradingview.com/pine-script-reference/v5/#fun_array{dot}abs>`__, 
 `array.avg() <https://www.tradingview.com/pine-script-reference/v5/#fun_array{dot}avg>`__, 
 `array.covariance() <https://www.tradingview.com/pine-script-reference/v5/#fun_array{dot}covariance>`__,
 `array.min() <https://www.tradingview.com/pine-script-reference/v5/#fun_array{dot}min>`__, 
 `array.max() <https://www.tradingview.com/pine-script-reference/v5/#fun_array{dot}max>`__, 
 `array.median() <https://www.tradingview.com/pine-script-reference/v5/#fun_array{dot}median>`__, 
 `array.mode() <https://www.tradingview.com/pine-script-reference/v5/#fun_array{dot}mode>`__, 
+`array.percentile_linear_interpolation() <https://www.tradingview.com/pine-script-reference/v5/#fun_array{dot}percentile_linear_interpolation>`__, 
+`array.percentile_nearest_rank() <https://www.tradingview.com/pine-script-reference/v5/#fun_array{dot}percentile_nearest_rank>`__, 
+`array.percentrank() <https://www.tradingview.com/pine-script-reference/v5/#fun_array{dot}percentrank>`__, 
 `array.range() <https://www.tradingview.com/pine-script-reference/v5/#fun_array{dot}range>`__,
 `array.standardize() <https://www.tradingview.com/pine-script-reference/v5/#fun_array{dot}standardize>`__, 
 `array.stdev() <https://www.tradingview.com/pine-script-reference/v5/#fun_array{dot}stdev>`__, 
@@ -580,7 +621,11 @@ Arrays containing "int" or "float" elements can be sorted in either ascending or
 `array.sort() <https://www.tradingview.com/pine-script-reference/v5/#fun_array{dot}sort>`__. 
 The ``order`` parameter is optional and defaults to `order.ascending <https://www.tradingview.com/pine-script-reference/v5/#var_order{dot}ascending>`__. 
 As all ``array.*()`` function arguments, it is of form "series", so can be determined at runtime, as is done here. 
-Note that in the example, which array is sorted is also determined at runtime::
+Note that in the example, which array is sorted is also determined at runtime:
+
+.. image:: images/Arrays-ManipulatingArrays-Sort.png
+
+::
 
     //@version=5
     indicator("`array.sort()`")
@@ -599,7 +644,13 @@ Note that in the example, which array is sorted is also determined at runtime::
           "a " + (barUp ? "is sorted ▲: "   : "is not sorted: ") + str.tostring(a) + "\n\n" +
           "b " + (barUp ? "is not sorted: " : "is sorted ▼: ")   + str.tostring(b), size = size.large)
 
-.. image:: images/Arrays-ManipulatingArrays-Sort.png
+Another useful option for sorting arrays is to use the 
+`array.sort_indices() <https://www.tradingview.com/pine-script-reference/v5/#fun_array{dot}sort_indices>`__ 
+function, which takes a reference to the original array and returns an array containing the indices from the original array. 
+Please note that this function won't modify the original array. The ``order`` parameter is optional and defaults to 
+`order.ascending <https://www.tradingview.com/pine-script-reference/v5/#var_order{dot}ascending>`__. 
+
+
 
 Reversing
 ^^^^^^^^^
@@ -681,6 +732,17 @@ We can also find the last occurrence of a value with
         label.new(bar_index, 0, "a: " + str.tostring(a) + 
           "\nFirst " + str.tostring(valueInput) + (firstIndexFound != -1 ? " value was found at index: " + str.tostring(firstIndexFound) : " value was not found.") +
           "\nLast " + str.tostring(valueInput)  + (lastIndexFound  != -1 ? " value was found at index: " + str.tostring(lastIndexFound) : " value was not found."))
+
+We can also perform a binary search on an array but note that performing a binary search on an array 
+means that the array will first need to be sorted in ascending order only. 
+The `array.binary_search() <https://www.tradingview.com/pine-script-reference/v5/#fun_array{dot}binary_search>`__ 
+function will return the value's index if it was found or -1 if it wasn't. 
+If we want to always return an existing index from the array even if our chosen value wasn't found, 
+then we can use one of the other binary search functions available. 
+The `array.binary_search_leftmost() <https://www.tradingview.com/pine-script-reference/v5/#fun_array{dot}binary_search_leftmost>`__ 
+function, which returns an index if the value was found or the first index to the left where the value would be found. 
+The `array.binary_search_rightmost() <https://www.tradingview.com/pine-script-reference/v5/#fun_array{dot}binary_search_rightmost>`__ 
+function is almost identical and returns an index if the value was found or the first index to the right where the value would be found. 
 
 
 

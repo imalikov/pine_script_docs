@@ -43,155 +43,155 @@ Grammar
 
 ::
 
-PINE_SCRIPT
-    [VERSION]
+    PINE_SCRIPT
+        [VERSION]
+        DECLARATION_STATEMENT
+        {STATEMENT{,STATEMENT}}
+        DISPLAY_STATEMENT
+
+    VERSION
+        //@version = 1 | //@version = 2 | //@version = 3 | //@version = 4 | //@version = 5
+
     DECLARATION_STATEMENT
-    {STATEMENT{,STATEMENT}}
+        indicator() | strategy() | library()
+
+    STATEMENT
+        <variable_declaration> | <variable_reassignment> | <function_declaration> | <function_call> | <structure>
+
     DISPLAY_STATEMENT
+        plot() | plotcandle() | plotbar() | plotchar() | plotarrow() | label.new() | line.new() | table.cell() | alertcondition()
 
-VERSION
-    //@version = 1 | //@version = 2 | //@version = 3 | //@version = 4 | //@version = 5
+    <variable_initialization>
+        <variable_declaration> = <expression> | <structure>
 
-DECLARATION_STATEMENT
-    indicator() | strategy() | library()
+    <variable_declaration>
+        [<declaration_mode>] [<type>] <identifier>
+        |
+        <tuple_declaration>
 
-STATEMENT
-    <variable_declaration> | <variable_reassignment> | <function_declaration> | <function_call> | <structure>
+    <declaration_mode>
+        [var | varip]
 
-DISPLAY_STATEMENT
-    plot() | plotcandle() | plotbar() | plotchar() | plotarrow() | label.new() | line.new() | table.cell() | alertcondition()
+    <type>
+        [int  | float   | bool   | color   | string   | label   | line   | box   | table |
+        int[] | float[] | bool[] | color[] | string[] | label[] | line[] | box[] | table[]]
 
-<variable_initialization>
-    <variable_declaration> = <expression> | <structure>
+    <variable_reassignment>
+        <identifier> := <expression> | <function_call> | <structure>
 
-<variable_declaration>
-    [<declaration_mode>] [<type>] <identifier>
-    |
+    <function_declaration>
+        <identifier>(<parameter_list>) => 
+            <local_block>
+        |
+        <identifier>(<parameter_list>) => <return_value>
+
+    <parameter_list>
+        {<parameter_definition>{, <parameter_definition>}}
+
+    <parameter_definition>
+        [<identifier> = <default_value>]
+
+    <structure>
+        <if_structure> | <for_structure> | <while_structure> | <switch_structure>
+
+    <if_structure>
+        if <expression>
+            <local_block>
+        {else if <expression>
+            <local_block>}
+        [else
+            <local_block>]
+
+    <for_structure>
+        for <identifier> = <expression> to <expression>[ by <expression>]
+            <local_block_loop>
+
+    <for_structure>
+        for <identifier> = <expression> to <expression>[ by <expression>]
+            <local_block_loop>
+
+    <while_structure>
+        while <expression>
+            <local_block_loop>
+
+    <local_block_loop>
+        {<statement> | break | continue}
+        <return_value>
+
+    <switch_structure>
+        <switch_structure_expression> | <switch_structure_values>
+
+    <switch_structure_expression>
+        switch <expression>
+            {<expression> => <local_block>}
+            => <local_block>
+
+    <switch_structure_values>
+        switch
+            {<expression> => <local_block>}
+            => <local_block>
+
+    <local_block>
+        {<statement>}
+        <return_value>
+
+    <return_value>
+        <statement> | <expression> | <tuple>
+
     <tuple_declaration>
+        \[<identifier>{, <identifier>}\]
 
-<declaration_mode>
-    [var | varip]
+    <tuple>
+        \[<expression>{, <expression>]\]
 
-<type>
-    [int  | float   | bool   | color   | string   | label   | line   | box   | table |
-    int[] | float[] | bool[] | color[] | string[] | label[] | line[] | box[] | table[]]
+    <expression>
+        <literal> | <identifier> | <function_call> | 
+        <arithmetic_expression> | <comparison_expression> | <logical_expression>
 
-<variable_reassignment>
-    <identifier> := <expression> | <function_call> | <structure>
+    <function_call>
+        functionName({<expression>{, <expression>}})
 
-<function_declaration>
-    <identifier>(<parameter_list>) => 
-        <local_block>
-    |
-    <identifier>(<parameter_list>) => <return_value>
-
-<parameter_list>
-    {<parameter_definition>{, <parameter_definition>}}
-
-<parameter_definition>
-    [<identifier> = <default_value>]
-
-<structure>
-    <if_structure> | <for_structure> | <while_structure> | <switch_structure>
-
-<if_structure>
-    if <expression>
-        <local_block>
-    {else if <expression>
-        <local_block>}
-    [else
-        <local_block>]
-
-<for_structure>
-    for <identifier> = <expression> to <expression>[ by <expression>]
-        <local_block_loop>
-
-<for_structure>
-    for <identifier> = <expression> to <expression>[ by <expression>]
-        <local_block_loop>
-
-<while_structure>
-    while <expression>
-        <local_block_loop>
-
-<local_block_loop>
-    {<statement> | break | continue}
-    <return_value>
-
-<switch_structure>
-    <switch_structure_expression> | <switch_structure_values>
-
-<switch_structure_expression>
-    switch <expression>
-        {<expression> => <local_block>}
-        => <local_block>
-
-<switch_structure_values>
-    switch
-        {<expression> => <local_block>}
-        => <local_block>
-
-<local_block>
-    {<statement>}
-    <return_value>
-
-<return_value>
-    <statement> | <expression> | <tuple>
-
-<tuple_declaration>
-    \[<identifier>{, <identifier>}\]
-
-<tuple>
-    \[<expression>{, <expression>]\]
-
-<expression>
-    <literal> | <identifier> | <function_call> | 
-    <arithmetic_expression> | <comparison_expression> | <logical_expression>
-
-<function_call>
-    functionName({<expression>{, <expression>}})
-
-<arithmetic_expression>
+    <arithmetic_expression>
 
 
-<comparison_expression>
+    <comparison_expression>
 
 
-<logical_expression>
+    <logical_expression>
 
 
-<ternary_expression>
+    <ternary_expression>
 
 
-<identifier>
-    <letter> | <underscore> {<letter><underscore><digit>}
+    <identifier>
+        <letter> | <underscore> {<letter><underscore><digit>}
 
-<arithmetic_operators>::
-    + | - | * | / | %
+    <arithmetic_operators>::
+        + | - | * | / | %
 
-<comparison_operators>::
-    < | <= | != | == | > | >=
+    <comparison_operators>::
+        < | <= | != | == | > | >=
 
-<logical_operators>::
-    not | and | or
+    <logical_operators>::
+        not | and | or
 
-<literal>
-    <literal_int> | <literal_float> | <literal_bool> | <literal_color> | <literal_string>
+    <literal>
+        <literal_int> | <literal_float> | <literal_bool> | <literal_color> | <literal_string>
 
-<literal_int>
-    [- | +]<digit>{<digit>}
+    <literal_int>
+        [- | +]<digit>{<digit>}
 
-<literal_float>
-    [- | +]<digit>{<digit>}[.][E|e<digit>{<digit>}]
+    <literal_float>
+        [- | +]<digit>{<digit>}[.][E|e<digit>{<digit>}]
 
-<literal_bool>
-    true | false | bool(na)
+    <literal_bool>
+        true | false | bool(na)
 
-<literal_color>
-    #RRGGBB | #RRGGBBAA | <built-in_color_constant>
+    <literal_color>
+        #RRGGBB | #RRGGBBAA | <built-in_color_constant>
 
-<literal_string>
-    "<characters>" | '<characters>'
+    <literal_string>
+        "<characters>" | '<characters>'
 
 
 .. image:: /images/TradingView-Logo-Block.svg

@@ -11,21 +11,13 @@
    :align: center
 
 
-|pic1| |pic2|
-
 .. |pic1| image:: /images/Pine_Script_logo.svg
-   :alt: Pine Script™ logo
-   :target: https://www.tradingview.com/pine-script-docs/en/v5/Introduction.html
-   :align: right
-   :width: 100
-   :height: 100
+   :width: 45%
 
 .. |pic2| image:: /images/Pine_Script_logo.svg
-   :alt: Pine Script™ logo
-   :target: https://www.tradingview.com/pine-script-docs/en/v5/Introduction.html
-   :align: right
-   :width: 100
-   :height: 100
+   :width: 45%
+
+|pic1| test |pic2|
 
 
 Pine Script™ small logo with macro

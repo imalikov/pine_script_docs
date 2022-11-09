@@ -17,6 +17,11 @@ Release notes
 
 This page contains release notes of notable changes in Pine Script™.
 
+November 2022
+------------
+
+Fixed behaviour of `math.round_to_mintick()  <https://www.tradingview.com/pine-script-reference/v5/#fun_math{dot}round_to_mintick>`_ function. For 'na' values it returns 'na'.
+ 
 October 2022
 ------------
 Pine Script™ now has a new, more powerful and better-integrated editor. Read `our blog <https://www.tradingview.com/blog/en/new-vsc-style-pine-script-editor-34159/>`_ to find out everything to know about all the new features and upgrades.

@@ -25,7 +25,9 @@
 
 .. class:: right
 
-|pic1| |pic2|
+.. align:: right
+
+|pic1| test |pic2|
 
 
 Pine Script™ small logo with macro

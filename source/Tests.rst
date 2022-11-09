@@ -22,6 +22,7 @@
    :target: https://www.tradingview.com/pine-script-docs/en/v5/Introduction.html
    :width: 100
    :height: 100
+   :align: right
 
 .. class:: right
 

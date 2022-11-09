@@ -29,7 +29,7 @@
 
 .. class:: right
 
-This paragraph will be to the right.
+   This paragraph will be to the right.
 
 |pic1| test |pic2|
 

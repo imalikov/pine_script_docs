@@ -23,7 +23,9 @@
    :width: 100
    :height: 100
 
-|pic1| test |pic2|
+.. class:: right
+
+|pic1| |pic2|
 
 
 Pine Script™ small logo with macro

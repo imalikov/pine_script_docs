@@ -327,7 +327,7 @@ Maximum bars back
 References to past values using the 
 `[] <https://www.tradingview.com/pine-script-reference/v5/#op_op_[]>`__ 
 history-referencing operator are dependent on the size of the historical buffer maintained by the Pine Script™ runtime, which is limited to a maximum of 5000 bars. 
-`This Help Center page <https://www.tradingview.com/?solution=43000587849>`__ 
+`This Help Center page <https://www.tradingview.com/support/solutions/43000587849>`__ 
 discusses the historical buffer and how to change its size using either the ``max_bars_back`` parameter or the 
 `max_bars_back() <https://www.tradingview.com/pine-script-reference/v5/#fun_max_bars_back>`__ function.
 

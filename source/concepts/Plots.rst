@@ -56,7 +56,7 @@ Note that:
 - The third call plots a 3-pixel wide step line following the low point of bodies.
 - The fourth call plot a gray circle at the bars' `low <https://www.tradingview.com/pine-script-reference/v5/#var_low>`__.
 - The last plot requires some preparation. We first define our bull/bear colors,
-  calculate an `Arnaud Legoux Moving Average <https://www.tradingview.com/u/?solution=43000594683>`__,
+  calculate an `Arnaud Legoux Moving Average <https://www.tradingview.com/support/solutions/43000594683>`__,
   then make our color calculations. We initialize our color variable on bar zero only, using `var <https://www.tradingview.com/pine-script-reference/v5/#op_var>`__.
   We initialize it to `color.silver <https://www.tradingview.com/pine-script-reference/v5/#var_color{dot}silver>`__, 
   so on the dataset's first bars, until one of our conditions causes the color to change, the line will be silver.
@@ -418,7 +418,7 @@ but it also has some limitations, namely that it does not accept "series color",
 and that its ``price`` parameter requires an "input int/float", so cannot vary during the script's execution.
 
 You can plot levels with `plot() <https://www.tradingview.com/pine-script-reference/v5/#fun_plot>`__
-in a few different ways. This shows a `CCI <https://www.tradingview.com/u/?solution=43000502001>`__
+in a few different ways. This shows a `CCI <https://www.tradingview.com/support/solutions/43000502001>`__
 indicator with levels plotted using `plot() <https://www.tradingview.com/pine-script-reference/v5/#fun_plot>`__:
 
 .. image:: images/Plots-Levels-01.png
@@ -501,12 +501,12 @@ Scale
 
 Not all values can be plotted everywhere. 
 Your script's visual space is always bound by upper and lower limits that are dynamically adjusted with the values plotted.
-An `RSI <https://www.tradingview.com/u/?solution=43000502338>`__ indicator will plot values between 0 and 100, 
+An `RSI <https://www.tradingview.com/support/solutions/43000502338>`__ indicator will plot values between 0 and 100, 
 which is why it is usually displayed in a distinct *pane* — or area — above or below the chart.
-If `RSI <https://www.tradingview.com/u/?solution=43000502338>`__ values were plotted as an overlay on the chart, 
+If `RSI <https://www.tradingview.com/support/solutions/43000502338>`__ values were plotted as an overlay on the chart, 
 the effect would be to distort the symbol's normal price scale, 
-unless it just hapenned to be close to `RSI <https://www.tradingview.com/u/?solution=43000502338>`__'s 0 to 100 range.
-This shows an `RSI <https://www.tradingview.com/u/?solution=43000502338>`__ signal line and a centerline at the 50 level, 
+unless it just hapenned to be close to `RSI <https://www.tradingview.com/support/solutions/43000502338>`__'s 0 to 100 range.
+This shows an `RSI <https://www.tradingview.com/support/solutions/43000502338>`__ signal line and a centerline at the 50 level, 
 with the script running in a separate pane:
 
 .. image:: images/Plots-Scale-01.png
@@ -523,7 +523,7 @@ with the script running in a separate pane:
     hline(50)
 
 Note that the *y* axis of our script's visual space is automatically sized using the range of values plotted, i.e., 
-the values of `RSI <https://www.tradingview.com/u/?solution=43000502338>`__. 
+the values of `RSI <https://www.tradingview.com/support/solutions/43000502338>`__. 
 See the page on :ref:`Colors <PageColors>` for more information on the 
 `color.from_gradient() <https://www.tradingview.com/pine-script-reference/v5/#fun_color{dot}from_gradient>`__ function used in the script.
 
@@ -538,8 +538,8 @@ This is what happens:
 .. image:: images/Plots-Scale-02.png
 
 The chart is on the BTCUSD symbol, whose `close <https://www.tradingview.com/pine-script-reference/v5/#var_close>`__
-prices are around 40000 during this period. Plotting values in the 40000 range makes our `RSI <https://www.tradingview.com/u/?solution=43000502338>`__ plots in the 0 to 100 range indiscernible.
-The same distorted plots would occur if we placed the `RSI <https://www.tradingview.com/u/?solution=43000502338>`__ indicator on the chart as an overlay.
+prices are around 40000 during this period. Plotting values in the 40000 range makes our `RSI <https://www.tradingview.com/support/solutions/43000502338>`__ plots in the 0 to 100 range indiscernible.
+The same distorted plots would occur if we placed the `RSI <https://www.tradingview.com/support/solutions/43000502338>`__ indicator on the chart as an overlay.
 
 
 
@@ -548,16 +548,16 @@ Merging two indicators
 
 If you are planning to merge two signals in one script, first consider the scale of each.
 It is impossible, for example, to correctly plot an 
-`RSI <https://www.tradingview.com/u/?solution=43000502338>`__ and 
-a `MACD <https://www.tradingview.com/u/?solution=43000502344>`__ 
-in the same script's visual space because `RSI <https://www.tradingview.com/u/?solution=43000502338>`__
-has a fixed range (0 to 100) while `MACD <https://www.tradingview.com/u/?solution=43000502344>`__ doesn't, as it plots moving averages calculated on price.
+`RSI <https://www.tradingview.com/support/solutions/43000502338>`__ and 
+a `MACD <https://www.tradingview.com/support/solutions/43000502344>`__ 
+in the same script's visual space because `RSI <https://www.tradingview.com/support/solutions/43000502338>`__
+has a fixed range (0 to 100) while `MACD <https://www.tradingview.com/support/solutions/43000502344>`__ doesn't, as it plots moving averages calculated on price.
 
 If both your indicators used fixed ranges, you can shift the values of one of them so they do not overlap.
-We could, for example, plot both `RSI <https://www.tradingview.com/u/?solution=43000502338>`__ (0 to 100)
-and the `True Strength Indicator (TSI) <https://www.tradingview.com/u/?solution=43000592290>`__ (-100 to +100) by displacing one of them.
-Our strategy here will be to compress and shift the `TSI <https://www.tradingview.com/u/?solution=43000592290>`__ values
-so they plot over `RSI <https://www.tradingview.com/u/?solution=43000502338>`__:
+We could, for example, plot both `RSI <https://www.tradingview.com/support/solutions/43000502338>`__ (0 to 100)
+and the `True Strength Indicator (TSI) <https://www.tradingview.com/support/solutions/43000592290>`__ (-100 to +100) by displacing one of them.
+Our strategy here will be to compress and shift the `TSI <https://www.tradingview.com/support/solutions/43000592290>`__ values
+so they plot over `RSI <https://www.tradingview.com/support/solutions/43000502338>`__:
 
 .. image:: images/Plots-Scale-03.png
 
@@ -587,11 +587,11 @@ Note that:
 - We have added levels using `hline <https://www.tradingview.com/pine-script-reference/v5/#fun_hline>`__
   to situate both signals.
 - In order for both signal lines to oscillate on the same range of 100,
-  we divide the `TSI <https://www.tradingview.com/u/?solution=43000592290>`__ value by 2 because it has a 200 range (-100 to +100).
+  we divide the `TSI <https://www.tradingview.com/support/solutions/43000592290>`__ value by 2 because it has a 200 range (-100 to +100).
   We then shift this value up by 150 so it oscillates between 100 and 200, making 150 its centerline.
 - The manipulations we make here are typical of the compromises required to bring two indicators
   with different scales in the same visual space, even when their values, contrary to 
-  `MACD <https://www.tradingview.com/u/?solution=43000502344>`__, are bounded in a fixed range.
+  `MACD <https://www.tradingview.com/support/solutions/43000502344>`__, are bounded in a fixed range.
 
 
   .. image:: /images/TradingView-Logo-Block.svg

@@ -715,7 +715,7 @@ The following functions now accept a series length parameter:
 * `variance() <https://www.tradingview.com/pine-script-reference/v4/#fun_variance>`__
 * `wpr() <https://www.tradingview.com/pine-script-reference/v4/#fun_wpr>`__
 
-A new type of alerts was added - script alerts. More information can be found in our `Help Center <https://www.tradingview.com/chart/?solution=43000597494/>`__.
+A new type of alerts was added - script alerts. More information can be found in our `Help Center <https://www.tradingview.com/support/solutions/43000597494/>`__.
 
 
 
@@ -830,7 +830,7 @@ Please note that you need to reapply the indicator in order for the `resolution`
     
 .. image:: images/ReleaseNotes-Tooltip.png
 
-* Added an ability to create `alerts on strategies <https://www.tradingview.com/chart/?solution=43000481368>`__.
+* Added an ability to create `alerts on strategies <https://www.tradingview.com/support/solutions/43000481368>`__.
 
 * A new function `line.get_price() <https://www.tradingview.com/pine-script-reference/v4/#fun_line{dot}get_price>`__ can be used to determine the price level at which the line is located on a certain bar.
 
@@ -887,7 +887,7 @@ New functions for common indicators were added:
 * ``supertrend()`` - SuperTrend
 
 
-Added a detailed description of all the fields in the `Strategy Tester Report <https://www.tradingview.com/chart/?solution=43000561856/>`__
+Added a detailed description of all the fields in the `Strategy Tester Report <https://www.tradingview.com/support/solutions/43000561856/>`__
 
 
 February 2020

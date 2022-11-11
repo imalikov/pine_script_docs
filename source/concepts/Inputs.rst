@@ -21,7 +21,7 @@ Introduction
 
 Inputs allow scripts to receive values that users can change. Using them for key values will make your scripts more adaptable to user preferences.
 
-The following script plots a 20-period `simple moving average (SMA) <https://www.tradingview.com/u/?solution=43000502589>`__
+The following script plots a 20-period `simple moving average (SMA) <https://www.tradingview.com/support/solutions/43000502589>`__
 using ``ta.sma(close, 20)``. While it is simple to write, it is not very flexible because that specific MA is all it will ever plot::
 
     //@version=5

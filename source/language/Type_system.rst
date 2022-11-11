@@ -627,31 +627,31 @@ or
 
     myVar = float(na)
 
-To test if some value is `na <https://www.tradingview.com/pine-script-reference/v4/#var_na>`__, 
-a special function must be used: `na() <https://www.tradingview.com/pine-script-reference/v4/#fun_na>`__. For example:
+To test if some value is `na <https://www.tradingview.com/pine-script-reference/v5/#var_na>`__, 
+a special function must be used: `na() <https://www.tradingview.com/pine-script-reference/v5/#fun_na>`__. For example:
 
 ::
 
     myClose = na(myVar) ? 0 : close
 
-Do not use the ``==`` operator to test for `na <https://www.tradingview.com/pine-script-reference/v4/#var_na>`__ values, as this method is unreliable.
+Do not use the ``==`` operator to test for `na <https://www.tradingview.com/pine-script-reference/v5/#var_na>`__ values, as this method is unreliable.
 
-Designing your calculations so they are `na <https://www.tradingview.com/pine-script-reference/v4/#var_na>`__-resistant is often useful. 
+Designing your calculations so they are `na <https://www.tradingview.com/pine-script-reference/v5/#var_na>`__-resistant is often useful. 
 In this example, we define a condition that is ``true`` when the bar's `close <https://www.tradingview.com/pine-script-reference/v5/#var_close>`__ 
 is higher than the previous one. For this calculation to work correctly on the dataset's first bar where no previous close exists and ``close[1]`` will return 
-`na <https://www.tradingview.com/pine-script-reference/v4/#var_na>`__, we use the 
-`nz() <https://www.tradingview.com/pine-script-reference/v4/#fun_nz>`__ function to replace it with the current bar's 
+`na <https://www.tradingview.com/pine-script-reference/v5/#var_na>`__, we use the 
+`nz() <https://www.tradingview.com/pine-script-reference/v5/#fun_nz>`__ function to replace it with the current bar's 
 `open <https://www.tradingview.com/pine-script-reference/v5/#var_open>`__ for that special case:
 
 ::
 
     bool risingClose = close > nz(close[1], open)
 
-Protecting against `na <https://www.tradingview.com/pine-script-reference/v4/#var_na>`__ values can also be useful to prevent an initial 
-`na <https://www.tradingview.com/pine-script-reference/v4/#var_na>`__ value from propagating in a calculation's result on all bars. 
-This happens here because the initial value of ``ath`` is `na <https://www.tradingview.com/pine-script-reference/v4/#var_na>`__, and 
+Protecting against `na <https://www.tradingview.com/pine-script-reference/v5/#var_na>`__ values can also be useful to prevent an initial 
+`na <https://www.tradingview.com/pine-script-reference/v5/#var_na>`__ value from propagating in a calculation's result on all bars. 
+This happens here because the initial value of ``ath`` is `na <https://www.tradingview.com/pine-script-reference/v5/#var_na>`__, and 
 `math.max() <https://www.tradingview.com/pine-script-reference/v5/#fun_math{dot}max>`__ returns 
-`na <https://www.tradingview.com/pine-script-reference/v4/#var_na>`__ if one of its arguments is `na <https://www.tradingview.com/pine-script-reference/v4/#var_na>`__:
+`na <https://www.tradingview.com/pine-script-reference/v5/#var_na>`__ if one of its arguments is `na <https://www.tradingview.com/pine-script-reference/v5/#var_na>`__:
 
 ::
 
@@ -667,7 +667,7 @@ To protect against this, we could instead use:
     var float ath = na
     ath := math.max(nz(ath), high)
 
-where we are replacing any `na <https://www.tradingview.com/pine-script-reference/v4/#var_na>`__ values of ``ath`` with zero. Even better would be:
+where we are replacing any `na <https://www.tradingview.com/pine-script-reference/v5/#var_na>`__ values of ``ath`` with zero. Even better would be:
 
 ::
 
@@ -736,7 +736,7 @@ function to force the type conversion of the value we supply as a length to `ta.
     s = ta.sma(close, int(len))
     plot(s)
 
-Explicit type-casting can also be useful when declaring variables and initializing them to `na <https://www.tradingview.com/pine-script-reference/v4/#var_na>`__ which can be done in two ways::
+Explicit type-casting can also be useful when declaring variables and initializing them to `na <https://www.tradingview.com/pine-script-reference/v5/#var_na>`__ which can be done in two ways::
 
     // Cast `na` to the "label" type.
     lbl = label(na)

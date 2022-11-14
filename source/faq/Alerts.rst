@@ -145,7 +145,8 @@ Here is some example code that shows you how you can partially get around this l
 Please note that:
     * This example shows `alertcondition() <https://www.tradingview.com/pine-script-reference/v5/#fun_alertcondition>`__ only but the concept is 
     functionally the same using the ``alert()`` function.
-    * We can also use `placeholders <https://www.tradingview.com/support/solutions/43000531021#fun_alert>`__ to construct alert messages consisting of variables.
+    
+    * We can also use `placeholders <https://www.tradingview.com/support/solutions/43000531021>`__ to construct alert messages consisting of variables.
 
 
 

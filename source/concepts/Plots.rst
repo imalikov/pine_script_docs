@@ -503,10 +503,10 @@ Not all values can be plotted everywhere.
 Your script's visual space is always bound by upper and lower limits that are dynamically adjusted with the values plotted.
 An `RSI <https://www.tradingview.com/support/solutions/43000502338>`__ indicator will plot values between 0 and 100, 
 which is why it is usually displayed in a distinct *pane* — or area — above or below the chart.
-If `RSI <https://www.tradingview.com/support/solutions/43000502338>`__ values were plotted as an overlay on the chart, 
+If RSI values were plotted as an overlay on the chart, 
 the effect would be to distort the symbol's normal price scale, 
-unless it just hapenned to be close to `RSI <https://www.tradingview.com/support/solutions/43000502338>`__'s 0 to 100 range.
-This shows an `RSI <https://www.tradingview.com/support/solutions/43000502338>`__ signal line and a centerline at the 50 level, 
+unless it just hapenned to be close to RSI's 0 to 100 range.
+This shows an RSI signal line and a centerline at the 50 level, 
 with the script running in a separate pane:
 
 .. image:: images/Plots-Scale-01.png

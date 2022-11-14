@@ -523,7 +523,7 @@ with the script running in a separate pane:
     hline(50)
 
 Note that the *y* axis of our script's visual space is automatically sized using the range of values plotted, i.e., 
-the values of `RSI <https://www.tradingview.com/support/solutions/43000502338>`__. 
+the values of RSI. 
 See the page on :ref:`Colors <PageColors>` for more information on the 
 `color.from_gradient() <https://www.tradingview.com/pine-script-reference/v5/#fun_color{dot}from_gradient>`__ function used in the script.
 
@@ -538,7 +538,7 @@ This is what happens:
 .. image:: images/Plots-Scale-02.png
 
 The chart is on the BTCUSD symbol, whose `close <https://www.tradingview.com/pine-script-reference/v5/#var_close>`__
-prices are around 40000 during this period. Plotting values in the 40000 range makes our `RSI <https://www.tradingview.com/support/solutions/43000502338>`__ plots in the 0 to 100 range indiscernible.
+prices are around 40000 during this period. Plotting values in the 40000 range makes our RSI plots in the 0 to 100 range indiscernible.
 The same distorted plots would occur if we placed the `RSI <https://www.tradingview.com/support/solutions/43000502338>`__ indicator on the chart as an overlay.
 
 
@@ -550,8 +550,8 @@ If you are planning to merge two signals in one script, first consider the scale
 It is impossible, for example, to correctly plot an 
 `RSI <https://www.tradingview.com/support/solutions/43000502338>`__ and 
 a `MACD <https://www.tradingview.com/support/solutions/43000502344>`__ 
-in the same script's visual space because `RSI <https://www.tradingview.com/support/solutions/43000502338>`__
-has a fixed range (0 to 100) while `MACD <https://www.tradingview.com/support/solutions/43000502344>`__ doesn't, as it plots moving averages calculated on price.
+in the same script's visual space because RSI 
+has a fixed range (0 to 100) while MACD doesn't, as it plots moving averages calculated on price._
 
 If both your indicators used fixed ranges, you can shift the values of one of them so they do not overlap.
 We could, for example, plot both `RSI <https://www.tradingview.com/support/solutions/43000502338>`__ (0 to 100)

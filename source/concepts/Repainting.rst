@@ -148,7 +148,7 @@ in realtime is subject to producing calculations that may not be repeatable on h
 Let's look at this simple script. It detects crosses of the
 `close <https://www.tradingview.com/pine-script-reference/v5/#var_close>`__ value
 (in the realtime bar, this corresponds to the current price of the instrument) 
-over and under an `EMA <https://www.tradingview.com/support/solutions/43000592270#>`__::
+over and under an `EMA <https://www.tradingview.com/support/solutions/43000592270>`__::
 
     //@version=5
     indicator("Repainting", "", true)

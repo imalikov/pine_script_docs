@@ -1213,95 +1213,95 @@ Cash flow
 +-------------------------------------------------------------------------------------------------------------+-------------+--------------------------------------------+
 | **Financial**                                                                                               | ``period``  | ``financial_id``                           |
 +-------------------------------------------------------------------------------------------------------------+-------------+--------------------------------------------+
-| `Amortization <https://www.tradingview.com/support/solutions/43000564143>`__                                        | FQ, FY      | AMORTIZATION                               |
+| `Amortization <https://www.tradingview.com/support/solutions/43000564143>`__                                | FQ, FY      | AMORTIZATION                               |
 +-------------------------------------------------------------------------------------------------------------+-------------+--------------------------------------------+
-| `Capital expenditures - fixed assets <https://www.tradingview.com/support/solutions/43000564167>`__                 | FQ, FY      | CAPITAL_EXPENDITURES_FIXED_ASSETS          |
+| `Capital expenditures - fixed assets <https://www.tradingview.com/support/solutions/43000564167>`__         | FQ, FY      | CAPITAL_EXPENDITURES_FIXED_ASSETS          |
 +-------------------------------------------------------------------------------------------------------------+-------------+--------------------------------------------+
-| `Capital expenditures <https://www.tradingview.com/support/solutions/43000564166>`__                                | FQ, FY      | CAPITAL_EXPENDITURES                       |
+| `Capital expenditures <https://www.tradingview.com/support/solutions/43000564166>`__                        | FQ, FY      | CAPITAL_EXPENDITURES                       |
 +-------------------------------------------------------------------------------------------------------------+-------------+--------------------------------------------+
-| `Capital expenditures - other assets <https://www.tradingview.com/support/solutions/43000564168>`__                 | FQ, FY      | CAPITAL_EXPENDITURES_OTHER_ASSETS          |
+| `Capital expenditures - other assets <https://www.tradingview.com/support/solutions/43000564168>`__         | FQ, FY      | CAPITAL_EXPENDITURES_OTHER_ASSETS          |
 +-------------------------------------------------------------------------------------------------------------+-------------+--------------------------------------------+
-| `Cash from financing activities <https://www.tradingview.com/support/solutions/43000553629>`__                      | FQ, FY      | CASH_F_FINANCING_ACTIVITIES                |
+| `Cash from financing activities <https://www.tradingview.com/support/solutions/43000553629>`__              | FQ, FY      | CASH_F_FINANCING_ACTIVITIES                |
 +-------------------------------------------------------------------------------------------------------------+-------------+--------------------------------------------+
-| `Cash from investing activities <https://www.tradingview.com/support/solutions/43000553628>`__                      | FQ, FY      | CASH_F_INVESTING_ACTIVITIES                |
+| `Cash from investing activities <https://www.tradingview.com/support/solutions/43000553628>`__              | FQ, FY      | CASH_F_INVESTING_ACTIVITIES                |
 +-------------------------------------------------------------------------------------------------------------+-------------+--------------------------------------------+
-| `Cash from operating activities <https://www.tradingview.com/support/solutions/43000553627>`__                      | FQ, FY      | CASH_F_OPERATING_ACTIVITIES                |
+| `Cash from operating activities <https://www.tradingview.com/support/solutions/43000553627>`__              | FQ, FY      | CASH_F_OPERATING_ACTIVITIES                |
 +-------------------------------------------------------------------------------------------------------------+-------------+--------------------------------------------+
-| `Deferred taxes (cash flow) <https://www.tradingview.com/support/solutions/43000564144>`__                          | FQ, FY      | CASH_FLOW_DEFERRED_TAXES                   |
+| `Deferred taxes (cash flow) <https://www.tradingview.com/support/solutions/43000564144>`__                  | FQ, FY      | CASH_FLOW_DEFERRED_TAXES                   |
 +-------------------------------------------------------------------------------------------------------------+-------------+--------------------------------------------+
-| `Depreciation & amortization (cash flow) <https://www.tradingview.com/support/solutions/43000563892>`__             | FQ, FY      | CASH_FLOW_DEPRECATION_N_AMORTIZATION       |
+| `Depreciation & amortization (cash flow) <https://www.tradingview.com/support/solutions/43000563892>`__     | FQ, FY      | CASH_FLOW_DEPRECATION_N_AMORTIZATION       |
 +-------------------------------------------------------------------------------------------------------------+-------------+--------------------------------------------+
-| `Change in accounts payable <https://www.tradingview.com/support/solutions/43000564150>`__                          | FQ, FY      | CHANGE_IN_ACCOUNTS_PAYABLE                 |
+| `Change in accounts payable <https://www.tradingview.com/support/solutions/43000564150>`__                  | FQ, FY      | CHANGE_IN_ACCOUNTS_PAYABLE                 |
 +-------------------------------------------------------------------------------------------------------------+-------------+--------------------------------------------+
-| `Change in accounts receivable <https://www.tradingview.com/support/solutions/43000564148>`__                       | FQ, FY      | CHANGE_IN_ACCOUNTS_RECEIVABLE              |
+| `Change in accounts receivable <https://www.tradingview.com/support/solutions/43000564148>`__               | FQ, FY      | CHANGE_IN_ACCOUNTS_RECEIVABLE              |
 +-------------------------------------------------------------------------------------------------------------+-------------+--------------------------------------------+
-| `Change in accrued expenses <https://www.tradingview.com/support/solutions/43000564151>`__                          | FQ, FY      | CHANGE_IN_ACCRUED_EXPENSES                 |
+| `Change in accrued expenses <https://www.tradingview.com/support/solutions/43000564151>`__                  | FQ, FY      | CHANGE_IN_ACCRUED_EXPENSES                 |
 +-------------------------------------------------------------------------------------------------------------+-------------+--------------------------------------------+
-| `Change in inventories <https://www.tradingview.com/support/solutions/43000564153>`__                               | FQ, FY      | CHANGE_IN_INVENTORIES                      |
+| `Change in inventories <https://www.tradingview.com/support/solutions/43000564153>`__                       | FQ, FY      | CHANGE_IN_INVENTORIES                      |
 +-------------------------------------------------------------------------------------------------------------+-------------+--------------------------------------------+
-| `Change in other assets/liabilities <https://www.tradingview.com/support/solutions/43000564154>`__                  | FQ, FY      | CHANGE_IN_OTHER_ASSETS                     |
+| `Change in other assets/liabilities <https://www.tradingview.com/support/solutions/43000564154>`__          | FQ, FY      | CHANGE_IN_OTHER_ASSETS                     |
 +-------------------------------------------------------------------------------------------------------------+-------------+--------------------------------------------+
-| `Change in taxes payable <https://www.tradingview.com/support/solutions/43000564149>`__                             | FQ, FY      | CHANGE_IN_TAXES_PAYABLE                    |
+| `Change in taxes payable <https://www.tradingview.com/support/solutions/43000564149>`__                     | FQ, FY      | CHANGE_IN_TAXES_PAYABLE                    |
 +-------------------------------------------------------------------------------------------------------------+-------------+--------------------------------------------+
-| `Changes in working capital <https://www.tradingview.com/support/solutions/43000564147>`__                          | FQ, FY      | CHANGES_IN_WORKING_CAPITAL                 |
+| `Changes in working capital <https://www.tradingview.com/support/solutions/43000564147>`__                  | FQ, FY      | CHANGES_IN_WORKING_CAPITAL                 |
 +-------------------------------------------------------------------------------------------------------------+-------------+--------------------------------------------+
-| `Common dividends paid <https://www.tradingview.com/support/solutions/43000564185>`__                               | FQ, FY      | COMMON_DIVIDENDS_CASH_FLOW                 |
+| `Common dividends paid <https://www.tradingview.com/support/solutions/43000564185>`__                       | FQ, FY      | COMMON_DIVIDENDS_CASH_FLOW                 |
 +-------------------------------------------------------------------------------------------------------------+-------------+--------------------------------------------+
-| `Depreciation/depletion <https://www.tradingview.com/support/solutions/43000564142>`__                              | FQ, FY      | DEPRECIATION_DEPLETION                     |
+| `Depreciation/depletion <https://www.tradingview.com/support/solutions/43000564142>`__                      | FQ, FY      | DEPRECIATION_DEPLETION                     |
 +-------------------------------------------------------------------------------------------------------------+-------------+--------------------------------------------+
-| `Free cash flow <https://www.tradingview.com/support/solutions/43000553630>`__                                      | FQ, FY      | FREE_CASH_FLOW                             |
+| `Free cash flow <https://www.tradingview.com/support/solutions/43000553630>`__                              | FQ, FY      | FREE_CASH_FLOW                             |
 +-------------------------------------------------------------------------------------------------------------+-------------+--------------------------------------------+
-| `Funds from operations <https://www.tradingview.com/support/solutions/43000563886>`__                               | FQ, FY      | FUNDS_F_OPERATIONS                         |
+| `Funds from operations <https://www.tradingview.com/support/solutions/43000563886>`__                       | FQ, FY      | FUNDS_F_OPERATIONS                         |
 +-------------------------------------------------------------------------------------------------------------+-------------+--------------------------------------------+
-| `Issuance/retirement of debt, net <https://www.tradingview.com/support/solutions/43000564172>`__                    | FQ, FY      | ISSUANCE_OF_DEBT_NET                       |
+| `Issuance/retirement of debt, net <https://www.tradingview.com/support/solutions/43000564172>`__            | FQ, FY      | ISSUANCE_OF_DEBT_NET                       |
 +-------------------------------------------------------------------------------------------------------------+-------------+--------------------------------------------+
-| `Issuance/retirement of long term debt <https://www.tradingview.com/support/solutions/43000564175>`__               | FQ, FY      | ISSUANCE_OF_LONG_TERM_DEBT                 |
+| `Issuance/retirement of long term debt <https://www.tradingview.com/support/solutions/43000564175>`__       | FQ, FY      | ISSUANCE_OF_LONG_TERM_DEBT                 |
 +-------------------------------------------------------------------------------------------------------------+-------------+--------------------------------------------+
-| `Issuance/retirement of other debt <https://www.tradingview.com/support/solutions/43000564178>`__                   | FQ, FY      | ISSUANCE_OF_OTHER_DEBT                     |
+| `Issuance/retirement of other debt <https://www.tradingview.com/support/solutions/43000564178>`__           | FQ, FY      | ISSUANCE_OF_OTHER_DEBT                     |
 +-------------------------------------------------------------------------------------------------------------+-------------+--------------------------------------------+
-| `Issuance/retirement of short term debt <https://www.tradingview.com/support/solutions/43000564173>`__              | FQ, FY      | ISSUANCE_OF_SHORT_TERM_DEBT                |
+| `Issuance/retirement of short term debt <https://www.tradingview.com/support/solutions/43000564173>`__      | FQ, FY      | ISSUANCE_OF_SHORT_TERM_DEBT                |
 +-------------------------------------------------------------------------------------------------------------+-------------+--------------------------------------------+
-| `Issuance/retirement of stock, net <https://www.tradingview.com/support/solutions/43000564169>`__                   | FQ, FY      | ISSUANCE_OF_STOCK_NET                      |
+| `Issuance/retirement of stock, net <https://www.tradingview.com/support/solutions/43000564169>`__           | FQ, FY      | ISSUANCE_OF_STOCK_NET                      |
 +-------------------------------------------------------------------------------------------------------------+-------------+--------------------------------------------+
-| `Net income (cash flow) <https://www.tradingview.com/support/solutions/43000563888>`__                              | FQ, FY      | NET_INCOME_STARTING_LINE                   |
+| `Net income (cash flow) <https://www.tradingview.com/support/solutions/43000563888>`__                      | FQ, FY      | NET_INCOME_STARTING_LINE                   |
 +-------------------------------------------------------------------------------------------------------------+-------------+--------------------------------------------+
-| `Non-cash items <https://www.tradingview.com/support/solutions/43000564146>`__                                      | FQ, FY      | NON_CASH_ITEMS                             |
+| `Non-cash items <https://www.tradingview.com/support/solutions/43000564146>`__                              | FQ, FY      | NON_CASH_ITEMS                             |
 +-------------------------------------------------------------------------------------------------------------+-------------+--------------------------------------------+
-| `Other financing cash flow items, total <https://www.tradingview.com/support/solutions/43000564179>`__              | FQ, FY      | OTHER_FINANCING_CASH_FLOW_ITEMS_TOTAL      |
+| `Other financing cash flow items, total <https://www.tradingview.com/support/solutions/43000564179>`__      | FQ, FY      | OTHER_FINANCING_CASH_FLOW_ITEMS_TOTAL      |
 +-------------------------------------------------------------------------------------------------------------+-------------+--------------------------------------------+
-| `Financing activities - other sources <https://www.tradingview.com/support/solutions/43000564181>`__                | FQ, FY      | OTHER_FINANCING_CASH_FLOW_SOURCES          |
+| `Financing activities - other sources <https://www.tradingview.com/support/solutions/43000564181>`__        | FQ, FY      | OTHER_FINANCING_CASH_FLOW_SOURCES          |
 +-------------------------------------------------------------------------------------------------------------+-------------+--------------------------------------------+
-| `Financing activities - other uses <https://www.tradingview.com/support/solutions/43000564182>`__                   | FQ, FY      | OTHER_FINANCING_CASH_FLOW_USES             |
+| `Financing activities - other uses <https://www.tradingview.com/support/solutions/43000564182>`__           | FQ, FY      | OTHER_FINANCING_CASH_FLOW_USES             |
 +-------------------------------------------------------------------------------------------------------------+-------------+--------------------------------------------+
-| `Other investing cash flow items, total <https://www.tradingview.com/support/solutions/43000564163>`__              | FQ, FY      | OTHER_INVESTING_CASH_FLOW_ITEMS_TOTAL      |
+| `Other investing cash flow items, total <https://www.tradingview.com/support/solutions/43000564163>`__      | FQ, FY      | OTHER_INVESTING_CASH_FLOW_ITEMS_TOTAL      |
 +-------------------------------------------------------------------------------------------------------------+-------------+--------------------------------------------+
-| `Investing activities - other sources <https://www.tradingview.com/support/solutions/43000564164>`__                | FQ, FY      | OTHER_INVESTING_CASH_FLOW_SOURCES          |
+| `Investing activities - other sources <https://www.tradingview.com/support/solutions/43000564164>`__        | FQ, FY      | OTHER_INVESTING_CASH_FLOW_SOURCES          |
 +-------------------------------------------------------------------------------------------------------------+-------------+--------------------------------------------+
-| `Investing activities - other uses <https://www.tradingview.com/support/solutions/43000564165>`__                   | FQ, FY      | OTHER_INVESTING_CASH_FLOW_USES             |
+| `Investing activities - other uses <https://www.tradingview.com/support/solutions/43000564165>`__           | FQ, FY      | OTHER_INVESTING_CASH_FLOW_USES             |
 +-------------------------------------------------------------------------------------------------------------+-------------+--------------------------------------------+
-| `Preferred dividends paid <https://www.tradingview.com/support/solutions/43000564186>`__                            | FQ, FY      | PREFERRED_DIVIDENDS_CASH_FLOW              |
+| `Preferred dividends paid <https://www.tradingview.com/support/solutions/43000564186>`__                    | FQ, FY      | PREFERRED_DIVIDENDS_CASH_FLOW              |
 +-------------------------------------------------------------------------------------------------------------+-------------+--------------------------------------------+
-| `Purchase/acquisition of business <https://www.tradingview.com/support/solutions/43000564159>`__                    | FQ, FY      | PURCHASE_OF_BUSINESS                       |
+| `Purchase/acquisition of business <https://www.tradingview.com/support/solutions/43000564159>`__            | FQ, FY      | PURCHASE_OF_BUSINESS                       |
 +-------------------------------------------------------------------------------------------------------------+-------------+--------------------------------------------+
-| `Purchase of investments <https://www.tradingview.com/support/solutions/43000564162>`__                             | FQ, FY      | PURCHASE_OF_INVESTMENTS                    |
+| `Purchase of investments <https://www.tradingview.com/support/solutions/43000564162>`__                     | FQ, FY      | PURCHASE_OF_INVESTMENTS                    |
 +-------------------------------------------------------------------------------------------------------------+-------------+--------------------------------------------+
-| `Repurchase of common & preferred stock <https://www.tradingview.com/support/solutions/43000564171>`__              | FQ, FY      | PURCHASE_OF_STOCK                          |
+| `Repurchase of common & preferred stock <https://www.tradingview.com/support/solutions/43000564171>`__      | FQ, FY      | PURCHASE_OF_STOCK                          |
 +-------------------------------------------------------------------------------------------------------------+-------------+--------------------------------------------+
-| `Purchase/sale of business, net <https://www.tradingview.com/support/solutions/43000564156>`__                      | FQ, FY      | PURCHASE_SALE_BUSINESS                     |
+| `Purchase/sale of business, net <https://www.tradingview.com/support/solutions/43000564156>`__              | FQ, FY      | PURCHASE_SALE_BUSINESS                     |
 +-------------------------------------------------------------------------------------------------------------+-------------+--------------------------------------------+
-| `Purchase/sale of investments, net <https://www.tradingview.com/support/solutions/43000564160>`__                   | FQ, FY      | PURCHASE_SALE_INVESTMENTS                  |
+| `Purchase/sale of investments, net <https://www.tradingview.com/support/solutions/43000564160>`__           | FQ, FY      | PURCHASE_SALE_INVESTMENTS                  |
 +-------------------------------------------------------------------------------------------------------------+-------------+--------------------------------------------+
-| `Reduction of long term debt <https://www.tradingview.com/support/solutions/43000564177>`__                         | FQ, FY      | REDUCTION_OF_LONG_TERM_DEBT                |
+| `Reduction of long term debt <https://www.tradingview.com/support/solutions/43000564177>`__                 | FQ, FY      | REDUCTION_OF_LONG_TERM_DEBT                |
 +-------------------------------------------------------------------------------------------------------------+-------------+--------------------------------------------+
-| `Sale of common & preferred stock <https://www.tradingview.com/support/solutions/43000564170>`__                    | FQ, FY      | SALE_OF_STOCK                              |
+| `Sale of common & preferred stock <https://www.tradingview.com/support/solutions/43000564170>`__            | FQ, FY      | SALE_OF_STOCK                              |
 +-------------------------------------------------------------------------------------------------------------+-------------+--------------------------------------------+
-| `Sale of fixed assets & businesses <https://www.tradingview.com/support/solutions/43000564158>`__                   | FQ, FY      | SALES_OF_BUSINESS                          |
+| `Sale of fixed assets & businesses <https://www.tradingview.com/support/solutions/43000564158>`__           | FQ, FY      | SALES_OF_BUSINESS                          |
 +-------------------------------------------------------------------------------------------------------------+-------------+--------------------------------------------+
-| `Sale/maturity of investments <https://www.tradingview.com/support/solutions/43000564161>`__                        | FQ, FY      | SALES_OF_INVESTMENTS                       |
+| `Sale/maturity of investments <https://www.tradingview.com/support/solutions/43000564161>`__                | FQ, FY      | SALES_OF_INVESTMENTS                       |
 +-------------------------------------------------------------------------------------------------------------+-------------+--------------------------------------------+
-| `Supplying of long term debt <https://www.tradingview.com/support/solutions/43000564176>`__                         | FQ, FY      | SUPPLYING_OF_LONG_TERM_DEBT                |
+| `Supplying of long term debt <https://www.tradingview.com/support/solutions/43000564176>`__                 | FQ, FY      | SUPPLYING_OF_LONG_TERM_DEBT                |
 +-------------------------------------------------------------------------------------------------------------+-------------+--------------------------------------------+
-| `Total cash dividends paid <https://www.tradingview.com/support/solutions/43000564183>`__                           | FQ, FY      | TOTAL_CASH_DIVIDENDS_PAID                  |
+| `Total cash dividends paid <https://www.tradingview.com/support/solutions/43000564183>`__                   | FQ, FY      | TOTAL_CASH_DIVIDENDS_PAID                  |
 +-------------------------------------------------------------------------------------------------------------+-------------+--------------------------------------------+
 
 

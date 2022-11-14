@@ -193,7 +193,7 @@ the more chances others will use them. Providing examples demonstrating how to u
 House Rules
 ^^^^^^^^^^^
 
-Pine libraries are considered public domain code in our `House Rules on Script Publishing <https://www.tradingview.com/house-rules/?solution=43000590599>`__, 
+Pine libraries are considered public domain code in our `House Rules on Script Publishing <https://www.tradingview.com/support/solutions/43000590599>`__, 
 which entails that, contrary to open-source indicators and strategies, permission is **not** required from their author if you reuse their functions in your open-source scripts. 
 If you intend to reuse code from a Pine Script™ library's functions in a public, closed-source publication (protected or invite-only), explicit permission for reuse in that form **is** required from its author.
 

@@ -86,14 +86,14 @@ Here, we are pointing to the "Editors' Picks" section, but there are many other 
 .. image:: images/FirstSteps-BrowsingCommunityScripts-01.png
 
 You can also search for scripts using the homepage's "Search" field, and filter scripts using different criteria. 
-The Help Center has a page explaining the `different types of scripts <https://www.tradingview.com/scripts/?solution=43000558522>`__ that are available.
+The Help Center has a page explaining the `different types of scripts <https://www.tradingview.com/support/solutions/43000558522>`__ that are available.
 
 The scripts stream shows script *widgets*, i.e., placeholders showing a miniature view of each publication's chart and description, and its author.
 By clicking on it you will open the *script's page*, where you can see the script on a chart, read the author's description, like the script, leave comments or 
 read the script's source code if it was published open-source.
 
 Once you find an interesting script in the Community Scripts, follow the instructions in the Help Center to `load it on your chart 
-<https://www.tradingview.com/script/?solution=43000555216>`__.
+<https://www.tradingview.com/support/solutions/43000555216>`__.
 
 
 

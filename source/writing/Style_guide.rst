@@ -70,7 +70,7 @@ While other arrangements are syntactically correct, this is how we recommend org
 If you publish your open-source scripts publicly on TradingView (scripts can also be published privately), 
 your open-source code is by default protected by the Mozilla license. You may choose any other license you prefer.
 
-The reuse of code from those scripts is governed by our `House Rules on Script Publishing <https://www.tradingview.com/house-rules/?solution=43000590599>`__ 
+The reuse of code from those scripts is governed by our `House Rules on Script Publishing <https://www.tradingview.com/support/solutions/43000590599>`__ 
 which preempt the author's license.
 
 The standard license comments appearing at the beginning of scripts are:

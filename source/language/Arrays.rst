@@ -263,8 +263,23 @@ When looping through array elements when the array's size is unknown, you can us
             array.set(a, i, i)
     plot(array.sum(a))
 
-This takes advantage of the fact that `for <https://www.tradingview.com/pine-script-reference/v5/#>`__ loops do not execute if the ``to`` expression is 
+This takes advantage of the fact that `for <https://www.tradingview.com/pine-script-reference/v5/#op_for>`__ loops do not execute if the ``to`` expression is 
 `na <https://www.tradingview.com/pine-script-reference/v5/#var_na>`__. Note that the ``to`` value is only evaluated once, upon entry.
+
+A much more recommended method to loop through array elements when the array's size is unknown is to use a `for...in <https://www.tradingview.com/pine-script-reference/v5/#op_for{dot}{dot}{dot}in>`__ loop. 
+This method is a variation of the traditional for loop that dynamically adjusts the number of iterations based on the array's size. 
+Here is an example of how you can write the code example from above using this new method:
+
+::
+
+    //@version=5
+    indicator("Protected `for` loop")
+    sizeInput = input.int(0, "Array size", minval = 0, maxval = 100000)
+    a = array.new_float(sizeInput)
+    if barstate.isfirst
+        for i = 0 to (array.size(a) == 0 ? na : array.size(a) - 1)
+            array.set(a, i, i)
+    plot(array.sum(a))
 
 A `while <https://www.tradingview.com/pine-script-reference/v5/#op_while>`__ statement can also be used:
 
@@ -272,7 +287,7 @@ A `while <https://www.tradingview.com/pine-script-reference/v5/#op_while>`__ sta
 
     //@version=5
     indicator("Protected `while` loop")
-    sizeInput = input.int(2, "Array size", minval = 0, maxval = 100000)
+    int sizeInput = input.int(2, "Array size", minval = 0, maxval = 100000)
     var a = array.new_float(sizeInput)
     if barstate.isfirst
         i = 0

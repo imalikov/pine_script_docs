@@ -255,49 +255,56 @@ When looping through array elements when the array's size is unknown, you can us
 ::
 
     //@version=5
-    indicator("Protected `for` loop")
-    sizeInput = input.int(0, "Array size", minval = 0, maxval = 100000)
-    a = array.new_float(sizeInput)
-    if barstate.isfirst
-        for i = 0 to (array.size(a) == 0 ? na : array.size(a) - 1)
-            array.set(a, i, i)
-    plot(array.sum(a))
+    indicator("Protected `for` loop", overlay = true)
+    array<float> a = request.security_lower_tf(syminfo.tickerid, "1", close)
 
-This takes advantage of the fact that `for <https://www.tradingview.com/pine-script-reference/v5/#op_for>`__ loops do not execute if the ``to`` expression is 
-`na <https://www.tradingview.com/pine-script-reference/v5/#var_na>`__. Note that the ``to`` value is only evaluated once, upon entry.
+    string labelText = ""
+    for i = 0 to (array.size(a) == 0 ? na : array.size(a) - 1)
+        labelText += str.tostring(array.get(a, i)) + "\n"
+
+    label.new(bar_index, high, text = labelText)
+
+.. note:: 
+   - We use the `request.security_lower_tf() <https://www.tradingview.com/pine-script-reference/v5/#fun_request{dot}security_lower_tf>`__ function
+     which returns an array of `close <https://www.tradingview.com/pine-script-reference/v5/#var_close>`__ prices at the ``1 minute`` timeframe. 
+   - This code example will throw an error if you use it on a chart timeframe smaller than ``1 minute``.
+   - `for <https://www.tradingview.com/pine-script-reference/v5/#op_for>`__ loops do not execute if the ``to`` expression is 
+     `na <https://www.tradingview.com/pine-script-reference/v5/#var_na>`__. Note that the ``to`` value is only evaluated once upon entry.
 
 A much more recommended method to loop through array elements when the array's size is unknown is to use a `for...in <https://www.tradingview.com/pine-script-reference/v5/#op_for{dot}{dot}{dot}in>`__ loop. 
 This method is a variation of the traditional for loop that dynamically adjusts the number of iterations based on the array's size. 
-Here is an example of how you can write the code example from above using this new method:
+Here is an example of how you can write the code example from above using this method:
 
 ::
 
     //@version=5
-    indicator("Protected `for` loop")
-    sizeInput = input.int(0, "Array size", minval = 0, maxval = 100000)
-    a = array.new_float(sizeInput)
-    if barstate.isfirst
-        for i = 0 to (array.size(a) == 0 ? na : array.size(a) - 1)
-            array.set(a, i, i)
-    plot(array.sum(a))
+    indicator("`for...in` loop", overlay = true)
+    array<float> a = request.security_lower_tf(syminfo.tickerid, "1", close)
 
-A `while <https://www.tradingview.com/pine-script-reference/v5/#op_while>`__ statement can also be used:
+    string labelText = ""
+    for price in a
+        labelText += str.tostring(price) + "\n"
+
+    label.new(bar_index, high, text = labelText)
+
+A `while <https://www.tradingview.com/pine-script-reference/v5/#op_while>`__ loop statement can also be used:
 
 ::
 
     //@version=5
-    indicator("Protected `while` loop")
-    int sizeInput = input.int(2, "Array size", minval = 0, maxval = 100000)
-    var a = array.new_float(sizeInput)
-    if barstate.isfirst
-        i = 0
-        while i < array.size(a)
-    	    array.set(a, i, i)
-       	    i += 1
-    plot(array.sum(a))
+    indicator("`while` loop", overlay = true)
+    array<float> a = request.security_lower_tf(syminfo.tickerid, "1", close)
+
+    string labelText = ""
+    int i = 0
+    while i < array.size(a)
+        labelText += str.tostring(array.get(a, i)) + "\n"
+        i += 1
+
+    label.new(bar_index, high, text = labelText)
 
 
-
+ 
 Scope
 -----
 

@@ -17,18 +17,26 @@ Release notes
 
 This page contains release notes of notable changes in Pine Script™.
 
-2022
-----
 
+November 2022
+------------
+
+Fixed behaviour of `math.round_to_mintick()  <https://www.tradingview.com/pine-script-reference/v5/#fun_math{dot}round_to_mintick>`_ function. For 'na' values it returns 'na'.
+ 
 October 2022
-^^^^^^^^^^^^
+------------
 
 Pine Script™ now has a new, more powerful and better-integrated editor. Read `our blog <https://www.tradingview.com/blog/en/new-vsc-style-pine-script-editor-34159/>`_ to find out everything to know about all the new features and upgrades.
 
 New overload for the `fill() <https://www.tradingview.com/pine-script-reference/v5/#fun_fill>`_ function was added. Now it can create vertical gradients. More info about it in the `blog post <https://www.tradingview.com/blog/en/pine-script-vertical-gradients-33586/>`_.
 
+
+A new function was added:
+
+* `str.format_time() <https://www.tradingview.com/pine-script-reference/v5/#fun_str{dot}format_time>`_ - Converts a timestamp to a formatted string using the specified format and time zone.
+
 September 2022
-^^^^^^^^^^^^^^
+-------------
 
 The ``text_font_family`` parameter now allows the selection of a monospace font in `label.new() <https://www.tradingview.com/pine-script-reference/v5/#fun_label{dot}new>`_, `box.new() <https://www.tradingview.com/pine-script-reference/v5/#fun_box{dot}new>`_ and `table.cell() <https://www.tradingview.com/pine-script-reference/v5/#fun_table{dot}cell>`_ function calls, which makes it easier to align text vertically. Its arguments can be:
 
@@ -42,7 +50,8 @@ The accompanying setter functions are:
 * `table.cell_set_text_font_family() <https://www.tradingview.com/pine-script-reference/v5/#fun_table{dot}cell_set_text_font_family>`_ - The function sets the font family of the text inside the cell.
 
 August 2022
-^^^^^^^^^^^
+
+-----------
 
 A new label style `label.style_text_outline <https://www.tradingview.com/pine-script-reference/v5/#var_label{dot}style_text_outline>`_ was added.
 
@@ -73,6 +82,10 @@ A new annotation ``//@strategy_alert_message`` was added. If the annotation is a
     // @strategy_alert_message My Default Alert Message
     strategy("My Strategy")
     plot(close)
+
+
+
+
 
 July 2022
 ^^^^^^^^^
@@ -322,7 +335,6 @@ Added new functions to clone drawings:
 * `line.copy() <https://www.tradingview.com/pine-script-reference/v5/#fun_line{dot}copy>`__ 
 * `label.copy() <https://www.tradingview.com/pine-script-reference/v5/#fun_label{dot}copy>`__ 
 * `box.copy() <https://www.tradingview.com/pine-script-reference/v5/#fun_box{dot}copy>`__ 
-
 
 
 2021
@@ -706,7 +718,7 @@ The following functions now accept a series length parameter:
 * `variance() <https://www.tradingview.com/pine-script-reference/v4/#fun_variance>`__
 * `wpr() <https://www.tradingview.com/pine-script-reference/v4/#fun_wpr>`__
 
-A new type of alerts was added - script alerts. More information can be found in our `Help Center <https://www.tradingview.com/chart/?solution=43000597494/>`__.
+A new type of alerts was added - script alerts. More information can be found in our `Help Center <https://www.tradingview.com/support/solutions/43000597494/>`__.
 
 
 
@@ -821,7 +833,7 @@ Please note that you need to reapply the indicator in order for the `resolution`
     
 .. image:: images/ReleaseNotes-Tooltip.png
 
-* Added an ability to create `alerts on strategies <https://www.tradingview.com/chart/?solution=43000481368>`__.
+* Added an ability to create `alerts on strategies <https://www.tradingview.com/support/solutions/43000481368>`__.
 
 * A new function `line.get_price() <https://www.tradingview.com/pine-script-reference/v4/#fun_line{dot}get_price>`__ can be used to determine the price level at which the line is located on a certain bar.
 
@@ -878,7 +890,7 @@ New functions for common indicators were added:
 * ``supertrend()`` - SuperTrend
 
 
-Added a detailed description of all the fields in the `Strategy Tester Report <https://www.tradingview.com/chart/?solution=43000561856/>`__
+Added a detailed description of all the fields in the `Strategy Tester Report <https://www.tradingview.com/support/solutions/43000561856/>`__
 
 
 February 2020

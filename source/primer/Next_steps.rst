@@ -86,7 +86,7 @@ Publishing scripts
 
 TradingView is home to a large community of Pine Script™ programmers and millions of traders from all around the world. Once you become proficient enough in Pine Script™, 
 you can choose to share your scripts with other traders. Before doing so, please take the time to learn Pine Script™ well-enough to supply traders with an original and reliable tool.
-All publicly published scripts are analyzed by our team of moderators and must comply with our `Script Publishing Rules <https://www.tradingview.com/house-rules/?solution=43000590599>`__, 
+All publicly published scripts are analyzed by our team of moderators and must comply with our `Script Publishing Rules <https://www.tradingview.com/support/solutions/43000590599>`__, 
 which require them to be original and well-documented.
 
 If want to use Pine scripts for your own use, simply write them in the Pine Script™ Editor and add them to your chart from there; 

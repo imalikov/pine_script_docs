@@ -22,7 +22,7 @@ Introduction
 
 TradingView alerts run 24x7 on our servers and do not require users to be logged in to execute. Alerts are created from the charts user interface (*UI*). 
 You will find all the information necessary to understand how alerts work and how to create them from the charts UI in the 
-Help Center's `About TradingView alerts <https://www.tradingview.com/?solution=43000520149>`__ page.
+Help Center's `About TradingView alerts <https://www.tradingview.com/support/solutions/43000520149>`__ page.
 
 Some of the alert types available on TradingView (*generic alerts*, *drawing alerts* and *script alerts* on order fill events) are created from symbols or 
 scripts loaded on the chart and do not require specific coding. Any user can create these types of alerts from the charts UI.

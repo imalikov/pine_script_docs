@@ -27,14 +27,14 @@ Script visibility and access
 When you publish a script, you control its **visibility** and **access**:
 
 - **Visibility** is controlled by choosing to publish **publicly** or **privately**. 
-  See `How do private ideas and scripts differ from public ones? <https://www.tradingview.com/?solution=43000548335>`__ in the Help Center for more details. 
+  See `How do private ideas and scripts differ from public ones? <https://www.tradingview.com/support/solutions/43000548335>`__ in the Help Center for more details. 
   Publish publicly when you have written a script you think can be useful to TradingViewers. Public scripts are subject to moderation. 
-  To avoid moderation, ensure your publication complies with our `House Rules <https://www.tradingview.com/?solution=43000591638>`__ and 
-  `Script Publishing Rules <https://www.tradingview.com/?solution=43000590599>`__. 
+  To avoid moderation, ensure your publication complies with our `House Rules <https://www.tradingview.com/support/solutions/43000591638>`__ and 
+  `Script Publishing Rules <https://www.tradingview.com/support/solutions/43000590599>`__. 
   Publish privately when you don't want your script visible to all other users, but want to share it with a few friends.
 - **Access** determines if users will see your source code, and how they will be able to use your script. 
   There are three access types: *open*, *protected* (reserved to paid accounts) or *invite-only* (reserved to Premium accounts). 
-  See `What are the different types of published scripts? <https://www.tradingview.com/?solution=43000482573>`__ in the Help Center for more details.
+  See `What are the different types of published scripts? <https://www.tradingview.com/support/solutions/43000482573>`__ in the Help Center for more details.
 
 
 When you publish a script
@@ -69,9 +69,9 @@ When you publish a public script:
 
 - Your script will be inluded in our `Community Scripts <https://www.tradingview.com/scripts/>`__ 
   where it becomes visible to the millions of TradingViewers on all internationalized versions of the site.
-- Your publication must comply with `House Rules <https://www.tradingview.com/?solution=43000591638>`__ 
-  and `Script Publishing Rules <https://www.tradingview.com/?solution=43000590599>`__. 
-- If your script is an invite-only script, you must comply with our `Vendor Requirements <https://www.tradingview.com/?solution=43000549951>`__.
+- Your publication must comply with `House Rules <https://www.tradingview.com/support/solutions/43000591638>`__ 
+  and `Script Publishing Rules <https://www.tradingview.com/support/solutions/43000590599>`__. 
+- If your script is an invite-only script, you must comply with our `Vendor Requirements <https://www.tradingview.com/support/solutions/43000549951>`__.
 - It becomes accessible through the search functions for scripts.
 - You will not be able to edit your original description or its title, nor change its public/private visibility, nor its access type (open-source, protected, invite-only).
 - You will not be able to delete your publication.
@@ -114,7 +114,7 @@ Invite-only
 
 The **invite-only** access type protects both the script's code and its use. The publisher of an invite-only script must explicitly grant access to individual users. 
 Invite-only scripts are mostly used by script vendors providing paid access to their scripts. 
-Only Premium accounts can publish invite-only scripts, and they must comply with our `Vendor Requirements <https://www.tradingview.com/?solution=43000549951>`__.
+Only Premium accounts can publish invite-only scripts, and they must comply with our `Vendor Requirements <https://www.tradingview.com/support/solutions/43000549951>`__.
 
 TradingView does not benefit from script sales. Transactions concerning invite-only scripts are strictly between users and vendors; they do not involve TradingView.
 

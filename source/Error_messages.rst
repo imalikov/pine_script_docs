@@ -17,6 +17,54 @@ Error messages
 
 
 
+The if statement is too long
+----------------------------
+
+This error occurs when the indented code inside an `if statement <https://www.tradingview.com/pine-script-reference/v5/#op_if>`__ is too large for the compiler. 
+Because of how the compiler works, you won't receive a message telling you exactly how many lines of code you are over the limit. 
+The only solution now is to break up your `if statement <https://www.tradingview.com/pine-script-reference/v5/#op_if>`__ into smaller parts 
+(functions or smaller `if statements <https://www.tradingview.com/pine-script-reference/v5/#op_if>`__). 
+The example below shows a reasonably lengthy `if statement <https://www.tradingview.com/pine-script-reference/v5/#op_if>`__; theoretically, 
+this would throw ``line 4: if statement is too long``.
+
+::
+
+    //@version=5
+    indicator("My script")
+
+    var e = 0
+    if barstate.islast
+        a = 1
+        b = 2
+        c = 3
+        d = 4
+        e := a + b + c + d
+        
+    plot(e)
+
+To fix this code, you could move these lines into their own function:
+
+::
+
+    //@version=5
+    indicator("My script")
+
+    var e = 0
+    doSomeWork() =>
+        a = 1
+        b = 2
+        c = 3
+        d = 4
+        
+        result = a + b + c + d
+        
+    if barstate.islast
+        e := doSomeWork()
+        
+    plot(e)
+
+
+
 Script requesting too many securities
 -------------------------------------
 

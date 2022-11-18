@@ -25,13 +25,13 @@ You can display text using one of the following methods:
 
  - The `plotchar() <https://www.tradingview.com/pine-script-reference/v5/#fun_plotchar>`__ or 
    `plotshape() <https://www.tradingview.com/pine-script-reference/v5/#fun_plotshape>`__ functions.
-        The `plotchar() <https://www.tradingview.com/pine-script-reference/v5/#fun_plotchar>`__ or 
-        `plotshape() <https://www.tradingview.com/pine-script-reference/v5/#fun_plotshape>`__ functions are useful to display fixed text on bars. 
-        There is no limit to the number of bars you may use those functions on, but you can't decide at runtime which text to print. 
-        One `plotchar() <https://www.tradingview.com/pine-script-reference/v5/#fun_plotchar>`__ call can print only one character on a bar. 
-        Using `plotshape()'s <https://www.tradingview.com/pine-script-reference/v5/#fun_plotshape>`__ text parameter, you can plot a string. 
-        When you want to print two different characters on bars depending on a condition that can only be evaluated at runtime, 
-        you must use two distinct calls, each one printing on a different condition:
+    The `plotchar() <https://www.tradingview.com/pine-script-reference/v5/#fun_plotchar>`__ or 
+    `plotshape() <https://www.tradingview.com/pine-script-reference/v5/#fun_plotshape>`__ functions are useful to display fixed text on bars. 
+    There is no limit to the number of bars you may use those functions on, but you can't decide which text to print at runtime. 
+    One `plotchar() <https://www.tradingview.com/pine-script-reference/v5/#fun_plotchar>`__ call can print only one character on a bar. 
+    Using `plotshape()'s <https://www.tradingview.com/pine-script-reference/v5/#fun_plotshape>`__ text parameter, you can plot a string. 
+    When you want to print two different characters on bars depending on a condition that can only be evaluated at runtime, 
+    you must use two distinct calls, each one printing on a particular condition:
 
         ::
 
@@ -43,17 +43,18 @@ You can display text using one of the following methods:
             plotchar(barDn, "Down", "▼", location.bottom, size = size.tiny)
 
         We need two distinct calls here because the argument to the char parameter in `plotchar() <https://www.tradingview.com/pine-script-reference/v5/#fun_plotchar>`__ 
-        must be of “input string” type, which means it can be determined by an input, but not calculated dynamically at runtime. This for example, would not work:
+        must be of “input string” type, which means input can determine it but not calculated dynamically at runtime. This line of code, for example, would not work:
 
         ::
 
             plotchar(barUp or barDn, 'Up/Down', barUp ? '▲' : '▼', location.top, size = size.tiny)
 
  - Labels
-        Labels are useful when the text you want to display needs to vary from bar to bar. 
-        They are required when you want to print values on the chart such as pivot levels, which cannot be known before the script executes. 
-        There is a limit to the number of labels that can be displayed by a script. There is a default of displaying the 50 most recent labels drawn by the script. 
-        You can increase that value to a max of 500 using the ``max_labels_count`` parameter of the `indicator() <https://www.tradingview.com/pine-script-reference/v5/#fun_indicator>`__ 
+        Labels are helpful when the text you want to display needs to vary from bar to bar. 
+        They are required when you want to print values on the chart, such as pivot levels, which cannot be known before the script executes. 
+        There is a limit to the number of labels a script can display. There is a default of displaying the 50 most recent labels drawn by the script. 
+        You can increase that value to a max of 500 using the ``max_labels_count`` parameter of the 
+        `indicator() <https://www.tradingview.com/pine-script-reference/v5/#fun_indicator>`__ 
         or `strategy() <https://www.tradingview.com/pine-script-reference/v5/#fun_strategy>`__ functions.
 
         This shows how you can use labels to display more or less the equivalent of our first example using labels. 
@@ -68,16 +69,16 @@ You can display text using one of the following methods:
             label.new(bar_index, na, barUp ? "▲" : "▼", yloc = barUp ? yloc.belowbar : yloc.abovebar, color = na, textcolor = color.blue)
 
  - Tables
-        Tables are useful to display text that floats in a fixed position of the indicator’s visual space, untethered to chart bars.
+        Tables help display text that floats in a fixed position of the indicator’s visual space, untethered to chart bars.
 
 
 
 How can I lift plotshape() text up?
 -----------------------------------
 
-You will need to use \n followed by a special non-printing character that doesn’t get stripped out. Here we’re using U+200E. 
+You will need to use ``\n`` followed by a unique non-printing character that doesn’t get stripped out. Here we’re using U+200E. 
 While you don’t see it in the following code’s strings, it is there and can be copied/pasted. 
-The special Unicode character needs to be the last one in the string for text going up, and the first one when you are plotting under the bar and text is going down:
+The unique Unicode character needs to be the last one in the string for text going up and the first one when you are plotting under the bar and text is going down:
 
 .. image:: images/Faq-Strings-01.png
 
@@ -101,7 +102,7 @@ How can I position text on either side of a single bar?
 By choosing label styles like ``style = label.style_label_left``, we can determine on which side of the bar the label is positioned. 
 Note that since the 'left'/'right' in there specifies the pointer’s position, 'left' has the side effect of positioning the label on the right side of the bar. 
 The text’s alignment in the label can be controlled using ``textalign = text.align_right``, and finally, 
-we can make the label’s background color transparent so we only display the text:
+we can make the label’s background color transparent, so we only display the text:
 
 .. image:: images/Faq-Strings-02.png
 
@@ -122,8 +123,8 @@ we can make the label’s background color transparent so we only display the te
 How can I print a value at the top right of the chart?
 ------------------------------------------------------
 
-See `this example <https://www.tradingview.com/pine-script-docs/en/v5/concepts/Tables.html#placing-a-single-value-in-a-fixed-position>`__ in the Pine Script™ 
-User Manual which uses a table to do it.
+See `this example <https://www.tradingview.com/pine-script-docs/en/v5/concepts/Tables.html#placing-a-single-value-in-a-fixed-position>`__ 
+in the Pine Script™ User Manual, which uses a table to do it.
 
 
 
@@ -131,7 +132,7 @@ How can I split a string into characters?
 -----------------------------------------
 
 It can be done using `str.split() <https://www.tradingview.com/pine-script-reference/v5/#fun_str{dot}split>`__ and an empty string argument for the separator parameter. 
-This splits the string into an array of characters:
+This example script splits the string into an array of characters:
 
 ::
 

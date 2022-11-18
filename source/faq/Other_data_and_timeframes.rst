@@ -17,11 +17,12 @@ Other timeframes (MTF) FAQ
     :depth: 3
 
 
+
 How can I convert the current resolution into a numeric format?
 ---------------------------------------------------------------
 
 Use the ``resInMinutes()`` function from the PineCoders MTF Selection Framework to convert the chart’s current resolution into minutes of type float. 
-From there you will be able to manipulate it using the other PineCoders MTF functions.
+From there, you can manipulate it using the other PineCoders MTF functions.
 
 ::
 
@@ -106,7 +107,7 @@ Use the ``multipleOfRes()`` function from the PineCoders MTF Selection Framework
     //@author=LucF, for PineCoders
     indicator("Multiple of current TF")
 
-    resMult = input.int(4, minval=1)
+    int resMult = input.int(4, minval=1)
 
     // Returns a multiple of current TF as a string usable with "security()".
     multipleOfRes(res, mult) =>
@@ -151,15 +152,15 @@ Use the ``multipleOfRes()`` function from the PineCoders MTF Selection Framework
 
 
 
-Is it possible to use security() on lower timeframes than the chart’s current timeframe?
-----------------------------------------------------------------------------------------
+Is it possible to use \`request.security()\` on lower timeframes than the chart’s current timeframe?
+----------------------------------------------------------------------------------------------------
 
 Yes it is possible, but only by using the `request.security_lower_tf() <https://www.tradingview.com/pine-script-reference/v5/#fun_request{dot}security_lower_tf>`__ function. 
 
 
 
-Why do HTF plots appear smoothed when using the resolution parameter with an indicator() script?
-------------------------------------------------------------------------------------------------
+Why do HTF plots appear smoothed when using the resolution parameter with an \`indicator()\` script?
+----------------------------------------------------------------------------------------------------
 
 Because gaps are used. See `this answer <https://www.tradingview.com/chart/TLT/gfhcvho3-How-to-Use-Multi-Timeframe-Analysis-and-What-It-Means/#tc4114362>`__ 
 to a question on TradingView’s 
@@ -168,8 +169,8 @@ publication for more details.
 
 
 
-Why do intraday OHLCV values not correspond to values retrieved with security() at daily timeframes and higher?
----------------------------------------------------------------------------------------------------------------
+Why do intraday OHLCV values not correspond to values retrieved with \`request.security()\` at daily timeframes and higher?
+---------------------------------------------------------------------------------------------------------------------------
 
 Some exchanges/brokers provide distinct data feeds for intraday and daily charts, and the data from both feeds will sometimes differ.
 
@@ -228,7 +229,7 @@ How can I plot a moving average calculated using the 1H timeframe on any chart?
 -------------------------------------------------------------------------------
 
 Here we plot the ``MA200`` calculated at the ``1H`` timeframe, but only when the chart’s timeframe is lower or equal to ``1H``, 
-otherwise it doesn’t make sense to calculate a moving average on a lower timeframe than the chart’s:
+otherwise, it doesn’t make sense to calculate a moving average on a lower timeframe than the chart’s timeframe:
 
 ::
 

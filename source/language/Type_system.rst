@@ -112,7 +112,7 @@ const
 Values of "const" form must be known at compile time, before your script has access to any information related to the symbol/timeframe information it is running on. 
 Compilation occurs when you save a script in the Pine Script™ Editor, which doesn't even require it to already be running on your chart. "const" variables cannot change during the execution of a script.
 
-Variables of "const" form can be intialized using a *literal* value, or calculated from expressions using only literal values or other variables of "const" form. 
+Variables of "const" form can be initialized using a *literal* value, or calculated from expressions using only literal values or other variables of "const" form. 
 Pine Script™'s :ref:`Style guide <PageStyleGuide>` recommends using upper case SNAKE_CASE to name variables of "const" form. 
 While it is not a requirement, "const" variables are often declared using the 
 `var <https://www.tradingview.com/pine-script-reference/v5/#op_var>`__ keyword so they are only initialized on the first bar of the dataset. 
@@ -483,7 +483,9 @@ Tuples
 """"""
 
 A *tuple* is a comma-separated set of expressions enclosed in brackets that can be used when a function or a local block must return more than one variable as a result. 
-For example::
+For example
+
+::
 
     calcSumAndMult(a, b) =>
         sum = a + b
@@ -494,13 +496,17 @@ In this example there is a 2-tuple on the last statement of the function's code 
 There is also a special syntax for calling functions that return tuples, which uses a *tuple declaration* on the left side of the equal sign in what is a multi-variable declaration.
 The result of a function such as ``calcSumAndMult()`` that returns a tuple must be assigned to a *tuple declaration*, i.e., 
 a set of comma-separated list of *new* variables that will receive the values returned by the function. 
-Here, the value of the ``sum`` and ``mult`` variables calculated by the function will be assigned to the ``s`` and ``m`` variables::
+Here, the value of the ``sum`` and ``mult`` variables calculated by the function will be assigned to the ``s`` and ``m`` variables
+
+::
 
     [s, m] = calcSumAndMul(high, low)
 
 Note that the type of ``s`` and ``m`` cannot be explicitly defined; it is always inferred by the type of the function return results.
 
-Tuples can be useful to request multiple values in one `request.security() <https://www.tradingview.com/pine-script-reference/v5/#fun_request{dot}security>`__ call, e.g.::
+Tuples can be useful to request multiple values in one `request.security() <https://www.tradingview.com/pine-script-reference/v5/#fun_request{dot}security>`__ call, e.g.
+
+::
 
     roundedOHLC() =>
         [math.round_to_mintick(open), math.round_to_mintick(high), math.round_to_mintick(low), math.round_to_mintick(close)]
@@ -512,21 +518,81 @@ or:
     
     [op, hi, lo, cl] = request.security(syminfo.tickerid, "D", [math.round_to_mintick(open), math.round_to_mintick(high), math.round_to_mintick(low), math.round_to_mintick(close)])
 
-or this form if no rounding is required::
+or this form if no rounding is required
+
+::
 
     [op, hi, lo, cl] = request.security(syminfo.tickerid, "D", [open, high, low, close])
 
-Tuples can also be used as return results of local blocks, in an `if <https://www.tradingview.com/pine-script-reference/v5/#op_if>`__ statement for example::
+Tuples can also be used as return results of local blocks, in an `if <https://www.tradingview.com/pine-script-reference/v5/#op_if>`__ statement for example
+
+::
 
     [v1, v2] = if close > open
         [high, close]
     else
         [close, low]
 
-They cannot be used in ternaries, however, because the return values of a ternary statement are not considered as local blocks. This is not allowed::
+They cannot be used in ternaries, however, because the return values of a ternary statement are not considered as local blocks. This is not allowed
+
+::
 
     // Not allowed.
     [v1, v2] = close > open ? [high, close] : [close, low]
+
+
+
+.. _PageTypeSystem_UserDefinedTypes:
+
+User-defined types
+""""""""""""""""""
+
+The `type <https://www.tradingview.com/pine-script-reference/v5/#op_type>`__ 
+keyword allows the creation of *user-defined types* (UDTs) from which 
+:ref:`objects <PageObjects>` can be created. 
+UDTs are composite types; they contain an arbitrary number of *fields* that can be of any type. 
+The syntax to define a *user-defined type* is:
+
+.. code-block:: text
+
+    [export] type <UDT_identifier>
+        <field_type> <field_name> [= <value>]
+        ...
+
+where:
+
+- ``export`` is used to export the UDT from a library. 
+  See the :ref:`Libraries <PageLibraries_Objects>` page for more information.
+- ``<UDT_identifier>`` is the name of the user-defined type.
+- ``<field_type>`` is the type of the field.
+- ``<field_name>`` is the name of the field.
+- ``<value>`` is an optional default value for the field, which will be assigned to it when new objects of that UDT are created. 
+  The field's default value will be `na <https://www.tradingview.com/pine-script-reference/v5/#var_na>`__ if none is specified. 
+  The same rules as those governing the default values of parameters in function signatures apply to the default values of fields.
+  For example, the `[] <https://www.tradingview.com/pine-script-reference/v5/#op_[]>`__ history-referencing operator cannot be used with them,
+  and expressions are not allowed.
+
+In this example, we create a UDT containing two fields to hold pivot information, 
+the `time <https://www.tradingview.com/pine-script-reference/v5/#var_time>`__ of the pivot's bar 
+and its price level:
+
+::
+
+    type pivotPoint
+        int openTime
+        float level
+
+User-defined types can be embedded, so a field can be of the same type as the UDT it belongs to. 
+Here, we add a field to our previous ``pivotPoint`` type that will hold the pivot information for another pivot point:
+
+::
+
+    type pivotPoint
+        int openTime
+        float level
+        pivotPoint nextPivot
+
+Two built-in methods can be used with a UDT: ``new()`` and ``copy()``. Read about them in the :ref:`Objects <PageObjects>` page.
 
 
 
@@ -535,59 +601,75 @@ They cannot be used in ternaries, however, because the return values of a ternar
 \`na\` value
 ------------
 
-In Pine Script™ there is a special value called `na <https://www.tradingview.com/pine-script-reference/v4/#var_na>`__, which is an acronym for *not available*, meaning
+In Pine Script™ there is a special value called `na <https://www.tradingview.com/pine-script-reference/v5/#var_na>`__, which is an acronym for *not available*, meaning
 the value of an expression or variable is undefined. It is similar to the ``null`` value in Java, or ``None`` in Python.
 
-`na <https://www.tradingview.com/pine-script-reference/v4/#var_na>`__ values can be automatically cast to almost any type. 
+`na <https://www.tradingview.com/pine-script-reference/v5/#var_na>`__ values can be automatically cast to almost any type. 
 In some cases, however, the Pine Script™ compiler cannot automatically infer a type for an 
-`na <https://www.tradingview.com/pine-script-reference/v4/#var_na>`__ value because more that one automatic type-casting rule can be applied. 
-For example::
+`na <https://www.tradingview.com/pine-script-reference/v5/#var_na>`__ value because more that one automatic type-casting rule can be applied. 
+For example:
+
+::
 
     // Compilation error!
     myVar = na
 
 Here, the compiler cannot determine if ``myVar`` will be used to plot something, as in ``plot(myVar)`` where its type would be "float", or to set some text as in
-``label.set_text(lb, text = myVar)`` where its type would be "string", or for some other purpose. Such cases must be explicitly resolved in one of two ways::
+``label.set_text(lb, text = myVar)`` where its type would be "string", or for some other purpose. Such cases must be explicitly resolved in one of two ways:
+
+::
 
     float myVar = na
 
-or::
+or
+
+::
 
     myVar = float(na)
 
-To test if some value is `na <https://www.tradingview.com/pine-script-reference/v4/#var_na>`__, 
-a special function must be used: `na() <https://www.tradingview.com/pine-script-reference/v4/#fun_na>`__. For example::
+To test if some value is `na <https://www.tradingview.com/pine-script-reference/v5/#var_na>`__, 
+a special function must be used: `na() <https://www.tradingview.com/pine-script-reference/v5/#fun_na>`__. For example:
+
+::
 
     myClose = na(myVar) ? 0 : close
 
-Do not use the ``==`` operator to test for `na <https://www.tradingview.com/pine-script-reference/v4/#var_na>`__ values, as this method is unreliable.
+Do not use the ``==`` operator to test for `na <https://www.tradingview.com/pine-script-reference/v5/#var_na>`__ values, as this method is unreliable.
 
-Designing your calculations so they are `na <https://www.tradingview.com/pine-script-reference/v4/#var_na>`__-resistant is often useful. 
+Designing your calculations so they are `na <https://www.tradingview.com/pine-script-reference/v5/#var_na>`__-resistant is often useful. 
 In this example, we define a condition that is ``true`` when the bar's `close <https://www.tradingview.com/pine-script-reference/v5/#var_close>`__ 
 is higher than the previous one. For this calculation to work correctly on the dataset's first bar where no previous close exists and ``close[1]`` will return 
-`na <https://www.tradingview.com/pine-script-reference/v4/#var_na>`__, we use the 
-`nz() <https://www.tradingview.com/pine-script-reference/v4/#fun_nz>`__ function to replace it with the current bar's 
-`open <https://www.tradingview.com/pine-script-reference/v5/#var_open>`__ for that special case::
+`na <https://www.tradingview.com/pine-script-reference/v5/#var_na>`__, we use the 
+`nz() <https://www.tradingview.com/pine-script-reference/v5/#fun_nz>`__ function to replace it with the current bar's 
+`open <https://www.tradingview.com/pine-script-reference/v5/#var_open>`__ for that special case:
+
+::
 
     bool risingClose = close > nz(close[1], open)
 
-Protecting against `na <https://www.tradingview.com/pine-script-reference/v4/#var_na>`__ values can also be useful to prevent an initial 
-`na <https://www.tradingview.com/pine-script-reference/v4/#var_na>`__ value from propagating in a calculation's result on all bars. 
-This happens here because the initial value of ``ath`` is `na <https://www.tradingview.com/pine-script-reference/v4/#var_na>`__, and 
+Protecting against `na <https://www.tradingview.com/pine-script-reference/v5/#var_na>`__ values can also be useful to prevent an initial 
+`na <https://www.tradingview.com/pine-script-reference/v5/#var_na>`__ value from propagating in a calculation's result on all bars. 
+This happens here because the initial value of ``ath`` is `na <https://www.tradingview.com/pine-script-reference/v5/#var_na>`__, and 
 `math.max() <https://www.tradingview.com/pine-script-reference/v5/#fun_math{dot}max>`__ returns 
-`na <https://www.tradingview.com/pine-script-reference/v4/#var_na>`__ if one of its arguments is `na <https://www.tradingview.com/pine-script-reference/v4/#var_na>`__::
+`na <https://www.tradingview.com/pine-script-reference/v5/#var_na>`__ if one of its arguments is `na <https://www.tradingview.com/pine-script-reference/v5/#var_na>`__:
+
+::
 
     // Declare `ath` and initialize it with `na` on the first bar.
     var float ath = na
     // On all bars, calculate the maximum between the `high` and the previous value of `ath`.
     ath := math.max(ath, high)
 
-To protect against this, we could instead use::
+To protect against this, we could instead use:
+
+::
 
     var float ath = na
     ath := math.max(nz(ath), high)
 
-where we are replacing any `na <https://www.tradingview.com/pine-script-reference/v4/#var_na>`__ values of ``ath`` with zero. Even better would be::
+where we are replacing any `na <https://www.tradingview.com/pine-script-reference/v5/#var_na>`__ values of ``ath`` with zero. Even better would be:
+
+::
 
     var float ath = high
     ath := math.max(ath, high)
@@ -603,7 +685,9 @@ There is an automatic type-casting mechanism in Pine Script™ which can *cast* 
 The auto-casting rules are: **int** 🠆 **float** 🠆 **bool**, which means that when a "float" is required, an "int" can be used in its place, 
 and when a "bool" value is required, an "int" or "float" value can be used in its place.
 
-See auto-casting in action in this code::
+See auto-casting in action in this code:
+
+::
 
     //@version=5
     indicator("")
@@ -652,7 +736,7 @@ function to force the type conversion of the value we supply as a length to `ta.
     s = ta.sma(close, int(len))
     plot(s)
 
-Explicit type-casting can also be useful when declaring variables and initializing them to `na <https://www.tradingview.com/pine-script-reference/v4/#var_na>`__ which can be done in two ways::
+Explicit type-casting can also be useful when declaring variables and initializing them to `na <https://www.tradingview.com/pine-script-reference/v5/#var_na>`__ which can be done in two ways::
 
     // Cast `na` to the "label" type.
     lbl = label(na)

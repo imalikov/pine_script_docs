@@ -22,9 +22,10 @@ Alerts FAQ
 How do I make an alert available using my script?
 -------------------------------------------------
 
-There are four ways in which alerts can be added to scripts:
+There are four ways in which users can add alerts to scripts:
 
     1. Insert an `alert() <https://www.tradingview.com/pine-script-reference/v5/#fun_alert>`__ call in a script.
+
         ::
 
         triggerCondition = close > close[1]
@@ -41,37 +42,37 @@ There are four ways in which alerts can be added to scripts:
     3. Create an alert from the TV Web user interface (ALT-A) and choose the script’s alert condition.
     4. Strategy based alerts generated from `strategy order fills <https://www.tradingview.com/support/solutions/43000481368>`__.
 
+
 When more than one condition can trigger a single alert, you will most probably need to have visual cues for each condition so that when users bring up a chart on 
-which an alert triggered, they can figure out which condition caused the alert to trigger. This is a method that allows users of your script to customize the alert to fit their needs.
+which condition triggered an alert, they can figure out which condition caused the alert to trigger. In addition, this method allows users of your script to customize the alert to fit their needs.
 
 When TradingView creates an alert, it saves a snapshot of the environment that will enable the alert to run on our servers. The elements saved with an alert are:
 
     * Current symbol
     * Current time frame
     * State of the script’s Inputs selections
-    * Current version of the script. Subsequent updates to the script’s code will not affect the alerts created with prior versions
+    * Current version of the script. Subsequent updates to the script’s code will not affect the alerts created with prior versions.
 
-Note that while alert condition code will compile in strategy scripts, alerts are only functional in studies.
-
+Note that while alert condition code will compile in strategy scripts, alerts are only functional in indicator scripts.
 
 
 
 How can I include values that change in my alerts?
 --------------------------------------------------
 
-Numeric values plotted by an indicator can be inserted in an alert text using placeholders. If you use:
+Placeholders can insert numeric values plotted by an indicator in an alert text. If you use:
 
 ::
 
     plot(myRsi, "rsiLine")
 
-in your script, then you can include that plot’s value in an alert message by using:
+In your script, then you can include that plot’s value in an alert message by using:
 
 ::
 
     alertcondition(close > open, message = 'RSI value is: {{plot("rsiLine")}}')
 
-If you are not already plotting a value which you must include in an alert message, you can plot it using this method so that 
+If you are not already plotting a value that you must include in an alert message, you can plot it using this method so that 
 plotting the value will not affect the price scale unless you use:
 
 ::
@@ -79,20 +80,19 @@ plotting the value will not affect the price scale unless you use:
     plotchar(myRsi, "myRsi", "", location.top)
 
 You can use other pre-defined placeholders to include variable information in alert messages. 
-See this `TV blog post on variable alerts <https://www.tradingview.com/blog/en/introducing-variables-in-alerts-14880>`__ for more information.
+See this `TV blog post on variable alerts <https://www.tradingview.com/blog/en/introducing-variables-in-alerts-14880>`__ for more details.
 
     Note that there is still no way to include variable text in an alert message.
-
 
 
 
 I have a custom script that generates alerts. How do I run it on many symbols?
 ------------------------------------------------------------------------------
 
-You need to create a separate alert for each symbol. There is currently no way to create an alert for all the symbols in a watchlist or for the Screener.
+It would be best if you created a separate alert for each symbol. Unfortunately, there is currently no way to create an alert for all the symbols in a watchlist or the Screener.
 
-By using a `security() <https://www.tradingview.com/pine-script-reference/v5/#var_request{dot}security>`__ call for each symbol (maximum 40), 
-you can monitor more than one symbol with the same script, and generate alerts containing the symbol’s name using placeholders in your alert’s text. 
+By using a `request.security() <https://www.tradingview.com/pine-script-reference/v5/#var_request{dot}security>`__ call for each symbol (maximum 40), 
+you can monitor more than one symbol with the same script and generate alerts containing the symbol’s name using placeholders in your alert’s text. 
 See this `TV blog post on variable alerts <https://www.tradingview.com/blog/en/introducing-variables-in-alerts-14880>`__ for more information.
 
 If one of the generic indicators supplied with the Screener suits your needs and your symbols are tagged with a color label, 
@@ -101,12 +101,12 @@ you can create an alert on those markets from within the Screener.
 
 
 
-Is it possible to use a string that varies as an argument to the alert() or alertcondition() function’s message= parameter?
----------------------------------------------------------------------------------------------------------------------------
+Is it possible to use a string that varies as an argument to the \`alert()\`` or \`alertcondition()\` function’s message = parameter?
+-------------------------------------------------------------------------------------------------------------------------------------
 
-The `alert() <https://www.tradingview.com/pine-script-reference/v5/#fun_alert>`__ or `alertcondition() <https://www.tradingview.com/pine-script-reference/v5/#fun_alertcondition>`__ 
-functions both take a constant string as an argument. 
-A constant string means that the value is known before the script compiles and can't be changed based on the underlying code. 
+The `alert() <https://www.tradingview.com/pine-script-reference/v5/#fun_alert>`__ or 
+`alertcondition() <https://www.tradingview.com/pine-script-reference/v5/#fun_alertcondition>`__ functions take a constant string as an argument. 
+A constant string means the value is known before the script compiles and can't be changed based on the underlying code. 
 Here is some example code that shows you how you can partially get around this limitation:
 
 ::
@@ -143,11 +143,11 @@ Here is some example code that shows you how you can partially get around this l
     alertcondition(cond2, title='cond2', message='cond2 Text')
 
 Please note that:
+
     * This example shows `alertcondition() <https://www.tradingview.com/pine-script-reference/v5/#fun_alertcondition>`__ only but the concept is 
     functionally the same using the ``alert()`` function.
     
     * We can also use `placeholders <https://www.tradingview.com/support/solutions/43000531021>`__ to construct alert messages consisting of variables.
-
 
 
 
@@ -159,9 +159,11 @@ The `alert() <https://www.tradingview.com/pine-script-reference/v5/#fun_alert>`_
     2. `alert.freq_once_per_bar <https://www.tradingview.com/pine-script-reference/v5/#var_alert{dot}freq_once_per_bar>`__
     3. `alert.freq_once_per_bar_close <https://www.tradingview.com/pine-script-reference/v5/#var_alert{dot}freq_once_per_bar_close>`__
 
-For alerts based on other types, users can set the frequency in the alert widget.
+Users can set the frequency in the alert widget for alerts based on other types.
 
 .. image:: images/Faq-Alerts-01.png
+
+
 
 
 .. image:: /images/TradingView-Logo-Block.svg

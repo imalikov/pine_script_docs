@@ -133,7 +133,7 @@ Scopes in the script
 --------------------
 
 Variables declared outside the body of a function or of other local blocks belong to
-the *global* scope. User-declared and buit-in functions, as well as built-in
+the *global* scope. User-declared and built-in functions, as well as built-in
 variables also belong to the global scope.
 
 Each function has its own *local* scope. All the variables declared

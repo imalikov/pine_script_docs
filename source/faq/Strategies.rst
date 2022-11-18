@@ -24,11 +24,11 @@ Why are my orders executed on the bar following my triggers?
 TradingView backtesting evaluates conditions at the `close <https://www.tradingview.com/pine-script-reference/v5/#var_close>`__ of historical bars. 
 When a condition triggers, the associated order is executed at the `open <https://www.tradingview.com/pine-script-reference/v5/#var_open>`__ of the next bar, 
 unless ``process_orders_on_close = true`` in the `strategy() <https://www.tradingview.com/pine-script-reference/v5/#fun_strategy>`__ declaration statement, 
-in which case the broker emulator will try to execute orders at the bar’s `close <https://www.tradingview.com/pine-script-reference/v5/#var_close>`__.
+In this case, the broker emulator will try to execute orders at the bar’s `close <https://www.tradingview.com/pine-script-reference/v5/#var_close>`__.
 
-In the real-time bar, orders may be executed on the tick (price change) following detection of a condition. While this may seem appealing, 
+In the real-time bar, orders may be executed on the tick (price change) following the detection of a condition. While this may seem appealing, 
 it is important to realize that if you use ``calc_on_every_tick = true`` in the `strategy() <https://www.tradingview.com/pine-script-reference/v5/#fun_strategy>`__ 
-declaration statement to make your strategy work this way, you are going to be running a different strategy than the one you tested on historical bars. 
+declaration statement to make your strategy work this way, you will be running a different strategy than the one you tested on historical bars. 
 See the `Strategies <https://www.tradingview.com/pine-script-docs/en/v5/concepts/Strategies.html>`__ page of the Pine Script™ User Manual for more information.
 
 
@@ -61,16 +61,16 @@ If you need to also filter on specific times, use `How To Set Backtest Time Rang
 
     plotchar(enterLong, "enterLong", "▲", location.belowbar, color.new(color.lime, 0), size=size.tiny)
 
-Note that with this code snippet, date filtering can quickly be enabled/disabled using a checkbox. 
-This way, traders don’t have to reset dates when filtering is no longer needed; they can simply uncheck the box.
+Note that date filtering can quickly be enabled/disabled using a checkbox with this code snippet. 
+This way, traders don’t have to reset dates when filtering is no longer needed; they can uncheck the box.
 
 
 
 Why is backtesting on Heikin Ashi and other non-standard charts not recommended?
 --------------------------------------------------------------------------------
 
-Because non-standard chart types use non-standard prices which produce non-standard results. 
-See our `Backtesting on Non-Standard Charts: Caution! - PineCoders FAQ <>`__ strategy script and its description for a more complete explanation.
+Backtesting on non-standard charts isn't recommended because non-standard chart types use non-standard prices, which produce non-standard results.
+See our `Backtesting on Non-Standard Charts: Caution! - PineCoders FAQ <>`__ strategy script and its description for a complete explanation.
 
 The TradingView Help Center also has a `good article <https://www.tradingview.com/support/solutions/43000481029>`__ on the subject.
 
@@ -98,7 +98,6 @@ Here are two ways you can go about it:
     var float entryPrice = na
     if longCondition[1] or shortCondition[1]
         entryPrice := open
-        entryPrice
     plot(entryPrice, 'Method 1', color.new(color.orange, 0), 3, plot.style_circles)
 
     // ————— Method 2: use built-in variable.
@@ -106,32 +105,55 @@ Here are two ways you can go about it:
 
 
 
-Can my strategy place orders with TradingView brokers?
-------------------------------------------------------
+Can my strategy script place orders with TradingView brokers?
+-------------------------------------------------------------
 
-Not directly from the TradingView platform, as can be done manually; only manual orders can be placed with brokers integrated in TradingView. 
-It is, however, possible for Pine scripts to place orders in markets for automated trading, including through some of the brokers integrated in TradingView, 
-but to reach them you will need to use a third party execution engine to relay orders. See our next entry on the subject.
-
-
-
-Can my Pine strategy or study place automated orders in markets?
-----------------------------------------------------------------
+Not directly from the TradingView platform, as can be done manually; brokers integrated with TradingView can only place manual orders. 
+It is, however, possible for Pine scripts to place orders in markets for automated trading, including through some of the brokers integrated with TradingView, 
+but to reach them, you will need to use a third-party execution engine to relay orders. See our next entry on the subject.
 
 
 
-Can I connect my strategies to my paper trading account?
---------------------------------------------------------
+Can my Pine Script™ strategy or indicator scripts place automated orders?
+-------------------------------------------------------------------------
+
+No, your strategy or indicator scripts can't place automated orders at this time, but possible workarounds are available. 
+We will discuss two popular options below: how to send your real-time alerts to a Discord or Telegram channel. 
+
+.. image:: images/Faq-Strategies-01.pressing
+
+To send alerts to a Discord channel, you first need to add your script to the chart, then create an alert for your script by clicking on the alarm clock icon.
+Make sure that you add your webhook URL into the webhook textbox and make sure the message textbox only displays 
+``{{strategy.order.alert_message}}`` so the example below will work correctly. If you followed the steps perfectly, you should now receive live Discord alerts!
+
+::
+
+    //@strategy_alert_message {"content": "{{strategy.order.alert_message}}" }
+    //@version=5
+    strategy("Discord alerts example", overlay = true)
+    float ma = ta.wma(hlcc4, 14)
+    bool buySig = close > ma
+    bool sellSig = close <= ma
+    string alertTxt = "{{strategy.order.action}} order filled for {{strategy.position_size}} shares of {{ticker}} @ {{strategy.order.price}}."
+
+    if buySig
+        strategy.entry("Long entry", strategy.long, alert_message = alertTxt)
+    if sellSig
+        strategy.entry("Short entry", strategy.short, alert_message = alertTxt)
+
+Sending alerts to a Telegram channel is a much more complicated process, so we would recommend checking out this 
+`excellent guide on Telegram alerts <https://www.tradingview.com/chart/ETHUSD/uQCb82ML-How-to-create-simple-web-hook-to-send-alerts-to-Telegram/>`__ 
+which was created by HeWhoMustNotBeNamed.
 
 
 
 How can I implement a time delay between orders?
 ------------------------------------------------
 
-We can do this by saving the time when trades occur, and then determining the time delay since the last order execution. 
+We can do this by saving the time when trades occur and then determining the time delay since the last order execution. 
 The broker emulator doesn’t notify a script when an order is executed, so we will detect their execution by monitoring changes in the 
 `strategy.position_size <https://www.tradingview.com/pine-script-reference/v5/#var_strategy{dot}position_size>`__ built-in variable.
-Here, we set up the script to allow the user to turn the delay on and off, and to set the duration of the delay. 
+Here, we set up the script to allow the user to turn the delay on and off and to set the duration of the delay. 
 The ``tfInMinutes()`` and ``timeFrom(from, qty, units)`` are lifted from our `Time Offset Calculation Framework <>`__:
 
 ::
@@ -204,15 +226,15 @@ How can I calculate custom statistics in a strategy?
 
 When you issue orders in a strategy by using any of the ``strategy.*()`` function calls, you do the equivalent of sending an order to your broker/exchange. 
 The broker emulator takes over the management of those orders and simulates their execution when the conditions in the orders are fulfilled. 
-In order to detect the execution of those orders, you can use changes in the built-in variables such as 
+To detect the execution of those orders, you can use changes in the built-in variables, such as 
 `strategy.opentrades <https://www.tradingview.com/pine-script-reference/v5/#var_strategy{dot}opentrades>`__ and 
 `strategy.closedtrades <https://www.tradingview.com/pine-script-reference/v5/#var_strategy{dot}closedtrades>`__.
 
 This script demonstrates how to accomplish this. The first part calculates the usual conditions required to manage trade orders and issues those orders. 
 The second part detects order fill events and calculates various statistics from them. The script also demonstrates how to calculate position sizes using a fixed 
-percentage of the equity and the risk incurred when entering the trade, which is defined as the distance to the entry stop. 
+percentage of the equity and the risk incurred when entering the trade, defined as the distance to the entry stop. 
 The default strategy parameters also use commission. All strategies should account for some fees, either in the form of commission or in slippage 
-(which can be used to simulate spreads), as nobody usually trades for free, and ignoring trading fees is a common mistake which can be costly:
+(which can be used to simulate spreads), as nobody usually trades for free, and ignoring trading fees is a common mistake that can be costly:
 
 ::
 
@@ -329,7 +351,7 @@ The depth of history is measured in bars and not time. The quantity of bars on c
  - 20K bars for Premium accounts.
 
 At 20K bars on 1min charts, the depth measured in time will vary with the quantity of 1min bars in the dataset. 
-24x7 markets with pretty much all 1min bars present will yield ~17 days of history. Less densely populated 1min charts like GOOGL will yield ~72 days.
+24x7 markets with almost all 1min bars present will yield ~17 days of history. Less densely populated 1min charts like GOOGL will yield ~72 days.
 
 You can use this script to test how deep your history reaches:
 

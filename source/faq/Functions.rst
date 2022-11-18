@@ -50,11 +50,11 @@ Such calculations typically use `ta.barssince() <https://www.tradingview.com/pin
 to determine the number of bars elapsed since a condition occurs. When using variable lengths, you must pay attention to the following:
 
  - `ta.barssince() <https://www.tradingview.com/pine-script-reference/v5/#fun_ta{dot}barssince>`__ returns zero on the bar where the condition is met. 
- Lengths, however, cannot be zero, so you need to ensure the length has a minimum value of one, which can be accomplished by using 
- `math.max() <https://www.tradingview.com/pine-script-reference/v5/#fun_math{dot}max>`__.
- - At the beginning of a dataset, until the condition is detected a first time, `ta.barssince() <https://www.tradingview.com/pine-script-reference/v5/#fun_ta{dot}barssince>`__ 
- returns na, which also cannot be used as a length, so you must protect your calculation against this, which can be done by using 
- `nz() <https://www.tradingview.com/pine-script-reference/v5/#fun_nz>`__.
+ Lengths, however, cannot be zero, so you need to ensure the length has a minimum value of one, which the 
+ `math.max() <https://www.tradingview.com/pine-script-reference/v5/#fun_math{dot}max>`__ function can accomplish.
+ - At the beginning of a dataset, until the condition is detected the first time, `ta.barssince() <https://www.tradingview.com/pine-script-reference/v5/#fun_ta{dot}barssince>`__ 
+ returns na, which also cannot be used as a length, so you must protect your calculation against this, which the 
+ `nz() <https://www.tradingview.com/pine-script-reference/v5/#fun_nz>`__ function can do.
  - The length must be an ``int``, so it is safer to cast the result of your length’s calculation to an ``int`` using 
  `int() <https://www.tradingview.com/pine-script-reference/v5/#fun_int>`__.
  - Finally, a `ta.barssince() <https://www.tradingview.com/pine-script-reference/v5/#fun_ta{dot}barssince>`__ value of 0 must translate to a variable length of 1, 
@@ -80,7 +80,7 @@ Put together, these requirements yield code such as this example to calculate th
 Why do some functions and built-ins evaluate incorrectly in if or ternary (?) blocks?
 -------------------------------------------------------------------------------------
 
-Many functions/built-ins need to execute on every bar to return correct results. 
+Many functions/built-ins must execute on every bar to return correct results. 
 Think of a rolling average like `ta.sma() <https://www.tradingview.com/pine-script-reference/v5/#fun_ta{dot}sma>`__ or a function like 
 `ta.highest() <https://www.tradingview.com/pine-script-reference/v5/#fun_ta{dot}highest>`__. If they miss values along the way, it’s easy to see how they won’t calculate properly.
 
@@ -88,19 +88,19 @@ To avoid problems, you need to be on the lookout for these conditions:
 
 **Condition A**
 A conditional expression that can only be evaluated with incoming, new bar information (i.e., using series variables like 
-`close <https://www.tradingview.com/pine-script-reference/v5/#var_close>`__). This excludes expressions using values of literal, const, input or simple forms 
-because they do not change during the script’s execution, and so when you use them, the same block in the if statement is guaranteed to execute on every bar. 
-`Read this <https://www.tradingview.com/pine-script-docs/en/v5/language/Type_system.html>`__ if you are not familiar with Pine Script™ forms and types.
+`close <https://www.tradingview.com/pine-script-reference/v5/#var_close>`__). This excludes expressions using values of literal, const, input, or simple forms 
+because they do not change during the script’s execution. So when you use them, the same block in the if statement is guaranteed to execute on every bar. 
+For example, `Read this <https://www.tradingview.com/pine-script-docs/en/v5/language/Type_system.html>`__ if you are unfamiliar with Pine Script™ forms and types.
 
 **Condition B**
 When condition A is met, and the if block(s) contain(s) functions or built-ins NOT in the list of exceptions, i.e., 
-which require evaluation on every bar to return a correct result, then condition B is also met.
+which require evaluation on every bar to return a correct result, condition B is also met.
 
-This is an example where an apparently inoffensive built-in like `ta.vwap <https://www.tradingview.com/pine-script-reference/v5/#var_ta{dot}vwap>`__ is used in a ternary. 
-`ta.vwap <https://www.tradingview.com/pine-script-reference/v5/#var_ta{dot}vwap>`__ is not in the 
+This is an example where an inoffensive built-in like `ta.vwap() <https://www.tradingview.com/pine-script-reference/v5/#var_ta{dot}vwap>`__ is used in a ternary. 
+`ta.vwap() <https://www.tradingview.com/pine-script-reference/v5/#var_ta{dot}vwap>`__ is not in the 
 `list of exceptions <https://www.tradingview.com/pine-script-docs/en/v5/language/Execution_model.html#exceptions>`__, and so when condition A is realized, 
-it will require evaluation prior to entry in the if block. You can flip between 3 modes: #1 where condition A is fulfilled and #2 and #3 where it is not. 
-You will see how the unshielded value (``upVwap2`` in the thick line) will produce incorrect results when mode 1 is used.
+it will require an evaluation prior to entry in the if block. You can flip between 3 modes: #1, where condition A is fulfilled, and #2 and #3, where it is not. 
+You will see how the unshielded value (``upVwap2`` in the thick line) will produce incorrect results when mode one is used.
 
 .. image:: images/Faq-Functions-01.png
 
@@ -108,31 +108,31 @@ You will see how the unshielded value (``upVwap2`` in the thick line) will produ
 
     //@version=5
     indicator("When to pre-evaluate functions/built-ins", "", true)
-    CN1 = "1. Condition A is true because evaluation varies bar to bar"
-    CN2 = "2. Condition A is false because `timeframe.multiplier` does not vary during the script\'s execution"
-    CN3 = "3. Condition A is false because an input does not vary during the script\'s execution"
-    useCond = input.string(CN1, "Test on conditional expression:", options=[CN1, CN2, CN3])
-    p = 10
+    string CN1     = "1. Condition A is true because evaluation varies bar to bar"
+    string CN2     = "2. Condition A is false because `timeframe.multiplier` does not vary during the script\'s execution"
+    string CN3     = "3. Condition A is false because an input does not vary during the script\'s execution"
+    string useCond = input.string(CN1, "Test on conditional expression:", options=[CN1, CN2, CN3])
+    int p          = 10
 
     // ————— Conditional expression 1: CAUTION!
     //       Can lead to execution of either `if` block because:
     //          uses *series* variables, so result changes bar to bar.
     //       (Condition A is fulfilled).
-    cond1 = close > open
+    bool cond1 = close > open
     // ————— Conditional expression 2: NO WORRIES
     //       Guarantees execution of same `if` block on every bar because:
     //          uses *simple* variable, so result does NOT change bar to bar
     //          because it is known before the script executes and does not change.
     //       (Condition A is NOT fulfilled).
-    cond2 = timeframe.multiplier > 0
+    bool cond2 = timeframe.multiplier > 0
     // ————— Conditional expression 3: NO WORRIES
     //       Guarantees execution of same `if` block on every bar because:
     //          uses *input* variable, so result does NOT change bar to bar
     //          because it is known before the script execcutes and does not change.
     //       (Condition A is NOT fulfilled).
-    cond3 = input(true)
+    bool cond3 = input.bool(true)
 
-    cond = useCond == CN1 ? cond1 : useCond == CN2 ? cond2 : cond3
+    bool cond = useCond == CN1 ? cond1 : useCond == CN2 ? cond2 : cond3
 
     // Built-in used in "if" blocks that is not part of the exception list,
     // and so will require forced evaluation on every bar prior to entry in "if" statement.
@@ -156,7 +156,7 @@ How can I round a number to x increments?
 
     //@version=5
     indicator("Round fraction example")
-    incrementAmt = input.float(0.75, "Increment", step = 0.01)
+    float incrementAmt = input.float(0.75, "Increment", step = 0.01)
 
     roundToIncrement(value, increment) =>
         // Kudos to @veryevilone for the idea.
@@ -172,8 +172,8 @@ How can I control the number of decimals used in displaying my script’s values
 Rounding behavior in displayed values is controlled by a combination of your script’s ``precision =`` and ``format =`` arguments in its 
 `indicator() <https://www.tradingview.com/pine-script-reference/v5/#fun_indicator>`__ or 
 `strategy() <https://www.tradingview.com/pine-script-reference/v5/#fun_strategy>`__ declaration statement. 
-Make sure to consult the `Pine Script™ User Manual <https://www.tradingview.com/pine-script-docs/en/v5/language/Script_structure.html#declaration-statement>`__ on the subject. 
-The default will use the precision of the price scale. To increase it, you will need to specify a ``precision =`` argument greater than that of the price scale.
+Consult the `Pine Script™ User Manual <https://www.tradingview.com/pine-script-docs/en/v5/language/Script_structure.html#declaration-statement>`__ on the subject. 
+The default will use the precision of the price scale. To increase it, you need to specify a ``precision =`` argument greater than the price scale.
 
 
 
@@ -181,7 +181,7 @@ How can I control the precision of values used in my calculations?
 ------------------------------------------------------------------
 
 You can use the ``math.round(number, precision)`` form of `math.round() <https://www.tradingview.com/pine-script-reference/v5/#fun_math{dot}round>`__ to round values. 
-You can also round values to tick precision using our function from this entry.
+Using this entry, you can also round values to tick precision using our function.
 
 
 
@@ -290,6 +290,28 @@ Use the `math.random() <https://www.tradingview.com/pine-script-reference/v5/#fu
 How can I evaluate a filter I am planning to use?
 -------------------------------------------------
 
+See the `Filter Information Box - PineCoders FAQ script <>`__ by alexgrover. You can add your filter code to it; 
+the script will then evaluate its impulse response and display your filter’s characteristics.
+
+
+
+What does \`nz()\` do?
+--------------------
+
+The `nz() <https://www.tradingview.com/pine-script-reference/v5/#fun_nz>`__ function replaces any ``NaN`` value with either the default of 0 or the user-defined value. 
+This function is helpful for different circumstances, such as doing a calculation on the first bar when there is no previous data, such as the code below.
+
+::
+
+    range = close - nz(close[1], open)
+
+On the first bar, the ``close[1]`` would be returned as ``NaN, `` so the `nz() <https://www.tradingview.com/pine-script-reference/v5/#fun_nz>`__ 
+function replaces the ``close[1]`` with the `open <https://www.tradingview.com/pine-script-reference/v5/#var_open>`__ value instead. 
+The `nz() <https://www.tradingview.com/pine-script-reference/v5/#fun_nz>`__ function will also protect against any divide by zero errors, so the code below won't throw an error.
+
+::
+
+    dbzTest = nz(close / (close - close))
 
 
 

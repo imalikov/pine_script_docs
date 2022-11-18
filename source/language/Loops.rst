@@ -246,7 +246,8 @@ where:
 - <identifier> is a variable's :ref:`name <PageIdentifiers>`
 - <expression> can be a literal, a variable, an expression or a function call. 
   It is evaluated at each iteration of the loop. When it evaluates to ``true``,
-  the loop executes. When it evaluates to ``false`` the loop stops.
+  the loop executes. When it evaluates to ``false`` the loop stops. Note that evaluation of the expression is done before each iteration only. 
+  Changes to the expression's value inside the loop will only have an impact on the next iteration.
 - <local_block_loop> consists of zero or more statements followed by a return value, which can be a tuple of values.
   It must be indented by four spaces or a tab. It can contain the ``break`` statement to exit the loop, 
   or the ``continue`` statement to exit the current iteration and continue on with the next.

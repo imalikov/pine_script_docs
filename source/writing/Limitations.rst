@@ -73,7 +73,7 @@ The outer loop of embedded loops counts as one loop, so it will time out first.
 Keep in mind that even though a loop may execute under the 500 ms time limit on a given bar, 
 the time it takes to execute on all the dataset's bars may nonetheless cause your script to exceed the total execution time limit. 
 For example, the limit on total execution time will make it impossible for you script to execute a 400 ms loop on each bar of a 20,000-bar dataset
-because your script would then need 8,000 seconds to execute.
+because your script would then need 8000 seconds to execute.
 
 
 

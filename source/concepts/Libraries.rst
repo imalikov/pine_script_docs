@@ -118,7 +118,8 @@ These are the constraints imposed on library functions:
 - ``plot*()``, ``fill()`` and ``bgcolor()`` calls are not allowed.
 
 Library functions always return a result that is either of "simple" or "series" form. 
-You cannot use them to calculate values where "const" or "input" forms are required, as is the case with some Pine Script™ built-in function arguments. 
+You cannot use them to calculate values where "const" or "input" forms are required, 
+as is the case with some Pine Script™ built-in function arguments. 
 For example, a library function cannot be used to calculate an argument for the ``show_last`` parameter in a 
 `plot() <https://www.tradingview.com/pine-script-reference/v5/#fun_plot>`__ call, because an "input int" argument is required for ``show_last``.
 
@@ -134,29 +135,178 @@ If the argument can be used in "series" form, it is. If it cannot, an attempt is
         ta.ema(close, x)
 
 will work when called using ``t.myEma(20)``, 
-even though `ta.ema() <https://www.tradingview.com/pine-script-reference/v5/#fun_ta{dot}ema>`__'s ``length`` parameter requires a "simple int" argument. 
-When the Pine Script™ compiler detects that a "series" length cannot be used with `ta.ema() <https://www.tradingview.com/pine-script-reference/v5/#fun_ta{dot}ema>`__, 
+even though `ta.ema() <https://www.tradingview.com/pine-script-reference/v5/#fun_ta{dot}ema>`__'s ``length`` parameter 
+requires a "simple int" argument. 
+When the Pine Script™ compiler detects that a "series" length cannot be used with 
+`ta.ema() <https://www.tradingview.com/pine-script-reference/v5/#fun_ta{dot}ema>`__, 
 it tries the "simple" form, which in this case is allowed.
 
 While library functions cannot return results of "const" or "input" forms, they can be written to produce a result of "simple" form. 
-This makes them useful in more contexts than functions returning a result of "series" form, because some Pine Script™ built-in functions do not allow "series" arguments. 
-For example, `request.security() <https://www.tradingview.com/pine-script-reference/v5/#fun_request{dot}security>`__ requires a "simple string" for its ``symbol`` parameter. 
-If we wrote a library function to assemble the argument to ``symbol`` in the following way, the function's result would not work because it is of "series" form::
+This makes them useful in more contexts than functions returning a result of "series" form, 
+because some Pine Script™ built-in functions do not allow "series" arguments. 
+For example, `request.security() <https://www.tradingview.com/pine-script-reference/v5/#fun_request{dot}security>`__ 
+requires a "simple string" for its ``symbol`` parameter. 
+If we wrote a library function to assemble the argument to ``symbol`` in the following way, 
+the function's result would not work because it is of "series" form::
 
     export makeTickerid(string prefix, string ticker) =>
         prefix + ":" + ticker
 
 However, by restricting the form of its parameters to "simple", we could force the function to yield a "simple" result. 
-We can achieve this by prefixing the parameters' type with the `simple <https://www.tradingview.com/pine-script-reference/v5/#op_simple>`__ keyword::
+We can achieve this by prefixing the parameters' type with the 
+`simple <https://www.tradingview.com/pine-script-reference/v5/#op_simple>`__ keyword::
 
     export makeTickerid(simple string prefix, simple string ticker) =>
         prefix + ":" + ticker
 
-Note that for the function to return a "simple" result, no "series" values can be used in its calculation; otherwise the result will be of "series" form.
+Note that for the function to return a "simple" result, no "series" values can be used in its calculation; 
+otherwise the result will be of "series" form.
 
-One can also use the `series <https://www.tradingview.com/pine-script-reference/v5/#op_simple>`__ keyword to prefix the type of a library function parameter. 
+One can also use the `series <https://www.tradingview.com/pine-script-reference/v5/#op_simple>`__ 
+keyword to prefix the type of a library function parameter. 
 However, because arguments are by default cast to the "series" form, using the 
 `series <https://www.tradingview.com/pine-script-reference/v5/#op_simple>`__ modifier is redundant; it exists more for completeness.
+
+
+
+.. _PageLibraries_Objects:
+
+User-defined types and objects
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+You can export :ref:`user-defined types (UDTs) <PageTypeSystem_UserDefinedTypes>` from libraries,
+and library functions can return :ref:`objects <PageObjects>`.
+
+To export a UDT, prefix its definition with the `export <https://www.tradingview.com/pine-script-reference/v5/#op_export>`__ 
+keyword just as you would export a function:
+
+::
+
+    //@version=5
+    library("Point")
+
+    export type point
+        int x
+        float y
+        bool isHi
+        bool wasBreached = false
+
+A script importing that library and creating an object from its ``point`` UDT would look somewhat like this:
+
+::
+
+  //@version=5
+  indicator("")
+  import userName/Point/1 as pt
+  newPoint = pt.point.new()
+
+Note that:
+
+- This code won't compile because no "Point" library is published, and the script doesn't display anything.
+- ``userName`` would need to be replaced by the TradingView user name of the library's publisher.
+- We use the built-in ``new()`` method to create an object from the ``point`` UDT.
+- We prefix the reference to the library's ``point`` UDT with the ``pt`` alias defined in the 
+  `import <https://www.tradingview.com/pine-script-reference/v5/#op_import>`__ statement, 
+  just like we would when using a function from an imported library.
+
+UDTs used in a library **must** be exported if any of its exported functions use a parameter or returns a result of that user-defined type.
+
+When a library only uses a UDT internally, it does not have to be exported. The following library uses the ``point`` UDT internally,
+but only its ``drawPivots()`` function is exported, which does not use a parameter nor return a result of ``point`` type:
+
+::
+
+    //@version=5
+    library("PivotLabels", true)
+
+    // We use this `point` UDT in the library, but it does NOT require exporting because:
+    //   1. The exported function's parameters do not use the UDT.
+    //   2. The exported function does not return a UDT result.
+    type point
+        int x
+        float y
+        bool isHi
+        bool wasBreached = false
+
+
+    fillPivotsArray(qtyLabels, leftLegs, rightLegs) =>
+        // Create an array of the specified qty of pivots to maintain.
+        var pivotsArray = array.new<point>(math.max(qtyLabels, 0))
+
+        // Detect pivots.
+        float pivotHi = ta.pivothigh(leftLegs, rightLegs)
+        float pivotLo = ta.pivotlow(leftLegs, rightLegs)
+
+        // Create a new `point` object when a pivot is found.
+        point foundPoint = switch
+            pivotHi => point.new(time[rightLegs], pivotHi, true)
+            pivotLo => point.new(time[rightLegs], pivotLo, false)
+            => na
+
+        // Add new pivot info to the array and remove the oldest pivot.
+        if not na(foundPoint)
+            array.push(pivotsArray, foundPoint)
+            array.shift(pivotsArray)
+
+        array<point> result = pivotsArray
+
+
+    detectBreaches(pivotsArray) => 
+        // Detect breaches.
+        for [i, eachPoint] in pivotsArray
+            if not na(eachPoint)
+                if not eachPoint.wasBreached
+                    bool hiWasBreached =     eachPoint.isHi and high[1] <= eachPoint.y and high > eachPoint.y
+                    bool loWasBreached = not eachPoint.isHi and low[1]  >= eachPoint.y and low  < eachPoint.y
+                    if hiWasBreached or loWasBreached
+                        // This pivot was breached; change its `wasBreached` field.
+                        point p = array.get(pivotsArray, i)
+                        p.wasBreached := true
+                        array.set(pivotsArray, i, p)
+
+
+    drawLabels(pivotsArray) =>
+        for eachPoint in pivotsArray
+            if not na(eachPoint)
+                label.new(
+                  eachPoint.x,
+                  eachPoint.y,
+                  str.tostring(eachPoint.y, format.mintick),
+                  xloc.bar_time,
+                  color = eachPoint.wasBreached ? color.gray : eachPoint.isHi ? color.teal : color.red,
+                  style = eachPoint.isHi ? label.style_label_down: label.style_label_up,
+                  textcolor = eachPoint.wasBreached ? color.silver : color.white)
+
+
+    // @function        Displays a label for each of the last `qtyLabels` pivots.
+    //                  Colors high pivots in green, low pivots in red, and breached pivots in gray.
+    // @param qtyLabels (simple int) Quantity of last labels to display.
+    // @param leftLegs  (simple int) Left pivot legs.
+    // @param rightLegs (simple int) Right pivot legs.
+    // @returns         Nothing.
+    export drawPivots(int qtyLabels, int leftLegs, int rightLegs) =>
+        // Gather pivots as they occur.
+        pointsArray = fillPivotsArray(qtyLabels, leftLegs, rightLegs)
+
+        // Mark breached pivots.
+        detectBreaches(pointsArray)
+
+        // Draw labels once.
+        if barstate.islastconfirmedhistory
+            drawLabels(pointsArray)
+
+
+    // Example use of the function.
+    drawPivots(20, 10, 5)
+
+If the TradingView user published the above library, it could be used like this:
+
+::
+
+  //@version=5
+  indicator("")
+  import TradingView/PivotLabels/1 as dpl
+  dpl.drawPivots(20, 10, 10)
 
 
 
@@ -167,6 +317,8 @@ Before you or other Pine Script™ programmers can reuse any library, it must be
 If you want to share your library with all TradingViewers, publish it publicly. To use it privately, use a private publication. 
 As with indicators or strategies, the active chart when you publish a library will appear in both its widget 
 (the small placeholder denoting libraries in the TradingView scripts stream) and script page (the page users see when they click on the widget).
+
+Private libraries can be used in public Protected or Invite-only scripts.
 
 After adding our example library to the chart and setting up a clean chart showing our library plots the way we want them, 
 we use the Pine Editor's "Publish Script" button. The "Publish Library" window comes up:

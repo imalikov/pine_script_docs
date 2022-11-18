@@ -13,10 +13,9 @@ Release notes
 =============
 
 .. contents:: :local:
-    :depth: 2
+    :depth: 3
 
 This page contains release notes of notable changes in Pine Script™.
-
 
 November 2022
 ------------
@@ -25,11 +24,9 @@ Fixed behaviour of `math.round_to_mintick()  <https://www.tradingview.com/pine-s
  
 October 2022
 ------------
-
 Pine Script™ now has a new, more powerful and better-integrated editor. Read `our blog <https://www.tradingview.com/blog/en/new-vsc-style-pine-script-editor-34159/>`_ to find out everything to know about all the new features and upgrades.
 
 New overload for the `fill() <https://www.tradingview.com/pine-script-reference/v5/#fun_fill>`_ function was added. Now it can create vertical gradients. More info about it in the `blog post <https://www.tradingview.com/blog/en/pine-script-vertical-gradients-33586/>`_.
-
 
 A new function was added:
 
@@ -50,7 +47,6 @@ The accompanying setter functions are:
 * `table.cell_set_text_font_family() <https://www.tradingview.com/pine-script-reference/v5/#fun_table{dot}cell_set_text_font_family>`_ - The function sets the font family of the text inside the cell.
 
 August 2022
-
 -----------
 
 A new label style `label.style_text_outline <https://www.tradingview.com/pine-script-reference/v5/#var_label{dot}style_text_outline>`_ was added.
@@ -86,9 +82,8 @@ A new annotation ``//@strategy_alert_message`` was added. If the annotation is a
 
 
 
-
 July 2022
-^^^^^^^^^
+---------
 
 It is now possible to fine-tune where a script's plot values are displayed through the introduction of 
 new arguments for the ``display`` parameter of the 
@@ -121,7 +116,7 @@ The ``display`` parameter supports the addition and subtraction of its arguments
 - ``display.price_scale + display.status_line`` will display the plot in the price scale and status line only.
 
 June 2022
-^^^^^^^^^
+---------
 
 The behavior of the argument used with the ``qty_percent`` parameter of `strategy.exit() <https://www.tradingview.com/pine-script-reference/v5/#fun_strategy{dot}exit>`__ has changed. Previously, the percentages used on successive exit orders of the same position were calculated from the remaining position at any given time. Instead, the percentages now always apply to the initial position size. When executing the following strategy, for example::
 
@@ -156,7 +151,7 @@ New built-in variables were added:
 
 
 May 2022
-^^^^^^^^
+--------
 
 `Matrix <https://www.tradingview.com/pine-script-reference/v5/#op_matrix>`__ support has been added to the `request.security() <https://www.tradingview.com/pine-script-reference/v5/#fun_request{dot}security>`__ function.
 
@@ -199,8 +194,11 @@ Added new ``comment`` and ``alert`` message parameters for the `strategy.exit() 
 * ``alert_loss`` - text that will replace the ``'{{strategy.order.alert_message}}'`` placeholder if the exit was triggered by crossing ``stop`` or ``loss`` specifically.
 * ``alert_trailing`` - text that will replace the ``'{{strategy.order.alert_message}}'`` placeholder if the exit was triggered by crossing ``trail_offset`` specifically. 
 
+
+
+
 April 2022
-^^^^^^^^^^
+-------------
 
 Added the ``display`` parameter to the following functions: `barcolor <https://www.tradingview.com/pine-script-reference/v5/#fun_barcolor>`__, `bgcolor <https://www.tradingview.com/pine-script-reference/v5/#fun_bgcolor>`__, `fill <https://www.tradingview.com/pine-script-reference/v5/#fun_fill>`__, `hline <https://www.tradingview.com/pine-script-reference/v5/#fun_hline>`__.
 
@@ -276,7 +274,7 @@ Added a new parameter for the `strategy() <https://www.tradingview.com/pine-scri
 * ``risk_free_rate`` - The risk-free rate of return is the annual percentage change in the value of an investment with minimal or zero risk, used to calculate the Sharpe and Sortino ratios.
 
 March 2022
-^^^^^^^^^^
+-------------
 
 New array functions were added:
 
@@ -295,14 +293,14 @@ Added a new optional ``nth`` parameter for the `array.min() <https://www.trading
 Added ``index`` in `for..in <https://www.tradingview.com/pine-script-reference/v5/#op_for{dot}{dot}{dot}in>`__ operator. It tracks the current iteration's index.
 
 Table merging and cell tooltips
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 * It is now possible to merge several cells in a table. A merged cell doesn't have to be a header: you can merge cells in any direction, as long as the resulting cell doesn't affect any already merged cells and doesn't go outside of the table's bounds. Cells can be merged with the new  `table.merge_cells() <https://www.tradingview.com/pine-script-reference/v5/#fun_table{dot}merge_cells>`__ function.
 
 * Tables now support tooltips, floating labels that appear when you hover over a table's cell. To add a tooltip, pass a string to the ``tooltip`` argument of the `table.cell() <https://www.tradingview.com/pine-script-reference/v5/#fun_table{dot}cell>`__ function or use the new `table.cell_set_tooltip() <https://www.tradingview.com/pine-script-reference/v5/#fun_table{dot}cell_set_tooltip>`__ function.
 
 February 2022
-^^^^^^^^^^^^^
+-------------
 
 Added templates and the ability to create arrays via templates. Instead of using one of the ``array.new_*()`` functions, a template function `array.new<type> <https://www.tradingview.com/pine-script-reference/v5/#fun_array%7Bdot%7Dnew%3Ctype%3E>`__ can be used. In the example below, we use this functionality to create an array filled with ``float`` values::
 
@@ -328,14 +326,13 @@ New functions were added:
 * `strategy.opentrades.entry_id() <https://www.tradingview.com/pine-script-reference/v5/#fun_strategy{dot}opentrades{dot}entry_id>`__ - returns the id of the open trade's entry.
 
 January 2022
-^^^^^^^^^^^^
+-------------
 
 Added new functions to clone drawings:
 
 * `line.copy() <https://www.tradingview.com/pine-script-reference/v5/#fun_line{dot}copy>`__ 
 * `label.copy() <https://www.tradingview.com/pine-script-reference/v5/#fun_label{dot}copy>`__ 
 * `box.copy() <https://www.tradingview.com/pine-script-reference/v5/#fun_box{dot}copy>`__ 
-
 
 2021
 ----

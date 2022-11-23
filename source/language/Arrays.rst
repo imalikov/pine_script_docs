@@ -49,23 +49,32 @@ The following syntax can be used to declare arrays:
 
     <type>[] <identifier> = <expression>
     var <type>[] <identifier> = <expression>
+    array<type> <identifier> = <expression>
+    var array<type> <identifier> = <expression>
 
-The ``[]`` modifier (not to be confused with the `[] <https://www.tradingview.com/pine-script-reference/v5/#op_[]>`__ 
-history-referencing operator) is appended to the type name when declaring arrays. However, since type-specific functions are always used to create arrays,
-the ``<type>[]`` part of the declaration is redundant, except if you initialize an array variable to ``na``. 
-Explicitly declaring the type of the array is useful, however, to clearly state our intention to readers.  
+.. note::
+   The ``[]`` modifier (not to be confused with the `[] <https://www.tradingview.com/pine-script-reference/v5/#op_[]>`__ 
+   history-referencing operator) is appended to the type name when declaring arrays. However, since type-specific functions are always used to create arrays,
+   the ``<type>[]`` part of the declaration is redundant, except if you initialize an array variable to ``na``. 
+   Explicitly declaring the array type helps state our intention to readers more clearly.
 
-In the following example we declare an array variable named ``prices`` and initialize it with ``na``. 
+In the following example, we declare an array variable named ``prices`` and initialize it with ``na``. 
 Consequently, its type must be specified. The variable will be used to designate an array containing "float" values,  
-but no array is created by this declaration yet. For the moment, the array variable contains no valid array ID, its value being ``na``:
+but no array has been created by this declaration yet. For the moment, the array variable contains no valid array ID, its value being ``na``:
 
 ::
 
     float[] prices = na
 
-When declaring an array and the ``<expression>`` is not ``na``, one of the ``array.new_<type>(size, initial_value)`` functions or 
-`array.from() <https://www.tradingview.com/pine-script-reference/v5/#fun_array{dot}from>`__ must be used. 
-The arguments of both the ``size`` and ``initial_value`` parameters can be "series", to allow dynamic sizing and initialization of array elements.
+We could also write the above example in this alternate form:
+
+::
+
+    array<float> prices = na
+
+When declaring an array and the ``<expression>`` is not ``na``, one of the following functions must be used: ``array.new_<type>(size, initial_value)``, 
+`array.from() <https://www.tradingview.com/pine-script-reference/v5/#fun_array{dot}from>`__, or `array.copy() <https://www.tradingview.com/pine-script-reference/v5/#fun_array{dot}copy>`__.
+For the ``array.new_<type>(size, initial_value)`` functions, the arguments of the ``size`` and ``initial_value`` parameters can be "series" to allow dynamic sizing and initialization of array elements.
 The following example creates an array containing zero "float" elements, 
 and this time, the array ID returned by the `array.new_float() <https://www.tradingview.com/pine-script-reference/v5/#fun_array{dot}new_float>`__
 function call is assigned to ``prices``:
@@ -85,25 +94,26 @@ Similar array creation functions exist for the other types of array elements:
 `array.new_box() <https://www.tradingview.com/pine-script-reference/v5/#fun_array{dot}new_box>`__ and  
 `array.new_table() <https://www.tradingview.com/pine-script-reference/v5/#fun_array{dot}new_table>`__.
 
-When declaring an array, you can initialize all elements in the array using the ``initial_value`` parameter. 
+When declaring an array using one of the array creation functions, you can initialize all elements using the ``initial_value`` parameter. 
 When no argument is supplied for ``initial_value``, the array elements are initialized to ``na``.
-The following declaration creates and array ID named ``prices``.
+The following declaration creates an array ID named ``prices``.
 The array is created with two elements, each initialized with the value of the ``close`` built-in variable on that bar:
 
 ::
 
     prices = array.new_float(2, close)
 
-You can also use `array.from() <https://www.tradingview.com/pine-script-reference/v5/#fun_array{dot}from>`__ to create an array and intialize it with different values at the same time. 
+You can also use `array.from() <https://www.tradingview.com/pine-script-reference/v5/#fun_array{dot}from>`__ to create an array and initialize it with different values at the same time. 
 `array.from() <https://www.tradingview.com/pine-script-reference/v5/#fun_array{dot}from>`__ infers the array's size and the type of its elements, 
 which must be consistent, from the arguments supplied to the function when calling it. Similarly to ``array.new_*()` functions, it accepts "series" arguments.
 
-Both these lines will create a "bool[]" array with the same two elements:
+All three of the lines of code below will create identical "bool" arrays with the same two elements:
 
 ::
 
     statesArray = array.from(close > open, high != close)
     bool[] statesArray = array.from(close > open, high != close)
+    array<bool> statesArray = array.from(close > open, high != close)
 
 
 

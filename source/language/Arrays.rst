@@ -52,11 +52,10 @@ The following syntax can be used to declare arrays:
     array<type> <identifier> = <expression>
     var array<type> <identifier> = <expression>
 
-.. note::
-   The ``[]`` modifier (not to be confused with the `[] <https://www.tradingview.com/pine-script-reference/v5/#op_[]>`__ 
-   history-referencing operator) is appended to the type name when declaring arrays. However, since type-specific functions are always used to create arrays,
-   the ``<type>[]`` part of the declaration is redundant, except if you initialize an array variable to ``na``. 
-   Explicitly declaring the array type helps state our intention to readers more clearly.
+The ``[]`` modifier (not to be confused with the `[] <https://www.tradingview.com/pine-script-reference/v5/#op_[]>`__ 
+history-referencing operator) is appended to the type name when declaring arrays. However, since type-specific functions are always used to create arrays,
+the ``<type>[]`` part of the declaration is redundant, except if you initialize an array variable to ``na``. 
+Explicitly declaring the array type helps state our intention to readers more clearly.
 
 In the following example, we declare an array variable named ``prices`` and initialize it with ``na``. 
 Consequently, its type must be specified. The variable will be used to designate an array containing "float" values,  
@@ -274,7 +273,7 @@ When looping through array elements when the array's size is unknown, you can us
 
     label.new(bar_index, high, text = labelText)
 
-.. note:: 
+Note that:
    - We use the `request.security_lower_tf() <https://www.tradingview.com/pine-script-reference/v5/#fun_request{dot}security_lower_tf>`__ function
      which returns an array of `close <https://www.tradingview.com/pine-script-reference/v5/#var_close>`__ prices at the ``1 minute`` timeframe. 
    - This code example will throw an error if you use it on a chart timeframe smaller than ``1 minute``.

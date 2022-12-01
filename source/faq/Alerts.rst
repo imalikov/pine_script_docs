@@ -40,7 +40,8 @@ There are four ways in which users can add alerts to scripts:
         alertcondition(triggerCondition, title = "Create Alert dialog box name", message = "Text sent with alert.")
 
     3. Create an alert from the TV Web user interface (ALT-A) and choose the script’s alert condition.
-    4. Strategy-based alerts generated from `strategy order fills <https://www.tradingview.com/pine-script-reference/v5/?solution=43000481368>`__.
+    4. Strategy based alerts generated from `strategy order fills <https://www.tradingview.com/support/solutions/43000481368>`__.
+
 
 When more than one condition can trigger a single alert, you will most probably need to have visual cues for each condition so that when users bring up a chart on 
 which condition triggered an alert, they can figure out which condition caused the alert to trigger. In addition, this method allows users of your script to customize the alert to fit their needs.
@@ -142,9 +143,11 @@ Here is some example code that shows you how you can partially get around this l
     alertcondition(cond2, title='cond2', message='cond2 Text')
 
 Please note that:
-    * This example shows `alertcondition() <https://www.tradingview.com/pine-script-reference/v5/#fun_alertcondition>`__ only, but the concept is 
-    functionally the same using the `alert() <https://www.tradingview.com/pine-script-reference/v5/#fun_alert>`__ function.
-    * We can also use `placeholders <https://www.tradingview.com/pine-script-reference/v5/?solution=43000531021#fun_alert>`__ to construct alert messages consisting of variables.
+
+    * This example shows `alertcondition() <https://www.tradingview.com/pine-script-reference/v5/#fun_alertcondition>`__ only but the concept is 
+    functionally the same using the ``alert()`` function.
+    
+    * We can also use `placeholders <https://www.tradingview.com/support/solutions/43000531021>`__ to construct alert messages consisting of variables.
 
 
 

@@ -401,7 +401,7 @@ This gives us a general idea of the values being used in each loop iteration::
 Note that:
 
 - To show more detail, the scale in the preceding screenshot has been manually expanded by clicking and dragging the scale area.
-- We use ``max_lines_count = 500, max_labels_count = 500`` in our `indicator() <https://www.tradingview.com/pine-script-reference/v4/#fun_indicator>`__ declaration statement to display the maximum number of lines and labels.
+- We use ``max_lines_count = 500, max_labels_count = 500`` in our `indicator() <https://www.tradingview.com/pine-script-reference/v5/#fun_indicator>`__ declaration statement to display the maximum number of lines and labels.
 - Each loop iteration does not necessarily produce a distinct `ta.tr <https://www.tradingview.com/pine-script-reference/v5/#var_ta{dot}tr>`__ value, which is why we may not see 20 distinct lines for each bar.
 - If we wanted to show only one level, we could use the same technique while isolating a specific loop iteration as we did in the preceding example.
 

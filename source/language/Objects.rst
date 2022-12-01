@@ -27,7 +27,7 @@ newcomers to Pine Script™ will want to explore the basics before tackling UDTs
 
 How to create user-defined types is explained in the :ref:`Type system <PageTypeSystem_UserDefinedTypes>` page. 
 Experienced programmers can think of UDTs as methodless classes. 
-They allow you to create custom types that organize different values under one logical entity.
+They allow you to create custom types that organize values under one logical entity.
 As arrays and matrices can be defined to contain objects of user-defined types,
 you can add virtual dimensions to those data structures.
 
@@ -52,19 +52,18 @@ Let's define a ``pivotPoint`` type to hold pivot information:
         float y
         string xloc = xloc.bar_time
 
-Note that:
-
-- We use the `type <https://www.tradingview.com/pine-script-reference/v5/#op_type>`__ keyword to declare the creation of a UDT.
-- We name our new UDT ``pivotPoint``.
-- After the first line, we create a local block containing the type and name of each field.
-- The ``x`` field will hold the x-coordinate of the pivot. 
-  It is declared as an "int" because it will hold either a timestamp or a bar index of "int" type.
-- ``y`` is a "float" because it will hold the pivot's price.
-- ``xloc`` is a field that will specify the units of ``x``:
-  `xloc.bar_index <https://www.tradingview.com/pine-script-reference/v5/#var_xloc{dot}bar_index>`__ or
-  `xloc.bar_time <https://www.tradingview.com/pine-script-reference/v5/#var_xloc{dot}bar_time>`__.
-  We set its default value to `xloc.bar_time <https://www.tradingview.com/pine-script-reference/v5/#var_xloc{dot}bar_time>`__ 
-  by using the ``=`` operator. When an object is created from that UDT, its ``xloc`` field will thus be set to that value.
+.. note::
+   - We use the `type <https://www.tradingview.com/pine-script-reference/v5/#op_type>`__ keyword to declare the creation of a UDT.
+   - We name our new UDT ``pivotPoint``.
+   - After the first line, we create a local block containing the type and name of each field.
+   - The ``x`` field will hold the x-coordinate of the pivot. 
+     It is declared as an "int" because it will hold either a timestamp or a bar index of the "int" type.
+   - ``y`` is a "float" because it will hold the pivot's price.
+   - ``xloc`` is a field that will specify the units of ``x``:
+     `xloc.bar_index <https://www.tradingview.com/pine-script-reference/v5/#var_xloc{dot}bar_index>`__ or
+     `xloc.bar_time <https://www.tradingview.com/pine-script-reference/v5/#var_xloc{dot}bar_time>`__.
+     We set its default value to `xloc.bar_time <https://www.tradingview.com/pine-script-reference/v5/#var_xloc{dot}bar_time>`__ 
+     by using the ``=`` operator. When an object is created from that UDT, its ``xloc`` field will thus be set to that value.
 
 Now that our ``pivotPoint`` UDT is defined, we can proceed to create objects from it. 
 We create objects using the UDT's ``new()`` built-in method.
@@ -134,7 +133,7 @@ Take note of this line from the above example:
 
     foundPoint = pivotPoint.new(time[legsInput], pivotHighPrice)
 
-Could also be written using the following:
+It could also be written using the following:
 
 ::
 
@@ -170,13 +169,13 @@ Changing field values
 The value of an object's fields can be changed using the 
 :ref:`:= <PageOperators_ReassignmentOperator>` reassignment operator.
 
-This line of our previous example:
+Take another look at this line from our previous example:
 
 ::
 
     foundPoint = pivotPoint.new(time[legsInput], pivotHighPrice)
 
-Could be written using the following:
+It could be written using the following:
 
 ::
 

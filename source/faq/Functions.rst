@@ -305,8 +305,7 @@ This function is helpful for different circumstances, such as doing a calculatio
 
     range = close - nz(close[1], open)
 
-On the first bar, the ``close[1]`` would be returned as ``NaN, `` so the `nz() <https://www.tradingview.com/pine-script-reference/v5/#fun_nz>`__ 
-function replaces the ``close[1]`` with the `open <https://www.tradingview.com/pine-script-reference/v5/#var_open>`__ value instead. 
+On the first bar, the ``close[1]`` would be returned as ``NaN``, so the ``nz()`` function replaces the ``close[1]`` with the `open <https://www.tradingview.com/pine-script-reference/v5/#var_open>`__ value instead. 
 The `nz() <https://www.tradingview.com/pine-script-reference/v5/#fun_nz>`__ function will also protect against any divide by zero errors, so the code below won't throw an error.
 
 ::

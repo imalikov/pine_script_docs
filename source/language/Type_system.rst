@@ -542,60 +542,6 @@ They cannot be used in ternaries, however, because the return values of a ternar
 
 
 
-.. _PageTypeSystem_UserDefinedTypes:
-
-User-defined types
-""""""""""""""""""
-
-The `type <https://www.tradingview.com/pine-script-reference/v5/#op_type>`__ 
-keyword allows the creation of *user-defined types* (UDTs) from which 
-:ref:`objects <PageObjects>` can be created. 
-UDTs are composite types; they contain an arbitrary number of *fields* that can be of any type. 
-The syntax to define a *user-defined type* is:
-
-.. code-block:: text
-
-    [export] type <UDT_identifier>
-        <field_type> <field_name> [= <value>]
-        ...
-
-where:
-
-- ``export`` is used to export the UDT from a library. 
-  See the :ref:`Libraries <PageLibraries_Objects>` page for more information.
-- ``<UDT_identifier>`` is the name of the user-defined type.
-- ``<field_type>`` is the type of the field.
-- ``<field_name>`` is the name of the field.
-- ``<value>`` is an optional default value for the field, which will be assigned to it when new objects of that UDT are created. 
-  The field's default value will be `na <https://www.tradingview.com/pine-script-reference/v5/#var_na>`__ if none is specified. 
-  The same rules as those governing the default values of parameters in function signatures apply to the default values of fields.
-  For example, the `[] <https://www.tradingview.com/pine-script-reference/v5/#op_[]>`__ history-referencing operator cannot be used with them,
-  and expressions are not allowed.
-
-In this example, we create a UDT containing two fields to hold pivot information, 
-the `time <https://www.tradingview.com/pine-script-reference/v5/#var_time>`__ of the pivot's bar 
-and its price level:
-
-::
-
-    type pivotPoint
-        int openTime
-        float level
-
-User-defined types can be embedded, so a field can be of the same type as the UDT it belongs to. 
-Here, we add a field to our previous ``pivotPoint`` type that will hold the pivot information for another pivot point:
-
-::
-
-    type pivotPoint
-        int openTime
-        float level
-        pivotPoint nextPivot
-
-Two built-in methods can be used with a UDT: ``new()`` and ``copy()``. Read about them in the :ref:`Objects <PageObjects>` page.
-
-
-
 .. _PageTypeSystem_NaValue:
 
 \`na\` value

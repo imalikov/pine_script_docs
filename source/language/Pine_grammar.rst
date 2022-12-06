@@ -30,9 +30,10 @@ Conventions
 
 - ``{}`` Curly braces content can be repeated zero or more times: {, <parameter>}
 - ``[]`` Square brackets content can appear zero or one time: [ by <expression>]
+- ``()`` Parentheses group syntactic elements
 - ``\``  Backslash escapes one character: ``\[`` means a literal ``[`` in the syntax.
 - ``|``  Pipe means "or".
-- Token names use uppercase: ``TOKEN_NAME``.
+- Token names (non-terminal symbols) use uppercase: ``TOKEN_NAME``.
 - Lowercase is used for language keywords.
 
 
@@ -50,7 +51,7 @@ Grammar
         DISPLAY_STATEMENT
 
     VERSION
-        //@version = 1 | //@version = 2 | //@version = 3 | //@version = 4 | //@version = 5
+        //@version = (1 | 2 | 3 | 4 | 5)
 
     DECLARATION_STATEMENT
         indicator() | strategy() | library()

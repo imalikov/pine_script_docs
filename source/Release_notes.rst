@@ -17,6 +17,16 @@ Release notes
 
 This page contains release notes of notable changes in Pine Script™.
 
+December 2022
+------------
+
+New ``strategy.*`` functions were added: 
+
+* `strategy.opentrades.entry_comment() <https://www.tradingview.com/pine-script-reference/v5/#fun_strategy{dot}opentrades{dot}entry_comment>`_  - The function returns the comment message of the open trade's entry.
+* `strategy.closedtrades.entry_comment() <https://www.tradingview.com/pine-script-reference/v5/#fun_strategy{dot}closedtrades{dot}entry_comment>`_  - The function returns the comment message of the closed trade's entry.
+* `strategy.closedtrades.exit_comment() <https://www.tradingview.com/pine-script-reference/v5/#fun_strategy{dot}closedtrades{dot}exit_comment>`_  - The function returns the comment message of the closed trade's exit.
+
+
 November 2022
 ------------
 

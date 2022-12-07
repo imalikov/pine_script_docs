@@ -214,7 +214,6 @@ The same syntax used in :ref:`libraries <PageLibraries>` can be used to document
 This can make it easier to port your functions to a library should you ever decide to do so. 
 
 
-
     // This source code is subject to the terms of the Mozilla Public License 2.0 at https://mozilla.org/MPL/2.0/
     // © TradingView
     

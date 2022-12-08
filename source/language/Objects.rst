@@ -133,16 +133,16 @@ Take note of this line from the above example:
 
     foundPoint = pivotPoint.new(time[legsInput], pivotHighPrice)
 
-It could also be written using the following:
+This could also be written using the following:
 
 ::
 
     pivotPoint foundPoint = na
     foundPoint := pivotPoint.new(time[legsInput], pivotHighPrice)
 
-When objects are created using the `var <https://www.tradingview.com/pine-script-reference/v5/#op_var>`__ or 
-`varip <https://www.tradingview.com/pine-script-reference/v5/#op_varip>`__ keywords, 
-that property applies to all the object's fields:
+When an object is created using `var <https://www.tradingview.com/pine-script-reference/v5/#op_var>`__ or 
+`varip <https://www.tradingview.com/pine-script-reference/v5/#op_varip>`__, 
+those keywords apply to all of the object's fields:
 
 ::
 

@@ -1141,10 +1141,10 @@ Zig Zag
     int depth = input.int(title = 'Depth', defval = 10, minval = 1)
 
     int length = math.floor(depth / 2)
-    pH = ta.pivothigh(high, length, length)
-    pL = ta.pivotlow(low, length, length)
-    iH = not na(pH) ? bar_index[length] : na
-    iL = not na(pL) ? bar_index[length] : na
+    float pH = ta.pivothigh(high, length, length)
+    float pL = ta.pivotlow(low, length, length)
+    int iH = not na(pH) ? bar_index[length] : na
+    int iL = not na(pL) ? bar_index[length] : na
 
     calc_dev(base_price, price) =>
         100 * (price - base_price) / base_price
@@ -1168,12 +1168,12 @@ Zig Zag
         else
             // reverse the direction (or create the very first line)
             if na(lineLast)
-                id = line.new(index, price, index, price, color=color.red, width=2)
+                id = line.new(index, price, index, price, color = color.red, width = 2)
                 [id, isHigh, true]
             else
                 // price move is significant
                 if math.abs(dev) >= dev_threshold
-                    id = line.new(iLast, pLast, index, price, color=color.red, width=2)
+                    id = line.new(iLast, pLast, index, price, color = color.red, width = 2)
                     [id, isHigh, true]
                 else
                     [line(na), bool(na), false]

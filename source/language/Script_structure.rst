@@ -18,7 +18,7 @@ Script structure
 .. include:: <isonum.txt>
 
 
-A script in Pine Script™ follows this general structure:
+A Pine script follows this general structure:
 
 .. code-block:: text
 

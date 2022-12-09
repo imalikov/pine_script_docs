@@ -71,19 +71,21 @@ Types
 Pine Script™ **types** identify the nature of a value. They are:
 
 - The fundamental types: "int", "float", "bool", "color" and "string"
-- The special types: "plot", "hline", "line", "label", "box", "table", "array"
+- The special types: "plot", "hline", "line", "linefill", "label", "box", "table", "array", "matrix"
+- User-defined types (UDTs)
 - "void"
-- tuples
 
-Each fundamental type refers to the nature of the value contained in a variable: ``1`` is of type "int", ``1.0`` is of type "float", ``"AAPL"`` is of type "string", etc.
-The special types all contain IDs referring to an object of the type's name, e.g., a variable of type "label" contains an ID (or *pointer*) referring to a label, and so on.
+Each fundamental type refers to the nature of the value contained in a variable: 
+``1`` is of type "int", ``1.0`` is of type "float", ``"AAPL"`` is of type "string", etc.
+Variables of special types contain an ID referring to an object of the type's name.
+A variable of type "label" contains an ID (or *pointer*) referring to a label, and so on.
 The "void" type means no value is returned.     
-Tuples are a syntactic arrangement of variables, e.g., ``[macdLine, signalLine, histLine]``.
 
 The Pine Script™ compiler can automatically convert some types into others when a value is not of the required type. The auto-casting rules are: **int** 🠆 **float** 🠆 **bool**. 
 See the :ref:`Type casting <PageTypeSystem_TypeCasting>` section of this page for more information on type casting.
 
-Except in function signatures, Pine Script™ forms are implicit in code; they are never declared because they are always determined by the compiler. 
+Except for parameter definitions appearing in function signatures, Pine Script™ forms are implicit in code; 
+they are never declared because they are always determined by the compiler. 
 Types, however, can be specified when declaring variables, e.g.::
 
     //@version=5
@@ -101,6 +103,7 @@ Using forms and types
 ---------------------
 
 
+
 Forms
 ^^^^^
 
@@ -112,9 +115,10 @@ const
 Values of "const" form must be known at compile time, before your script has access to any information related to the symbol/timeframe information it is running on. 
 Compilation occurs when you save a script in the Pine Script™ Editor, which doesn't even require it to already be running on your chart. "const" variables cannot change during the execution of a script.
 
-Variables of "const" form can be initialized using a *literal* value, or calculated from expressions using only literal values or other variables of "const" form. 
-Pine Script™'s :ref:`Style guide <PageStyleGuide>` recommends using upper case SNAKE_CASE to name variables of "const" form. 
-While it is not a requirement, "const" variables are often declared using the 
+Variables of "const" form can be initialized using a *literal* value, 
+or calculated from expressions using only literal values or other variables of "const" form. 
+Our :ref:`Style guide <PageStyleGuide>` recommends using upper case SNAKE_CASE to name variables of "const" form. 
+While it is not a requirement, "const" variables can be declared using the 
 `var <https://www.tradingview.com/pine-script-reference/v5/#op_var>`__ keyword so they are only initialized on the first bar of the dataset. 
 See the :ref:`section on \`var\` <PageVariableDeclarations_Var>` for more information.
 
@@ -127,7 +131,7 @@ These are examples of literal values:
 - *literal color*: ``#FF55C6``, ``#FF55C6ff``
 
 .. note:: In Pine Script™, the built-in variables ``open``, ``high``, ``low``, ``close``, ``volume``, ``time``,
-    ``hl2``, ``hlc3``, ``ohlc4``, etc., are not of "const" form. Because they change bar to bar, they are of *series* form.
+    ``hl2``, ``hlc3``, ``ohlc4``, etc., are of "series" form because their values can change bar to bar.
 
 The "const" form is a requirement for the arguments to the ``title`` and ``shorttitle`` parameters in 
 `indicator() <https://www.tradingview.com/pine-script-reference/v5/#fun_indicator>`__, for example. 
@@ -159,6 +163,7 @@ for which we do not use an uppercase name because it is not of "const" form::
     var name1 = "My Indicator "
     var NAME2 = "No. 2"
     name1 := name1 + NAME2
+
 
 
 .. _PageTypeSystem_Input:
@@ -204,6 +209,7 @@ Note that:
 Wherever an "input" form is required, a "const" form can also be used.
 
 
+
 simple
 """"""
 
@@ -218,6 +224,7 @@ A "simple" form argument is also required for the ``length`` argument of functio
 which cannot work with dynamic lengths that could change during the script's execution.
 
 Wherever a "simple" form is required, a "const" or "input" form can also be used.
+
 
 
 series
@@ -271,6 +278,7 @@ Wherever a "series" form is required, a "const", "input" or "simple" form can al
 
 Types
 ^^^^^
+
 
 
 int
@@ -477,71 +485,6 @@ A "void" result cannot be used in an expression or assigned to a variable. No ``
 
 
 
-.. _PageTypeSystem_Tuples:
-
-Tuples
-""""""
-
-A *tuple* is a comma-separated set of expressions enclosed in brackets that can be used when a function or a local block must return more than one variable as a result. 
-For example
-
-::
-
-    calcSumAndMult(a, b) =>
-        sum = a + b
-        mult = a * b
-        [sum, mult]
-
-In this example there is a 2-tuple on the last statement of the function's code block, which is the result returned by the function. Tuple elements can be of any type.
-There is also a special syntax for calling functions that return tuples, which uses a *tuple declaration* on the left side of the equal sign in what is a multi-variable declaration.
-The result of a function such as ``calcSumAndMult()`` that returns a tuple must be assigned to a *tuple declaration*, i.e., 
-a set of comma-separated list of *new* variables that will receive the values returned by the function. 
-Here, the value of the ``sum`` and ``mult`` variables calculated by the function will be assigned to the ``s`` and ``m`` variables
-
-::
-
-    [s, m] = calcSumAndMul(high, low)
-
-Note that the type of ``s`` and ``m`` cannot be explicitly defined; it is always inferred by the type of the function return results.
-
-Tuples can be useful to request multiple values in one `request.security() <https://www.tradingview.com/pine-script-reference/v5/#fun_request{dot}security>`__ call, e.g.
-
-::
-
-    roundedOHLC() =>
-        [math.round_to_mintick(open), math.round_to_mintick(high), math.round_to_mintick(low), math.round_to_mintick(close)]
-    [op, hi, lo, cl] = request.security(syminfo.tickerid, "D", roundedOHLC())
-
-or:
-
-::
-    
-    [op, hi, lo, cl] = request.security(syminfo.tickerid, "D", [math.round_to_mintick(open), math.round_to_mintick(high), math.round_to_mintick(low), math.round_to_mintick(close)])
-
-or this form if no rounding is required
-
-::
-
-    [op, hi, lo, cl] = request.security(syminfo.tickerid, "D", [open, high, low, close])
-
-Tuples can also be used as return results of local blocks, in an `if <https://www.tradingview.com/pine-script-reference/v5/#op_if>`__ statement for example
-
-::
-
-    [v1, v2] = if close > open
-        [high, close]
-    else
-        [close, low]
-
-They cannot be used in ternaries, however, because the return values of a ternary statement are not considered as local blocks. This is not allowed
-
-::
-
-    // Not allowed.
-    [v1, v2] = close > open ? [high, close] : [close, low]
-
-
-
 .. _PageTypeSystem_UserDefinedTypes:	
 
 User-defined types
@@ -723,7 +666,7 @@ This is code that will not compile because we fail to convert the type of the ar
     plot(s)
 
 The code fails to compile with the following error: 
-*Cannot call 'ta.sma` with argument 'length'='len'. An argument of 'const float' type was used but a 'series int' is expected;*. 
+*Cannot call 'ta.sma` with argument 'length'='len'. An argument of 'const float' type was used but a 'series int' is expected*. 
 The compiler is telling us that we supplied a "float" value where an "int" is required. There is no auto-casting rule that can automatically cast a "float" to an "int", 
 so we will need to do the job ourselves. For this, we will use the `int() <https://www.tradingview.com/pine-script-reference/v5/#fun_int>`__ 
 function to force the type conversion of the value we supply as a length to `ta.sma() <https://www.tradingview.com/pine-script-reference/v5/#fun_ta{dot}sma>`__ from "float" to "int"::
@@ -740,6 +683,77 @@ Explicit type-casting can also be useful when declaring variables and initializi
     lbl = label(na)
     // Explicitly declare the type of the new variable.
     label lbl = na
+
+
+
+.. _PageTypeSystem_Tuples:
+
+Tuples
+------
+
+A *tuple* is a comma-separated set of expressions enclosed in brackets that can be used when a function or 
+a local block must return more than one variable as a result. For example:
+
+::
+
+    calcSumAndMult(a, b) =>
+        sum = a + b
+        mult = a * b
+        [sum, mult]
+
+In this example there is a two-element tuple on the last statement of the function's code block, 
+which is the result returned by the function. Tuple elements can be of any type.
+There is also a special syntax for calling functions that return tuples, 
+which uses a *tuple declaration* on the left side of the equal sign in what is a multi-variable declaration.
+The result of a function such as ``calcSumAndMult()`` that returns a tuple must be assigned to a *tuple declaration*, i.e., 
+a set of comma-separated list of *new* variables that will receive the values returned by the function. 
+Here, the value of the ``sum`` and ``mult`` variables calculated by the function will be assigned to the ``s`` and ``m`` variables:
+
+::
+
+    [s, m] = calcSumAndMul(high, low)
+
+Note that the type of ``s`` and ``m`` cannot be explicitly defined; it is always inferred by the type of the function return results.
+
+Tuples can be useful to request multiple values in one 
+`request.security() <https://www.tradingview.com/pine-script-reference/v5/#fun_request{dot}security>`__ call:
+
+::
+
+    roundedOHLC() =>
+        [math.round_to_mintick(open), math.round_to_mintick(high), math.round_to_mintick(low), math.round_to_mintick(close)]
+    [op, hi, lo, cl] = request.security(syminfo.tickerid, "D", roundedOHLC())
+
+or:
+
+::
+    
+    [op, hi, lo, cl] = request.security(syminfo.tickerid, "D", [math.round_to_mintick(open), math.round_to_mintick(high), math.round_to_mintick(low), math.round_to_mintick(close)])
+
+or this form if no rounding is required
+
+::
+
+    [op, hi, lo, cl] = request.security(syminfo.tickerid, "D", [open, high, low, close])
+
+Tuples can also be used as return results of local blocks, 
+in an `if <https://www.tradingview.com/pine-script-reference/v5/#op_if>`__ statement for example:
+
+::
+
+    [v1, v2] = if close > open
+        [high, close]
+    else
+        [close, low]
+
+They cannot be used in ternaries, however, because the return values of a ternary statement are not considered as local blocks. 
+This is not allowed:
+
+::
+
+    // Not allowed.
+    [v1, v2] = close > open ? [high, close] : [close, low]
+
 
 
 .. image:: /images/TradingView-Logo-Block.svg

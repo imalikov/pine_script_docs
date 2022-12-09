@@ -95,6 +95,8 @@ This is an example library::
 
 
 
+.. _PageLibraries_Functions:
+
 Library functions
 ^^^^^^^^^^^^^^^^^
 

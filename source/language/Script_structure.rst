@@ -48,7 +48,7 @@ Notable changes to the current version of Pine Script™ are documented in the :
 Declaration statement
 ---------------------
 
-All Pine scripts must contain one *declaration statement*, which is a call to one of these functions:
+All Pine scripts must contain one :ref:`declaration statement <PageDeclarationStatements>`, which is a call to one of these functions:
 
 - `indicator() <https://www.tradingview.com/pine-script-reference/v5/#fun_indicator>`__
 - `strategy() <https://www.tradingview.com/pine-script-reference/v5/#fun_strategy>`__

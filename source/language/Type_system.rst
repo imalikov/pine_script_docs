@@ -430,20 +430,31 @@ Note that there is no ``plot`` or ``hline`` keyword to explicitly declare the ty
 
 
 
-line, label, box and table
-""""""""""""""""""""""""""
+line, linefill, label, box and table
+""""""""""""""""""""""""""""""""""""
 
-Drawings were introduced in Pine Script™ v4. These objects are created with the
+Drawings appeared in Pine Script™ starting with v4. Each drawing has its own type:
+`line <https://www.tradingview.com/pine-script-reference/v5/#op_line>`__,
+`linefill <https://www.tradingview.com/pine-script-reference/v5/#op_linefill>`__,
+`label <https://www.tradingview.com/pine-script-reference/v5/#op_label>`__,
+`box <https://www.tradingview.com/pine-script-reference/v5/#op_box>`__,
+`table <https://www.tradingview.com/pine-script-reference/v5/#op_table>`__.
+
+Each type is also used as a namespace containing all the built-in functions used to operate on each type of drawing.
+One of these is a ``new()`` constructor used to create an object of that type:
 `line.new() <https://www.tradingview.com/pine-script-reference/v5/#fun_line{dot}new>`__,
-and `label.new() <https://www.tradingview.com/pine-script-reference/v5/#fun_label{dot}new>`__,
+`linefill.new() <https://www.tradingview.com/pine-script-reference/v5/#fun_linefill{dot}new>`__,
+`label.new() <https://www.tradingview.com/pine-script-reference/v5/#fun_label{dot}new>`__,
 `box.new() <https://www.tradingview.com/pine-script-reference/v5/#fun_box{dot}new>`__ and
-`table.new() <https://www.tradingview.com/pine-script-reference/v5/#fun_table{dot}new>`__ functions. 
+`table.new() <https://www.tradingview.com/pine-script-reference/v5/#fun_table{dot}new>`__. 
 
-These functions all return an ID that uniquely identifies each drawing object. 
-The ID's type is "series line", "series label", "series box" and "series table", respectively, and an ID can exist in no other form than "series". 
-Drawing IDs act like a pointer in that they are used to reference a specific instance of a drawing in all the related functions of its namespace. 
-The line ID returned by a `line.new() <https://www.tradingview.com/pine-script-reference/v5/#fun_line{dot}new>`__ 
-call is then used to refer to that line using `line.delete() <https://www.tradingview.com/pine-script-reference/v5/#fun_line{dot}delete>`__, for example.
+These functions all return an ID which is a reference that uniquely identifies each drawing object. 
+IDs are always of "series" form, thus "series line", "series label", etc.
+Drawing IDs act like a pointer in that they are used to reference a specific instance of a drawing 
+in all the functions of that drawing's namespace. 
+For example, the line ID returned by a `line.new() <https://www.tradingview.com/pine-script-reference/v5/#fun_line{dot}new>`__ 
+call will then be used to refer to it when comes time to delete the line using 
+`line.delete() <https://www.tradingview.com/pine-script-reference/v5/#fun_line{dot}delete>`__.
 
 
 

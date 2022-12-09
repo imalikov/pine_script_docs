@@ -20,6 +20,10 @@ This page contains release notes of notable changes in Pine Script™.
 December 2022
 ------------
 
+A new function was added:
+
+* `ticker.standard() <https://www.tradingview.com/pine-script-reference/v5/#fun_ticker{dot}standard>`_ - Creates a ticker to request data from a standard chart that is unaffected by modifiers like extended session, dividend adjustment, currency conversion, and the calculations of non-standard chart types: Heikin Ashi, Renko, etc.
+
 New ``strategy.*`` functions were added: 
 
 * `strategy.opentrades.entry_comment() <https://www.tradingview.com/pine-script-reference/v5/#fun_strategy{dot}opentrades{dot}entry_comment>`_  - The function returns the comment message of the open trade's entry.

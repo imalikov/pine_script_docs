@@ -38,7 +38,7 @@ A compiler annotation in the following form tells the compiler which of the vers
 - The version number can be 1 to 5.
 - The compiler annotation is not mandatory. When omitted, version 1 is assumed. 
   It is strongly recommended to always use the latest version.
-- While it is synctactically correct to place the version directive anywhere in the script, 
+- While it is synctactically correct to place the version annotation anywhere in the script, 
   it is much more useful to readers when placed at the top of the script.
 
 Notable changes to the current version of Pine Script™ are documented in the :ref:`Release notes <PageReleaseNotes>`.
@@ -77,7 +77,7 @@ Each type of script has distinct requirements:
 Code
 ----
 
-Lines in a script that are not comments or compiler directives are *statements*, which implement the script's algorithm. 
+Lines in a script that are not comments or compiler annotations are *statements*, which implement the script's algorithm. 
 A statement can be one of these:
 
 - :ref:`variable declaration <PageExpressionsDeclarationsStatements_VariableDeclaration>`

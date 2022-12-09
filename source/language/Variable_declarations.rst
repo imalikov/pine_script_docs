@@ -27,7 +27,11 @@ The syntax of variable declarations is:
 .. code-block:: text
 
     [<declaration_mode>] [<type>] <identifier> = <expression> | <structure>
-    |
+    
+or
+    
+.. code-block:: text
+
     <tuple_declaration> = <function_call> | <structure>
 
 where:

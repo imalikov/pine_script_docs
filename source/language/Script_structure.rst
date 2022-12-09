@@ -28,32 +28,15 @@ A script in Pine Script™ follows this general structure:
 
 
 
-Comments
---------
-
-Double slashes (``//``) define comments in Pine Script™. Comments can begin anywhere on the line. 
-They can also follow Pine Script™ code on the same line::
-
-    //@version=5
-    indicator("")
-    // This line is a comment
-    a = close // This is also a comment
-    plot(a)
-
-The Pine Script™ Editor has a keyboard shortcut to comment/uncomment lines: :kbd:`ctrl` + :kbd:`/`. 
-You can use it on multiple lines by highlighting them first.
-
-
-
 Version
 -------
 
-A compiler directive in the following form tells the compiler which of the versions of Pine Script™ the script is written in::
+A compiler annotation in the following form tells the compiler which of the versions of Pine Script™ the script is written in::
 
     //@version=5
     
 - The version number can be 1 to 5.
-- The compiler directive is not mandatory, but if omitted, version 1 is assumed. 
+- The compiler annotation is not mandatory. When omitted, version 1 is assumed. 
   It is strongly recommended to always use the latest version.
 - While it is synctactically correct to place the version directive anywhere in the script, 
   it is much more useful to readers when placed at the top of the script.
@@ -65,7 +48,7 @@ Notable changes to the current version of Pine Script™ are documented in the :
 Declaration statement
 ---------------------
 
-All Pine scripts must contain a *declaration statement*, which is a call to one of these functions:
+All Pine scripts must contain one *declaration statement*, which is a call to one of these functions:
 
 - `indicator() <https://www.tradingview.com/pine-script-reference/v5/#fun_indicator>`__
 - `strategy() <https://www.tradingview.com/pine-script-reference/v5/#fun_strategy>`__
@@ -87,7 +70,7 @@ Each type of script has distinct requirements:
   `line.new() <https://www.tradingview.com/pine-script-reference/v5/#fun_line{dot}new>`__, etc.).
 - Strategies must contain at least one ``strategy.*()`` call, e.g., 
   `strategy.entry() <https://www.tradingview.com/pine-script-reference/v5/#fun_strategy{dot}entry>`__.
-- Libraries must contain at least one library function declaration.
+- Libraries must contain at least one exported :ref:`function <PageLibraries_Functions>` or :ref:`user-defined type <PageLibraries_Objects>`.
 
 
 
@@ -160,6 +143,24 @@ You can bring up a simple Pine Script™ v5 strategy by selecting "New blank str
         strategy.entry("My Short Entry Id", strategy.short)
 
 
+
+Comments
+--------
+
+Double slashes (``//``) define comments in Pine Script™. Comments can begin anywhere on the line. 
+They can also follow Pine Script™ code on the same line::
+
+    //@version=5
+    indicator("")
+    // This line is a comment
+    a = close // This is also a comment
+    plot(a)
+
+The Pine Script™ Editor has a keyboard shortcut to comment/uncomment lines: :kbd:`ctrl` + :kbd:`/`. 
+You can use it on multiple lines by highlighting them first.
+
+
+
 Line wrapping
 -------------
 
@@ -209,6 +210,13 @@ You can use comments in wrapped lines::
       high > high[1] ? color.lime : // A comment
       low < low[1] ? color.blue : color.black
     bgcolor(c)
+
+
+
+Compiler annotations
+--------------------
+
+
 
 
 .. image:: /images/TradingView-Logo-Block.svg

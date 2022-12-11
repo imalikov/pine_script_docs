@@ -240,18 +240,18 @@ Note that:
 
 `time_tradingday <https://www.tradingview.com/pine-script-reference/v5/#var_time_tradingday>`__ is useful
 when a symbol trades on overnight sessions that start and close on different calendar days.
-This happens in forex markets, for example, where a session can open Sunday at 17:00 and close Monday at 17:00.
+For example, this happens in forex markets where a session can open Sunday at 17:00 and close Monday at 17:00.
 
-The variable returns the time of the beginning of the trading day when used at timeframes of 1D and less.
+The variable returns the time of the beginning of the trading day in `UNIX time <https://en.wikipedia.org/wiki/Unix_time>`__ when used at timeframes of 1D and less.
 When used on timeframes higher than 1D, 
-it returns the starting time of the last trading day in the bar (e.g., at 1W it will return the starting time of the last trading day of the week).
+it returns the starting time of the last trading day in the bar (e.g., at 1W, it will return the starting time of the last trading day of the week).
 
 
 
 \`timenow\`
 ^^^^^^^^^^^
 
-`timenow <https://www.tradingview.com/pine-script-reference/v5/#var_timenow>`__ returns the current time.
+`timenow <https://www.tradingview.com/pine-script-reference/v5/#var_timenow>`__ returns the current time in `UNIX time <https://en.wikipedia.org/wiki/Unix_time>`__.
 It works in realtime, but also when a script executes on historical bars. 
 In realtime, your scripts will only perceive changes when they execute on feed updates.
 When no updates occur the script is idle, so it cannot update its display.
@@ -260,7 +260,9 @@ See the page on Pine Script™'s :ref:`execution model <PageExecutionModel>` for
 This script uses the values of `timenow <https://www.tradingview.com/pine-script-reference/v5/#var_timenow>`__
 and `time_close <https://www.tradingview.com/pine-script-reference/v5/#var_time_close>`__
 to calculate a realtime countdown for intraday bars.
-Contrary to the countdown on the chart, this one will only update when a feed update causes the script to execute another iteration::
+Contrary to the countdown on the chart, this one will only update when a feed update causes the script to execute another iteration:
+
+::
 
     //@version=5
     indicator("", "", true)

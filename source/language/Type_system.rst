@@ -458,7 +458,7 @@ call will then be used to refer to it when comes time to delete the line using
 
 
 
-arrays and matrices
+Arrays and matrices
 """""""""""""""""""
 
 Arrays and matrices in Pine Script™ are identified by an ID, much like drawings such as lines. 

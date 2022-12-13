@@ -87,8 +87,7 @@ The formal syntax of a variable declaration is:
         var | varip
 
     <type>
-        int   | float   | bool   | color   | string   | label   | line   | box   | table | 
-        int[] | float[] | bool[] | color[] | string[] | label[] | line[] | box[] | table[]
+        int | float | bool | color | string | line | linefill | label | box | table | array<type> | matrix<type> | UDF
 
 
 

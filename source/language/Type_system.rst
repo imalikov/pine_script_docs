@@ -458,10 +458,13 @@ call will then be used to refer to it when comes time to delete the line using
 
 
 
-array
-"""""
+arrays and matrices
+"""""""""""""""""""
 
-Arrays in Pine Script™ are identified by an array ID. There is no single type representing an array ID, 
+Arrays and matrices in Pine Script™ are identified by an ID. Their type is specified by appending a *type template* to the
+`array <https://www.tradingview.com/pine-script-reference/v5/#op_array>`__ or
+`matrix <https://www.tradingview.com/pine-script-reference/v5/#op_matrix>`__ keywords.
+A type template is a fundament  re is no single type representing an array ID, 
 but rather an overloaded version of a subset of Pine Script™ types which represents the type of an array's elements. 
 These type names are constructed by appending the ``[]`` suffix 
 (not to be confused with the 
@@ -484,17 +487,6 @@ An array containing elements of type "int" initalized with one element of value 
     int[] a2 = array.new_int(1, 10)
     a3 = array.from(10)
     int[] a4 = array.from(10)
-
-
-
-void
-""""
-
-There is a "void" type in Pine Script™. Functions having only side-effects and returning no usable result return the "void" type. 
-An example of such a function is `alert() <https://www.tradingview.com/pine-script-reference/v5/#fun_alert>`__; 
-it does something (triggers an alert event), but it returns no useful value.
-
-A "void" result cannot be used in an expression or assigned to a variable. No ``void`` keyword exists in Pine Script™, as variables cannot be declared using the "void" type.
 
 
 
@@ -547,6 +539,17 @@ Here, we add a field to our previous ``pivotPoint`` type that will hold the pivo
         pivotPoint nextPivot	
 
 Two built-in methods can be used with a UDT: ``new()`` and ``copy()``. Read about them in the :ref:`Objects <PageObjects>` page.
+
+
+
+void
+""""
+
+There is a "void" type in Pine Script™. Functions having only side-effects and returning no usable result return the "void" type. 
+An example of such a function is `alert() <https://www.tradingview.com/pine-script-reference/v5/#fun_alert>`__; 
+it does something (triggers an alert event), but it returns no useful value.
+
+A "void" result cannot be used in an expression or assigned to a variable. No ``void`` keyword exists in Pine Script™, as variables cannot be declared using the "void" type.
 
 
 
@@ -627,6 +630,19 @@ where we are replacing any `na <https://www.tradingview.com/pine-script-referenc
 
     var float ath = high
     ath := math.max(ath, high)
+
+
+
+.. _PageTypeSystem_TypeTemplates:
+
+Type templates
+--------------
+
+Type templates are used to build array and matrix types. They consist of the 
+`array <https://www.tradingview.com/pine-script-reference/v5/#op_array>`__ or
+`matrix <https://www.tradingview.com/pine-script-reference/v5/#op_matrix>`__ keywords,
+followed by a type enclosed in angle brackets (``< >``).
+The types that can be used in 
 
 
 

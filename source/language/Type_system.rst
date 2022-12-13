@@ -648,7 +648,7 @@ Type templates can be constructed from:
 - :ref:`User-defined types (UDTs) <PageTypeSystem_UserDefinedTypes>`
     
 They can be used to declare the type of a variable and in the
-`array.new<type> <https://www.tradingview.com/pine-script-reference/v5/#fun_array{dot}new<type>>`__ or 
+`array.new<type> <https://www.tradingview.com/pine-script-reference/v5/#fun_array{dot}new\<type\>>`__ or 
 `matrix.new<type> <https://www.tradingview.com/pine-script-reference/v5/#fun_matrix{dot}new\<type\>>`__
 function calls used to create a new array or matrix:
 

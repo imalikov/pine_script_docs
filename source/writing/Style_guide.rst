@@ -45,7 +45,8 @@ We recommend the use of:
 Script organization
 -------------------
 
-The Pine Script™ compiler is quite forgiving of the positioning of specific statements or compiler directives in the script. 
+The Pine Script™ compiler is quite forgiving of the positioning of specific statements or 
+the version :ref:`compiler annotation <PageScriptStructure_CompilerAnnotations>` in the script. 
 While other arrangements are syntactically correct, this is how we recommend organizing scripts:
 
 .. code-block:: text
@@ -85,7 +86,8 @@ The standard license comments appearing at the beginning of scripts are:
 <version>
 ^^^^^^^^^
 
-This is the compiler directive defining the version of Pine Script™ the script will use. If none is present, v1 is used. For v5, use
+This is the :ref:`compiler annotation <PageScriptStructure_CompilerAnnotations>` defining the version of Pine Script™ the script will use. 
+If none is present, v1 is used. For v5, use:
 
 ::
 

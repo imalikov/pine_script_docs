@@ -31,15 +31,16 @@ A Pine script follows this general structure:
 Version
 -------
 
-A compiler annotation in the following form tells the compiler which of the versions of Pine Script™ the script is written in::
+A :ref:`compiler annotation <PageScriptStructure_CompilerAnnotations>` 
+in the following form tells the compiler which of the versions of Pine Script™ the script is written in::
 
     //@version=5
     
 - The version number can be 1 to 5.
 - The compiler annotation is not mandatory. When omitted, version 1 is assumed. 
-  It is strongly recommended to always use the latest version.
-- While it is synctactically correct to place the version annotation anywhere in the script, 
-  it is much more useful to readers when placed at the top of the script.
+  It is strongly recommended to always use the latest version of the language.
+- While it is synctactically correct to place the version compiler annotation anywhere in the script, 
+  it is much more useful to readers when it appears at the top of the script.
 
 Notable changes to the current version of Pine Script™ are documented in the :ref:`Release notes <PageReleaseNotes>`.
 
@@ -77,8 +78,9 @@ Each type of script has distinct requirements:
 Code
 ----
 
-Lines in a script that are not comments or compiler annotations are *statements*, which implement the script's algorithm. 
-A statement can be one of these:
+Lines in a script that are not :ref:`comments <PageScriptStructure_Comments>` or 
+:ref:`compiler annotations <PageScriptStructure_CompilerAnnotations>` are *statements*, 
+which implement the script's algorithm. A statement can be one of these:
 
 - :ref:`variable declaration <PageExpressionsDeclarationsStatements_VariableDeclaration>`
 - :ref:`variable reassignement <PageExpressionsDeclarationsStatements_VariableReassignment>`
@@ -96,15 +98,13 @@ Statements can be arranged in multiple ways:
 
 - Some statements can be expressed in one line, like most variable declarations, 
   lines containing only a function call or single-line function declarations.
-  Others, like structures, always require multiple lines because they require a *local block*.
-- Statements in the *global scope* of the script (i.e., which are not part of local blocks) cannot begin with white space (space or tab). 
+  Lines can also be :ref:`wrapped <PageScriptStructure_LineWrapping>` (continued on multiple lines).
+  Multiple one-line statements can be concatenated on a single line by using the comma as a separator.
+- Others statements such as structures or multi-line function declarations always require multiple lines because they require a *local block*.
+  A local block must be indented by a tab or four spaces. Each local block defines a distinct *local scope*.
+- Statements in the *global scope* of the script (i.e., which are not part of local blocks) cannot begin with white space (a space or a tab). 
   Their first character must also be the line's first character.
   Lines beginning in a line's first position become by definition part of the script's *global scope*.
-- Structures or multi-line function declarations always require a *local block*. 
-  A local block must be indented by a tab or four spaces. Each local block defines a distinct *local scope*.
-- Multiple one-line statements can be concatenated on a single line by using the comma (``,``) as a separator.
-- Lines can contain comments, or be comments.
-- Lines can also be wrapped (continued on multiple lines).
 
 A simple valid Pine Script™ v5 indicator can be generated in the Pine Script™ Editor by using the "Open" button and choosing "New blank indicator"::
 
@@ -113,7 +113,9 @@ A simple valid Pine Script™ v5 indicator can be generated in the Pine Script�
     plot(close)
 
 This indicator includes three local blocks, one in the ``f()`` function declaration, 
-and two in the variable declaration using an `if <https://www.tradingview.com/pine-script-reference/v5/#op_if>`__ structure::
+and two in the variable declaration using an `if <https://www.tradingview.com/pine-script-reference/v5/#op_if>`__ structure:
+
+::
 
     //@version=5
 
@@ -130,7 +132,9 @@ and two in the variable declaration using an `if <https://www.tradingview.com/pi
     bgcolor(color.new(plotColor, 70))   // Call to a built-in function  (global scope)
 
 
-You can bring up a simple Pine Script™ v5 strategy by selecting "New blank strategy" instead::
+You can bring up a simple Pine Script™ v5 strategy by selecting "New blank strategy" instead:
+
+::
 
     //@version=5
     strategy("My Strategy", overlay=true, margin_long=100, margin_short=100)
@@ -145,11 +149,15 @@ You can bring up a simple Pine Script™ v5 strategy by selecting "New blank str
 
 
 
+.. _PageScriptStructure_Comments:
+
 Comments
 --------
 
 Double slashes (``//``) define comments in Pine Script™. Comments can begin anywhere on the line. 
-They can also follow Pine Script™ code on the same line::
+They can also follow Pine Script™ code on the same line:
+
+::
 
     //@version=5
     indicator("")
@@ -162,6 +170,8 @@ You can use it on multiple lines by highlighting them first.
 
 
 
+.. _PageScriptStructure_LineWrapping:
+
 Line wrapping
 -------------
 
@@ -169,7 +179,9 @@ Long lines can be split on multiple lines, or "wrapped". Wrapped lines must be i
 
     a = open + high + low + close
 
-may be wrapped as::
+may be wrapped as:
+
+::
 
     a = open +
           high +
@@ -188,7 +200,9 @@ However, since a local block must syntactically begin with an
 indentation (4 spaces or 1 tab), when splitting it onto the
 following line, the continuation of the statement must start with more
 than one indentation (not equal to a multiple of four spaces). For
-example::
+example:
+
+::
 
     updown(s) =>
         isEqual = s == s[1]
@@ -203,7 +217,9 @@ example::
                        -1 :
                        nz(ud[1])-1)
 
-You can use comments in wrapped lines::
+You can use comments in wrapped lines:
+
+::
 
     //@version=5
     indicator("")
@@ -214,9 +230,14 @@ You can use comments in wrapped lines::
 
 
 
+.. _PageScriptStructure_CompilerAnnotations:
+
 Compiler annotations
 --------------------
 
+Compiler annotations accomplish different purposes:
+
+- 
 
 
 

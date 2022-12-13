@@ -65,7 +65,8 @@ Your first Pine script is running on your chart, which should look like this:
 Let's look at our script's code, line by line:
 
 Line 1: ``//@version=5``
-    This is a comment containing a compiler directive that tells the compiler the script will use version 5 of Pine Script™.
+    This is a :ref:`compiler annotation <PageScriptStructure_CompilerAnnotations>` 
+    telling the compiler the script will use version 5 of Pine Script™.
 Line 2: ``indicator("MACD #1")``
     Defines the name of the script that will appear on the chart as "MACD".
 Line 3: ``fast = 12``

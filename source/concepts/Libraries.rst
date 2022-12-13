@@ -63,7 +63,8 @@ A library script has the following structure, where one or more exportable funct
 
 Note that:
 
-- The ``// @description``, ``// @function``, ``// @param`` and ``// @returns`` compiler directives are optional but we highly recommend you use them. 
+- The ``// @description``, ``// @function``, ``// @param`` and ``// @returns`` 
+  :ref:`compiler annotations <PageScriptStructure_CompilerAnnotations>` are optional but we highly recommend you use them. 
   They serve a double purpose: document the library's code and populate the default library description which authors can use when publishing the library.
 - The `export <https://www.tradingview.com/pine-script-reference/v5/#op_export>`__ keyword is mandatory.
 - <parameter_type> is mandatory, contrary to user-defined function parameter definitions in indicators or strategies, which are typeless.
@@ -334,7 +335,8 @@ Note that:
   it is preferable to keep its default value because the ``title`` argument is used to reference imported libraries in the 
   `import <https://www.tradingview.com/pine-script-reference/v5/#op_import>`__ statement. 
   It makes life easier for library users when your publication's title matches the actual name of the library.
-- A default description is built from the compiler directives we used in our library. We will publish the library wihout retouching it.
+- A default description is built from the :ref:`compiler annotations <PageScriptStructure_CompilerAnnotations>` we used in our library. 
+  We will publish the library wihout retouching it.
 - We chose to publish our library publicly, so it will be visible to all TradingViewers.
 - We do not have the possibility of selecting a visibility type other than "Open" because libraries are always open-source.
 - The list of categories for libraries is different than for indicators and strategies. We have selected the "Statistics and Metrics" category.

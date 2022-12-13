@@ -448,8 +448,8 @@ One of these is a ``new()`` constructor used to create an object of that type:
 `box.new() <https://www.tradingview.com/pine-script-reference/v5/#fun_box{dot}new>`__ and
 `table.new() <https://www.tradingview.com/pine-script-reference/v5/#fun_table{dot}new>`__. 
 
-These functions all return an ID which is a reference that uniquely identifies each drawing object. 
-IDs are always of "series" form, thus "series line", "series label", etc.
+These functions all return an ID which is a reference that uniquely identifies a drawing object. 
+IDs are always of "series" form, thus their form and type is "series line", "series label", etc.
 Drawing IDs act like a pointer in that they are used to reference a specific instance of a drawing 
 in all the functions of that drawing's namespace. 
 For example, the line ID returned by a `line.new() <https://www.tradingview.com/pine-script-reference/v5/#fun_line{dot}new>`__ 
@@ -463,8 +463,10 @@ array
 
 Arrays in Pine Script™ are identified by an array ID. There is no single type representing an array ID, 
 but rather an overloaded version of a subset of Pine Script™ types which represents the type of an array's elements. 
-These type names are constructed by appending the ``[]`` suffix (not to be confused with the 
-`[] <https://www.tradingview.com/pine-script-reference/v5/#op_[]>`__ history-referencing operator) to one of the Pine Script™ types allowed for array elements:
+These type names are constructed by appending the ``[]`` suffix 
+(not to be confused with the 
+`[] <https://www.tradingview.com/pine-script-reference/v5/#op_[]>`__ history-referencing operator) 
+to one of the Pine Script™ types allowed for array elements:
 
 - ``int[]``
 - ``float[]``
@@ -663,6 +665,7 @@ For these cases, explicit type-casting functions exist. They are:
 `color() <https://www.tradingview.com/pine-script-reference/v5/#fun_color>`__,
 `string() <https://www.tradingview.com/pine-script-reference/v5/#fun_string>`__,
 `line() <https://www.tradingview.com/pine-script-reference/v5/#fun_line>`__,
+`linefill() <https://www.tradingview.com/pine-script-reference/v5/#fun_linefill>`__,
 `label() <https://www.tradingview.com/pine-script-reference/v5/#fun_label>`__,
 `box() <https://www.tradingview.com/pine-script-reference/v5/#fun_box>`__, and
 `table() <https://www.tradingview.com/pine-script-reference/v5/#fun_table>`__.

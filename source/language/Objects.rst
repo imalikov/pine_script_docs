@@ -37,7 +37,7 @@ Creating objects
 
 Before an object can be created, its type must be defined. 	
 The :ref:`User-defined types <PageTypeSystem_UserDefinedTypes>` section of the 	
-:ref:`Type system <PageTypeSystem_UserDefinedTypes>` page explains how to do so.	
+:ref:`Type system <PageTypeSystem>` page explains how to do so.	
 
 Let's define a ``pivotPoint`` type to hold pivot information:	
 

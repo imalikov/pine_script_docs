@@ -461,9 +461,19 @@ call will then be used to refer to it when comes time to delete the line using
 arrays and matrices
 """""""""""""""""""
 
-Arrays and matrices in Pine Script™ are identified by an ID. Their type is specified by appending a *type template* to the
+Array and matrix types are specified by appending a :ref:`type template <PageTypeSystem_TypeTemplates>` to the
 `array <https://www.tradingview.com/pine-script-reference/v5/#op_array>`__ or
 `matrix <https://www.tradingview.com/pine-script-reference/v5/#op_matrix>`__ keywords.
+The type template specifies the type of the elements contained in the array or matrix.
+
+- ``array<int>`` defines an array containing "int" elements.
+- ``array<label>`` defines an array containing "label" IDs.
+- ``array<UDF>`` defines an array containing objects of a :ref:`user-defined type (UDT) <PageTypeSystem_UserDefinedTypes>`.
+- ``matrix<float>`` defines a matrix containing "float" elements.
+- ``matrix<UDF>`` defines a matrix containing objects of a :ref:`user-defined type (UDT) <PageTypeSystem_UserDefinedTypes>`.
+
+Arrays and matrices in Pine Script™ are identified by an ID. 
+
 A type template is a fundament  re is no single type representing an array ID, 
 but rather an overloaded version of a subset of Pine Script™ types which represents the type of an array's elements. 
 These type names are constructed by appending the ``[]`` suffix 
@@ -471,22 +481,15 @@ These type names are constructed by appending the ``[]`` suffix
 `[] <https://www.tradingview.com/pine-script-reference/v5/#op_[]>`__ history-referencing operator) 
 to one of the Pine Script™ types allowed for array elements:
 
-- ``int[]``
-- ``float[]``
-- ``bool[]``
-- ``color[]``
-- ``string[]``
-- ``line[]``
-- ``label[]``
-- ``box[]``
-- ``table[]``
-
 An array containing elements of type "int" initalized with one element of value 10 can be declared in the following, equivalent ways::
 
     a1 = array.new_int(1, 10)
     int[] a2 = array.new_int(1, 10)
     a3 = array.from(10)
     int[] a4 = array.from(10)
+
+Note that the ``int[]`` syntax can also be used to declare an array of "int" elements, but that use is discouraged.
+No equivalent exists to specify the type of matrices.
 
 
 
@@ -638,11 +641,25 @@ where we are replacing any `na <https://www.tradingview.com/pine-script-referenc
 Type templates
 --------------
 
-Type templates are used to build array and matrix types. They consist of the 
-`array <https://www.tradingview.com/pine-script-reference/v5/#op_array>`__ or
-`matrix <https://www.tradingview.com/pine-script-reference/v5/#op_matrix>`__ keywords,
-followed by a type enclosed in angle brackets (``< >``).
-The types that can be used in 
+Type templates are used to build array and matrix types. They are a type name enclosed in angle brackets, for example:
+``<int>``, ``<label>``, ``<pivotPoint>`` (where ``pivotPoint`` is a :ref:`user-defined type (UDT) <PageTypeSystem_UserDefinedTypes>`).
+Type templates can be constructed from:
+
+- Fundamental types: "int", "float", "bool", "color" and "string"
+- The following special types: "line", "linefill", "label", "box", "table"
+- :ref:`User-defined types (UDTs) <PageTypeSystem_UserDefinedTypes>`
+    
+They can be used to declare the type of a variable and in the
+`array.new<type> <https://www.tradingview.com/pine-script-reference/v5/#fun_array{dot}new<type>>`__ or 
+`matrix.new<type> <https://www.tradingview.com/pine-script-reference/v5/#fun_matrix{dot}new<type>>`__
+function calls used to create a new array or matrix:
+
+::
+
+    // Declare an empty array variable.
+    var array<int> a = na
+    // Create a array of 10 "int" elements.
+    var a = array.new<int>(10)
 
 
 

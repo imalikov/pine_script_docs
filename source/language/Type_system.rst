@@ -461,10 +461,11 @@ call will then be used to refer to it when comes time to delete the line using
 arrays and matrices
 """""""""""""""""""
 
+Arrays and matrices in Pine Script™ are identified by an ID, much like drawings such as lines. 
+The type of the ID defines the type of elements contained in the array or matrix. 
 Array and matrix types are specified by appending a :ref:`type template <PageTypeSystem_TypeTemplates>` to the
 `array <https://www.tradingview.com/pine-script-reference/v5/#op_array>`__ or
-`matrix <https://www.tradingview.com/pine-script-reference/v5/#op_matrix>`__ keywords.
-The type template specifies the type of the elements contained in the array or matrix.
+`matrix <https://www.tradingview.com/pine-script-reference/v5/#op_matrix>`__ keywords:
 
 - ``array<int>`` defines an array containing "int" elements.
 - ``array<label>`` defines an array containing "label" IDs.
@@ -472,24 +473,21 @@ The type template specifies the type of the elements contained in the array or m
 - ``matrix<float>`` defines a matrix containing "float" elements.
 - ``matrix<UDF>`` defines a matrix containing objects of a :ref:`user-defined type (UDT) <PageTypeSystem_UserDefinedTypes>`.
 
-Arrays and matrices in Pine Script™ are identified by an ID. 
+An array containing elements of type "int" initalized with one element of value 10 can be declared in the following, equivalent ways:
 
-A type template is a fundament  re is no single type representing an array ID, 
-but rather an overloaded version of a subset of Pine Script™ types which represents the type of an array's elements. 
-These type names are constructed by appending the ``[]`` suffix 
-(not to be confused with the 
-`[] <https://www.tradingview.com/pine-script-reference/v5/#op_[]>`__ history-referencing operator) 
-to one of the Pine Script™ types allowed for array elements:
+::
 
-An array containing elements of type "int" initalized with one element of value 10 can be declared in the following, equivalent ways::
-
-    a1 = array.new_int(1, 10)
-    int[] a2 = array.new_int(1, 10)
+    a1 = array.new<int>(1, 10)
+    array<int> a2 = array.new<int>(1, 10)
     a3 = array.from(10)
-    int[] a4 = array.from(10)
+    array<int> a4 = array.from(10)
 
 Note that the ``int[]`` syntax can also be used to declare an array of "int" elements, but that use is discouraged.
-No equivalent exists to specify the type of matrices.
+No equivalent exists to specify the type of matrices in that way. Also note that type-specific built-ins such as 
+`array.new_int() <https://www.tradingview.com/pine-script-reference/v5/#fun_array{dot}new_int`__
+also exist, but the more generic 
+`array.new<type> <https://www.tradingview.com/pine-script-reference/v5/#op_array>`__ is preferred, 
+which would be ``array.new<int>()`` to create an array of "int" elements.
 
 
 

@@ -238,10 +238,71 @@ Compiler annotations
 Compiler annotations accomplish different purposes:
 
 - ``// @version=`` is used to specify the version of Pine Script™ used in a script.
-- ``// @description``, ``// @function``, ``// @param`` and ``// @returns``
-  are used to document function definitions.
-- ``// @type`` is used to document :ref:`user-defined type (UDT) <PageTypeSystem_UserDefinedTypes>` definitions.
+- ``// @description`` is used to provide a description for a library.
+- ``// @function``, ``// @param`` and ``// @returns`` are used to document function definitions.
+- ``// @type`` and ``// @field`` are used to document :ref:`user-defined type (UDT) <PageTypeSystem_UserDefinedTypes>` definitions.
 - ``// @variable`` is used to document variable declarations.
+- ``// #region`` and ``// #endregion`` can be used in scripts to create collapsible blocks in the Editor.
+
+This script draws a rectangle using three interactively selected points on the chart.
+It illustrates how compiler annotations can be used:
+
+.. image:: images/ScriptStructure-CompilerAnnotations01.png
+
+::
+
+    //@version=5
+    indicator("Triangle", "", true)
+
+    int   TIME_DEFAULT  = 0
+    float PRICE_DEFAULT = 0.0
+
+    x1Input = input.time(TIME_DEFAULT,   "Point 1", inline = "1", confirm = true)
+    y1Input = input.price(PRICE_DEFAULT, "",        inline = "1", tooltip = "Pick point 1", confirm = true)
+    x2Input = input.time(TIME_DEFAULT,   "Point 2", inline = "2", confirm = true)
+    y2Input = input.price(PRICE_DEFAULT, "",        inline = "2", tooltip = "Pick point 2", confirm = true)
+    x3Input = input.time(TIME_DEFAULT,   "Point 3", inline = "3", confirm = true)
+    y3Input = input.price(PRICE_DEFAULT, "",        inline = "3", tooltip = "Pick point 3", confirm = true)
+
+    // @type            Used to represent the coordinates and color to draw a triangle.
+    // @field time1     Time of first point.
+    // @field time2     Time of second point.
+    // @field time3     Time of third point.
+    // @field price1    Price of first point.
+    // @field price2    Price of second point.
+    // @field price3    Price of third point.
+    // @field lineColor Color to be used to draw the triangle lines.
+    type Triangle
+        int   time1
+        int   time2
+        int   time3
+        float price1
+        float price2
+        float price3
+        color lineColor
+
+    //@function Draws a triangle using the coordinates of the `t` object.
+    //@param t  (Triangle) Object representing the triangle to be drawn.
+    //@returns  The ID of the last line drawn.
+    drawTriangle(Triangle t) =>
+        line.new(t.time1, t.price1, t.time2, t.price2, xloc = xloc.bar_time, color = t.lineColor)
+        line.new(t.time2, t.price2, t.time3, t.price3, xloc = xloc.bar_time, color = t.lineColor)
+        line.new(t.time1, t.price1, t.time3, t.price3, xloc = xloc.bar_time, color = t.lineColor)
+
+    // Draw the triangle only once on the last historical bar.
+    if barstate.islastconfirmedhistory
+        //@variable Used to hold the Triangle object to be drawn.
+        Triangle triangle = Triangle.new()
+
+        triangle.time1  := x1Input
+        triangle.time2  := x2Input
+        triangle.time3  := x3Input
+        triangle.price1 := y1Input
+        triangle.price2 := y2Input
+        triangle.price3 := y3Input
+        triangle.lineColor := color.purple
+        
+        drawTriangle(triangle)
 
 
 

@@ -237,7 +237,11 @@ Compiler annotations
 
 Compiler annotations accomplish different purposes:
 
-- 
+- ``// @version=`` is used to specify the version of Pine Script™ used in a script.
+- ``// @description``, ``// @function``, ``// @param`` and ``// @returns``
+  are used to document function definitions.
+- ``// @type`` is used to document :ref:`user-defined type (UDT) <PageTypeSystem_UserDefinedTypes>` definitions.
+- ``// @variable`` is used to document variable declarations.
 
 
 

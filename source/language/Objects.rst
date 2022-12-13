@@ -186,7 +186,8 @@ Collecting objects
 ------------------	
 
 Arrays and matrices can contain objects, allowing users to add virtual dimensions to their data structures.	
-To declare object arrays and matrices, use UDT names in *type templates*, which are constructed using angle brackets.	
+To declare object arrays and matrices, use UDT names in :ref:`type templates <PageTypeSystem_TypeTemplates>`, 
+which are constructed using angle brackets.	
 
 This example declares an empty array that will hold objects of the ``pivotPoint`` UDT and initializes the ``pivotHighArray`` variable with its ID:	
 

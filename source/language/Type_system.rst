@@ -486,7 +486,7 @@ Note that the ``int[]`` syntax can also be used to declare an array of "int" ele
 No equivalent exists to specify the type of matrices in that way. Also note that type-specific built-ins such as 
 `array.new_int() <https://www.tradingview.com/pine-script-reference/v5/#fun_array{dot}new_int>`__ 
 also exist, but the more generic 
-`array.new<type> <https://www.tradingview.com/pine-script-reference/v5/#op_array>`__ is preferred, 
+`array.new<type> <https://www.tradingview.com/pine-script-reference/v5/#op_array>`__ form is preferred, 
 which would be ``array.new<int>()`` to create an array of "int" elements.
 
 
@@ -649,7 +649,7 @@ Type templates can be constructed from:
     
 They can be used to declare the type of a variable and in the
 `array.new<type> <https://www.tradingview.com/pine-script-reference/v5/#fun_array{dot}new<type>>`__ or 
-`matrix.new<type> <https://www.tradingview.com/pine-script-reference/v5/#fun_matrix{dot}new<type>>`__
+`matrix.new<type> <https://www.tradingview.com/pine-script-reference/v5/#fun_matrix{dot}new`<type`>>`__
 function calls used to create a new array or matrix:
 
 ::

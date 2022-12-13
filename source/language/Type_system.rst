@@ -484,7 +484,7 @@ An array containing elements of type "int" initalized with one element of value 
 
 Note that the ``int[]`` syntax can also be used to declare an array of "int" elements, but that use is discouraged.
 No equivalent exists to specify the type of matrices in that way. Also note that type-specific built-ins such as 
-`array.new_int() <https://www.tradingview.com/pine-script-reference/v5/#fun_array{dot}new_int`__
+`array.new_int() <https://www.tradingview.com/pine-script-reference/v5/#fun_array{dot}new_int>`__ 
 also exist, but the more generic 
 `array.new<type> <https://www.tradingview.com/pine-script-reference/v5/#op_array>`__ is preferred, 
 which would be ``array.new<int>()`` to create an array of "int" elements.

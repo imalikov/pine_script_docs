@@ -658,7 +658,7 @@ function calls used to create a new array or matrix:
 
     // Declare an empty array variable.
     var array<int> a = na
-    // Create a array of 10 "int" elements.
+    // Create an array of 10 "int" elements.
     var a = array.new<int>(10)
 
 

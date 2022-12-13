@@ -88,8 +88,9 @@ A statement can be one of these:
   :ref:`a library function call <PageLibraries_UsingALibrary>`
 - `if <https://www.tradingview.com/pine-script-reference/v5/#op_if>`__,
   `for <https://www.tradingview.com/pine-script-reference/v5/#op_for>`__,
-  `while <https://www.tradingview.com/pine-script-reference/v5/#op_while>`__ or
-  `switch <https://www.tradingview.com/pine-script-reference/v5/#op_switch>`__ *structure*.
+  `while <https://www.tradingview.com/pine-script-reference/v5/#op_while>`__, 
+  `switch <https://www.tradingview.com/pine-script-reference/v5/#op_switch>`__ or
+  `type <https://www.tradingview.com/pine-script-reference/v5/#op_type>`__ *structure*.
 
 Statements can be arranged in multiple ways:
 

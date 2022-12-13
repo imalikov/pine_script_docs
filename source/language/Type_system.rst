@@ -652,7 +652,7 @@ Type casting
 ------------
 
 There is an automatic type-casting mechanism in Pine Script™ which can *cast* (or convert) certain types to another. 
-The auto-casting rules are: **int** 🠆 **float** 🠆 **bool**, which means that when a "float" is required, an "int" can be used in its place, 
+The auto-casting rules are: **"int" 🠆 "float" 🠆 "bool"**, which means that when a "float" is required, an "int" can be used in its place, 
 and when a "bool" value is required, an "int" or "float" value can be used in its place.
 
 See auto-casting in action in this code:
@@ -665,13 +665,14 @@ See auto-casting in action in this code:
 
 Note that:
 
-- `plotshape(() <https://www.tradingview.com/pine-script-reference/v5/#fun_plotshape>`__ requires a "series bool" argument for its first parameter named ``series``. 
+- `plotshape() <https://www.tradingview.com/pine-script-reference/v5/#fun_plotshape>`__ requires a "series bool" argument for its first parameter named ``series``. 
   The ``true``/``false`` value of that "bool" argument determines if the function plots a shape or not.
-- We are here calling `plotshape(() <https://www.tradingview.com/pine-script-reference/v5/#fun_plotshape>`__ with 
+- We are here calling `plotshape() <https://www.tradingview.com/pine-script-reference/v5/#fun_plotshape>`__ with 
   `close <https://www.tradingview.com/pine-script-reference/v5/#var_close>`__ as its first argument. 
-  This would not be allowed without Pine Script™'s auto-casting rules, which allow a "float" to be cast to a "bool". 
-  When a "float" is cast to a bool, any non-zero values are converted to ``true``, and zero values are converted to ``false``. 
-  As a result of this, our code will plot an "X" on all bars, as long as `close <https://www.tradingview.com/pine-script-reference/v5/#var_close>`__ is not equal to zero.
+  This would not be allowed without Pine's auto-casting rules, which allow a "float" to be cast to a "bool". 
+  When a "float" is cast to a "bool", any non-zero values are converted to ``true``, and zero values are converted to ``false``. 
+  As a result of this, our code will plot an "X" on all bars, 
+  as long as `close <https://www.tradingview.com/pine-script-reference/v5/#var_close>`__ is not equal to zero.
 
 It may sometimes be necessary to cast one type into another because auto-casting rules will not suffice. 
 For these cases, explicit type-casting functions exist. They are:

@@ -19,3 +19,4 @@ Language
    Built-ins
    User-defined_functions
    Arrays
+   Objects

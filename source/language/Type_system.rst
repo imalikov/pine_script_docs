@@ -71,19 +71,21 @@ Types
 Pine Script™ **types** identify the nature of a value. They are:
 
 - The fundamental types: "int", "float", "bool", "color" and "string"
-- The special types: "plot", "hline", "line", "label", "box", "table", "array"
+- The special types: "plot", "hline", "line", "linefill", "label", "box", "table", "array", "matrix"
+- User-defined types (UDTs)
 - "void"
-- tuples
 
-Each fundamental type refers to the nature of the value contained in a variable: ``1`` is of type "int", ``1.0`` is of type "float", ``"AAPL"`` is of type "string", etc.
-The special types all contain IDs referring to an object of the type's name, e.g., a variable of type "label" contains an ID (or *pointer*) referring to a label, and so on.
+Each fundamental type refers to the nature of the value contained in a variable: 
+``1`` is of type "int", ``1.0`` is of type "float", ``"AAPL"`` is of type "string", etc.
+Variables of special types contain an ID referring to an object of the type's name.
+A variable of type "label" contains an ID (or *pointer*) referring to a label, and so on.
 The "void" type means no value is returned.     
-Tuples are a syntactic arrangement of variables, e.g., ``[macdLine, signalLine, histLine]``.
 
 The Pine Script™ compiler can automatically convert some types into others when a value is not of the required type. The auto-casting rules are: **int** 🠆 **float** 🠆 **bool**. 
 See the :ref:`Type casting <PageTypeSystem_TypeCasting>` section of this page for more information on type casting.
 
-Except in function signatures, Pine Script™ forms are implicit in code; they are never declared because they are always determined by the compiler. 
+Except for parameter definitions appearing in function signatures, Pine Script™ forms are implicit in code; 
+they are never declared because they are always determined by the compiler. 
 Types, however, can be specified when declaring variables, e.g.::
 
     //@version=5
@@ -101,6 +103,7 @@ Using forms and types
 ---------------------
 
 
+
 Forms
 ^^^^^
 
@@ -112,9 +115,10 @@ const
 Values of "const" form must be known at compile time, before your script has access to any information related to the symbol/timeframe information it is running on. 
 Compilation occurs when you save a script in the Pine Script™ Editor, which doesn't even require it to already be running on your chart. "const" variables cannot change during the execution of a script.
 
-Variables of "const" form can be initialized using a *literal* value, or calculated from expressions using only literal values or other variables of "const" form. 
-Pine Script™'s :ref:`Style guide <PageStyleGuide>` recommends using upper case SNAKE_CASE to name variables of "const" form. 
-While it is not a requirement, "const" variables are often declared using the 
+Variables of "const" form can be initialized using a *literal* value, 
+or calculated from expressions using only literal values or other variables of "const" form. 
+Our :ref:`Style guide <PageStyleGuide>` recommends using upper case SNAKE_CASE to name variables of "const" form. 
+While it is not a requirement, "const" variables can be declared using the 
 `var <https://www.tradingview.com/pine-script-reference/v5/#op_var>`__ keyword so they are only initialized on the first bar of the dataset. 
 See the :ref:`section on \`var\` <PageVariableDeclarations_Var>` for more information.
 
@@ -127,7 +131,7 @@ These are examples of literal values:
 - *literal color*: ``#FF55C6``, ``#FF55C6ff``
 
 .. note:: In Pine Script™, the built-in variables ``open``, ``high``, ``low``, ``close``, ``volume``, ``time``,
-    ``hl2``, ``hlc3``, ``ohlc4``, etc., are not of "const" form. Because they change bar to bar, they are of *series* form.
+    ``hl2``, ``hlc3``, ``ohlc4``, etc., are of "series" form because their values can change bar to bar.
 
 The "const" form is a requirement for the arguments to the ``title`` and ``shorttitle`` parameters in 
 `indicator() <https://www.tradingview.com/pine-script-reference/v5/#fun_indicator>`__, for example. 
@@ -159,6 +163,7 @@ for which we do not use an uppercase name because it is not of "const" form::
     var name1 = "My Indicator "
     var NAME2 = "No. 2"
     name1 := name1 + NAME2
+
 
 
 .. _PageTypeSystem_Input:
@@ -204,6 +209,7 @@ Note that:
 Wherever an "input" form is required, a "const" form can also be used.
 
 
+
 simple
 """"""
 
@@ -218,6 +224,7 @@ A "simple" form argument is also required for the ``length`` argument of functio
 which cannot work with dynamic lengths that could change during the script's execution.
 
 Wherever a "simple" form is required, a "const" or "input" form can also be used.
+
 
 
 series
@@ -271,6 +278,7 @@ Wherever a "series" form is required, a "const", "input" or "simple" form can al
 
 Types
 ^^^^^
+
 
 
 int
@@ -422,47 +430,116 @@ Note that there is no ``plot`` or ``hline`` keyword to explicitly declare the ty
 
 
 
-line, label, box and table
-""""""""""""""""""""""""""
+line, linefill, label, box and table
+""""""""""""""""""""""""""""""""""""
 
-Drawings were introduced in Pine Script™ v4. These objects are created with the
+Drawings appeared in Pine Script™ starting with v4. Each drawing has its own type:
+`line <https://www.tradingview.com/pine-script-reference/v5/#op_line>`__,
+`linefill <https://www.tradingview.com/pine-script-reference/v5/#op_linefill>`__,
+`label <https://www.tradingview.com/pine-script-reference/v5/#op_label>`__,
+`box <https://www.tradingview.com/pine-script-reference/v5/#op_box>`__,
+`table <https://www.tradingview.com/pine-script-reference/v5/#op_table>`__.
+
+Each type is also used as a namespace containing all the built-in functions used to operate on each type of drawing.
+One of these is a ``new()`` constructor used to create an object of that type:
 `line.new() <https://www.tradingview.com/pine-script-reference/v5/#fun_line{dot}new>`__,
-and `label.new() <https://www.tradingview.com/pine-script-reference/v5/#fun_label{dot}new>`__,
+`linefill.new() <https://www.tradingview.com/pine-script-reference/v5/#fun_linefill{dot}new>`__,
+`label.new() <https://www.tradingview.com/pine-script-reference/v5/#fun_label{dot}new>`__,
 `box.new() <https://www.tradingview.com/pine-script-reference/v5/#fun_box{dot}new>`__ and
-`table.new() <https://www.tradingview.com/pine-script-reference/v5/#fun_table{dot}new>`__ functions. 
+`table.new() <https://www.tradingview.com/pine-script-reference/v5/#fun_table{dot}new>`__. 
 
-These functions all return an ID that uniquely identifies each drawing object. 
-The ID's type is "series line", "series label", "series box" and "series table", respectively, and an ID can exist in no other form than "series". 
-Drawing IDs act like a pointer in that they are used to reference a specific instance of a drawing in all the related functions of its namespace. 
-The line ID returned by a `line.new() <https://www.tradingview.com/pine-script-reference/v5/#fun_line{dot}new>`__ 
-call is then used to refer to that line using `line.delete() <https://www.tradingview.com/pine-script-reference/v5/#fun_line{dot}delete>`__, for example.
+These functions all return an ID which is a reference that uniquely identifies a drawing object. 
+IDs are always of "series" form, thus their form and type is "series line", "series label", etc.
+Drawing IDs act like a pointer in that they are used to reference a specific instance of a drawing 
+in all the functions of that drawing's namespace. 
+For example, the line ID returned by a `line.new() <https://www.tradingview.com/pine-script-reference/v5/#fun_line{dot}new>`__ 
+call will then be used to refer to it when comes time to delete the line using 
+`line.delete() <https://www.tradingview.com/pine-script-reference/v5/#fun_line{dot}delete>`__.
 
 
 
-array
-"""""
+Arrays and matrices
+"""""""""""""""""""
 
-Arrays in Pine Script™ are identified by an array ID. There is no single type representing an array ID, 
-but rather an overloaded version of a subset of Pine Script™ types which represents the type of an array's elements. 
-These type names are constructed by appending the ``[]`` suffix (not to be confused with the 
-`[] <https://www.tradingview.com/pine-script-reference/v5/#op_[]>`__ history-referencing operator) to one of the Pine Script™ types allowed for array elements:
+Arrays and matrices in Pine Script™ are identified by an ID, much like drawings such as lines. 
+The type of the ID defines the type of elements contained in the array or matrix. 
+Array and matrix types are specified by appending a :ref:`type template <PageTypeSystem_TypeTemplates>` to the
+`array <https://www.tradingview.com/pine-script-reference/v5/#op_array>`__ or
+`matrix <https://www.tradingview.com/pine-script-reference/v5/#op_matrix>`__ keywords:
 
-- ``int[]``
-- ``float[]``
-- ``bool[]``
-- ``color[]``
-- ``string[]``
-- ``line[]``
-- ``label[]``
-- ``box[]``
-- ``table[]``
+- ``array<int>`` defines an array containing "int" elements.
+- ``array<label>`` defines an array containing "label" IDs.
+- ``array<UDF>`` defines an array containing objects of a :ref:`user-defined type (UDT) <PageTypeSystem_UserDefinedTypes>`.
+- ``matrix<float>`` defines a matrix containing "float" elements.
+- ``matrix<UDF>`` defines a matrix containing objects of a :ref:`user-defined type (UDT) <PageTypeSystem_UserDefinedTypes>`.
 
-An array containing elements of type "int" initalized with one element of value 10 can be declared in the following, equivalent ways::
+An array containing elements of type "int" initalized with one element of value 10 can be declared in the following, equivalent ways:
 
-    a1 = array.new_int(1, 10)
-    int[] a2 = array.new_int(1, 10)
+::
+
+    a1 = array.new<int>(1, 10)
+    array<int> a2 = array.new<int>(1, 10)
     a3 = array.from(10)
-    int[] a4 = array.from(10)
+    array<int> a4 = array.from(10)
+
+Note that the ``int[]`` syntax can also be used to declare an array of "int" elements, but that use is discouraged.
+No equivalent exists to specify the type of matrices in that way. Also note that type-specific built-ins such as 
+`array.new_int() <https://www.tradingview.com/pine-script-reference/v5/#fun_array{dot}new_int>`__ 
+also exist, but the more generic 
+`array.new<type> <https://www.tradingview.com/pine-script-reference/v5/#op_array>`__ form is preferred, 
+which would be ``array.new<int>()`` to create an array of "int" elements.
+
+
+
+.. _PageTypeSystem_UserDefinedTypes:	
+
+User-defined types
+""""""""""""""""""
+
+The `type <https://www.tradingview.com/pine-script-reference/v5/#op_type>`__ 	
+keyword allows the creation of *user-defined types* (UDTs) from which 	
+:ref:`objects <PageObjects>` can be created. 	
+UDTs are composite types; they contain an arbitrary number of *fields* that can be of any type. 	
+The syntax to define a *user-defined type* is:	
+
+.. code-block:: text	
+    [export] type <UDT_identifier>	
+        <field_type> <field_name> [= <value>]	
+        ...	
+where:	
+
+- ``export`` is used to export the UDT from a library. 	
+  See the :ref:`Libraries <PageLibraries_Objects>` page for more information.	
+- ``<UDT_identifier>`` is the name of the user-defined type.	
+- ``<field_type>`` is the type of the field.	
+- ``<field_name>`` is the name of the field.	
+- ``<value>`` is an optional default value for the field, which will be assigned to it when new objects of that UDT are created. 	
+  The field's default value will be `na <https://www.tradingview.com/pine-script-reference/v5/#var_na>`__ if none is specified. 	
+  The same rules as those governing the default values of parameters in function signatures apply to the default values of fields.	
+  For example, the `[] <https://www.tradingview.com/pine-script-reference/v5/#op_[]>`__ history-referencing operator cannot be used with them,	
+  and expressions are not allowed.	
+
+In this example, we create a UDT containing two fields to hold pivot information, 	
+the `time <https://www.tradingview.com/pine-script-reference/v5/#var_time>`__ of the pivot's bar 	
+and its price level:	
+
+::	
+
+    type pivotPoint	
+        int openTime	
+        float level	
+
+User-defined types can be embedded, so a field can be of the same type as the UDT it belongs to. 	
+Here, we add a field to our previous ``pivotPoint`` type that will hold the pivot information for another pivot point:	
+
+::	
+
+    type pivotPoint	
+        int openTime	
+        float level	
+        pivotPoint nextPivot	
+
+Two built-in methods can be used with a UDT: ``new()`` and ``copy()``. Read about them in the :ref:`Objects <PageObjects>` page.
 
 
 
@@ -474,71 +551,6 @@ An example of such a function is `alert() <https://www.tradingview.com/pine-scri
 it does something (triggers an alert event), but it returns no useful value.
 
 A "void" result cannot be used in an expression or assigned to a variable. No ``void`` keyword exists in Pine Script™, as variables cannot be declared using the "void" type.
-
-
-
-.. _PageTypeSystem_Tuples:
-
-Tuples
-""""""
-
-A *tuple* is a comma-separated set of expressions enclosed in brackets that can be used when a function or a local block must return more than one variable as a result. 
-For example
-
-::
-
-    calcSumAndMult(a, b) =>
-        sum = a + b
-        mult = a * b
-        [sum, mult]
-
-In this example there is a 2-tuple on the last statement of the function's code block, which is the result returned by the function. Tuple elements can be of any type.
-There is also a special syntax for calling functions that return tuples, which uses a *tuple declaration* on the left side of the equal sign in what is a multi-variable declaration.
-The result of a function such as ``calcSumAndMult()`` that returns a tuple must be assigned to a *tuple declaration*, i.e., 
-a set of comma-separated list of *new* variables that will receive the values returned by the function. 
-Here, the value of the ``sum`` and ``mult`` variables calculated by the function will be assigned to the ``s`` and ``m`` variables
-
-::
-
-    [s, m] = calcSumAndMul(high, low)
-
-Note that the type of ``s`` and ``m`` cannot be explicitly defined; it is always inferred by the type of the function return results.
-
-Tuples can be useful to request multiple values in one `request.security() <https://www.tradingview.com/pine-script-reference/v5/#fun_request{dot}security>`__ call, e.g.
-
-::
-
-    roundedOHLC() =>
-        [math.round_to_mintick(open), math.round_to_mintick(high), math.round_to_mintick(low), math.round_to_mintick(close)]
-    [op, hi, lo, cl] = request.security(syminfo.tickerid, "D", roundedOHLC())
-
-or:
-
-::
-    
-    [op, hi, lo, cl] = request.security(syminfo.tickerid, "D", [math.round_to_mintick(open), math.round_to_mintick(high), math.round_to_mintick(low), math.round_to_mintick(close)])
-
-or this form if no rounding is required
-
-::
-
-    [op, hi, lo, cl] = request.security(syminfo.tickerid, "D", [open, high, low, close])
-
-Tuples can also be used as return results of local blocks, in an `if <https://www.tradingview.com/pine-script-reference/v5/#op_if>`__ statement for example
-
-::
-
-    [v1, v2] = if close > open
-        [high, close]
-    else
-        [close, low]
-
-They cannot be used in ternaries, however, because the return values of a ternary statement are not considered as local blocks. This is not allowed
-
-::
-
-    // Not allowed.
-    [v1, v2] = close > open ? [high, close] : [close, low]
 
 
 
@@ -622,13 +634,40 @@ where we are replacing any `na <https://www.tradingview.com/pine-script-referenc
 
 
 
+.. _PageTypeSystem_TypeTemplates:
+
+Type templates
+--------------
+
+Type templates are used to build array and matrix types. They are a type name enclosed in angle brackets, for example:
+``<int>``, ``<label>``, ``<pivotPoint>`` (where ``pivotPoint`` is a :ref:`user-defined type (UDT) <PageTypeSystem_UserDefinedTypes>`).
+Type templates can be constructed from:
+
+- Fundamental types: "int", "float", "bool", "color" and "string"
+- The following special types: "line", "linefill", "label", "box", "table"
+- :ref:`User-defined types (UDTs) <PageTypeSystem_UserDefinedTypes>`
+    
+They can be used to declare the type of a variable and in the
+`array.new<type> <https://www.tradingview.com/pine-script-reference/v5/#fun_array{dot}new\<type\>>`__ or 
+`matrix.new<type> <https://www.tradingview.com/pine-script-reference/v5/#fun_matrix{dot}new\<type\>>`__
+function calls used to create a new array or matrix:
+
+::
+
+    // Declare an empty array variable.
+    var array<int> a = na
+    // Create an array of 10 "int" elements.
+    var a = array.new<int>(10)
+
+
+
 .. _PageTypeSystem_TypeCasting:
 
 Type casting
 ------------
 
 There is an automatic type-casting mechanism in Pine Script™ which can *cast* (or convert) certain types to another. 
-The auto-casting rules are: **int** 🠆 **float** 🠆 **bool**, which means that when a "float" is required, an "int" can be used in its place, 
+The auto-casting rules are: **"int" 🠆 "float" 🠆 "bool"**, which means that when a "float" is required, an "int" can be used in its place, 
 and when a "bool" value is required, an "int" or "float" value can be used in its place.
 
 See auto-casting in action in this code:
@@ -641,13 +680,14 @@ See auto-casting in action in this code:
 
 Note that:
 
-- `plotshape(() <https://www.tradingview.com/pine-script-reference/v5/#fun_plotshape>`__ requires a "series bool" argument for its first parameter named ``series``. 
+- `plotshape() <https://www.tradingview.com/pine-script-reference/v5/#fun_plotshape>`__ requires a "series bool" argument for its first parameter named ``series``. 
   The ``true``/``false`` value of that "bool" argument determines if the function plots a shape or not.
-- We are here calling `plotshape(() <https://www.tradingview.com/pine-script-reference/v5/#fun_plotshape>`__ with 
+- We are here calling `plotshape() <https://www.tradingview.com/pine-script-reference/v5/#fun_plotshape>`__ with 
   `close <https://www.tradingview.com/pine-script-reference/v5/#var_close>`__ as its first argument. 
-  This would not be allowed without Pine Script™'s auto-casting rules, which allow a "float" to be cast to a "bool". 
-  When a "float" is cast to a bool, any non-zero values are converted to ``true``, and zero values are converted to ``false``. 
-  As a result of this, our code will plot an "X" on all bars, as long as `close <https://www.tradingview.com/pine-script-reference/v5/#var_close>`__ is not equal to zero.
+  This would not be allowed without Pine's auto-casting rules, which allow a "float" to be cast to a "bool". 
+  When a "float" is cast to a "bool", any non-zero values are converted to ``true``, and zero values are converted to ``false``. 
+  As a result of this, our code will plot an "X" on all bars, 
+  as long as `close <https://www.tradingview.com/pine-script-reference/v5/#var_close>`__ is not equal to zero.
 
 It may sometimes be necessary to cast one type into another because auto-casting rules will not suffice. 
 For these cases, explicit type-casting functions exist. They are:
@@ -657,6 +697,7 @@ For these cases, explicit type-casting functions exist. They are:
 `color() <https://www.tradingview.com/pine-script-reference/v5/#fun_color>`__,
 `string() <https://www.tradingview.com/pine-script-reference/v5/#fun_string>`__,
 `line() <https://www.tradingview.com/pine-script-reference/v5/#fun_line>`__,
+`linefill() <https://www.tradingview.com/pine-script-reference/v5/#fun_linefill>`__,
 `label() <https://www.tradingview.com/pine-script-reference/v5/#fun_label>`__,
 `box() <https://www.tradingview.com/pine-script-reference/v5/#fun_box>`__, and
 `table() <https://www.tradingview.com/pine-script-reference/v5/#fun_table>`__.
@@ -671,7 +712,7 @@ This is code that will not compile because we fail to convert the type of the ar
     plot(s)
 
 The code fails to compile with the following error: 
-*Cannot call 'ta.sma` with argument 'length'='len'. An argument of 'const float' type was used but a 'series int' is expected;*. 
+*Cannot call 'ta.sma` with argument 'length'='len'. An argument of 'const float' type was used but a 'series int' is expected*. 
 The compiler is telling us that we supplied a "float" value where an "int" is required. There is no auto-casting rule that can automatically cast a "float" to an "int", 
 so we will need to do the job ourselves. For this, we will use the `int() <https://www.tradingview.com/pine-script-reference/v5/#fun_int>`__ 
 function to force the type conversion of the value we supply as a length to `ta.sma() <https://www.tradingview.com/pine-script-reference/v5/#fun_ta{dot}sma>`__ from "float" to "int"::
@@ -688,6 +729,77 @@ Explicit type-casting can also be useful when declaring variables and initializi
     lbl = label(na)
     // Explicitly declare the type of the new variable.
     label lbl = na
+
+
+
+.. _PageTypeSystem_Tuples:
+
+Tuples
+------
+
+A *tuple* is a comma-separated set of expressions enclosed in brackets that can be used when a function or 
+a local block must return more than one variable as a result. For example:
+
+::
+
+    calcSumAndMult(a, b) =>
+        sum = a + b
+        mult = a * b
+        [sum, mult]
+
+In this example there is a two-element tuple on the last statement of the function's code block, 
+which is the result returned by the function. Tuple elements can be of any type.
+There is also a special syntax for calling functions that return tuples, 
+which uses a *tuple declaration* on the left side of the equal sign in what is a multi-variable declaration.
+The result of a function such as ``calcSumAndMult()`` that returns a tuple must be assigned to a *tuple declaration*, i.e., 
+a set of comma-separated list of *new* variables that will receive the values returned by the function. 
+Here, the value of the ``sum`` and ``mult`` variables calculated by the function will be assigned to the ``s`` and ``m`` variables:
+
+::
+
+    [s, m] = calcSumAndMul(high, low)
+
+Note that the type of ``s`` and ``m`` cannot be explicitly defined; it is always inferred by the type of the function return results.
+
+Tuples can be useful to request multiple values in one 
+`request.security() <https://www.tradingview.com/pine-script-reference/v5/#fun_request{dot}security>`__ call:
+
+::
+
+    roundedOHLC() =>
+        [math.round_to_mintick(open), math.round_to_mintick(high), math.round_to_mintick(low), math.round_to_mintick(close)]
+    [op, hi, lo, cl] = request.security(syminfo.tickerid, "D", roundedOHLC())
+
+or:
+
+::
+    
+    [op, hi, lo, cl] = request.security(syminfo.tickerid, "D", [math.round_to_mintick(open), math.round_to_mintick(high), math.round_to_mintick(low), math.round_to_mintick(close)])
+
+or this form if no rounding is required
+
+::
+
+    [op, hi, lo, cl] = request.security(syminfo.tickerid, "D", [open, high, low, close])
+
+Tuples can also be used as return results of local blocks, 
+in an `if <https://www.tradingview.com/pine-script-reference/v5/#op_if>`__ statement for example:
+
+::
+
+    [v1, v2] = if close > open
+        [high, close]
+    else
+        [close, low]
+
+They cannot be used in ternaries, however, because the return values of a ternary statement are not considered as local blocks. 
+This is not allowed:
+
+::
+
+    // Not allowed.
+    [v1, v2] = close > open ? [high, close] : [close, low]
+
 
 
 .. image:: /images/TradingView-Logo-Block.svg

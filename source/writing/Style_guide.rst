@@ -45,7 +45,8 @@ We recommend the use of:
 Script organization
 -------------------
 
-The Pine Script™ compiler is quite forgiving of the positioning of specific statements or compiler directives in the script. 
+The Pine Script™ compiler is quite forgiving of the positioning of specific statements or 
+the version :ref:`compiler annotation <PageScriptStructure_CompilerAnnotations>` in the script. 
 While other arrangements are syntactically correct, this is how we recommend organizing scripts:
 
 .. code-block:: text
@@ -85,7 +86,8 @@ The standard license comments appearing at the beginning of scripts are:
 <version>
 ^^^^^^^^^
 
-This is the compiler directive defining the version of Pine Script™ the script will use. If none is present, v1 is used. For v5, use
+This is the :ref:`compiler annotation <PageScriptStructure_CompilerAnnotations>` defining the version of Pine Script™ the script will use. 
+If none is present, v1 is used. For v5, use:
 
 ::
 
@@ -212,12 +214,9 @@ Such dependencies on global variables should ideally be documented in the functi
 It will also help readers if you document the function's objective, parameters and result. 
 The same syntax used in :ref:`libraries <PageLibraries>` can be used to document your functions. 
 This can make it easier to port your functions to a library should you ever decide to do so. 
-Placing the documentation inside the function, as opposed to outside of it as is done in libraries, will prevent confusion::
 
+::
 
-    // This source code is subject to the terms of the Mozilla Public License 2.0 at https://mozilla.org/MPL/2.0/
-    // © TradingView
-    
     //@version=5
     indicator("<function_declarations>", "", true)
     
@@ -227,11 +226,11 @@ Placing the documentation inside the function, as opposed to outside of it as is
     
     string sizeInput = input.string(SIZE_NORMAL, "Size", options = [SIZE_LARGE, SIZE_NORMAL, SIZE_SMALL])
     
+    // @function        Used to produce an argument for the `size` parameter in built-in functions.
+    // @param userSize  (simple string) User-selected size.
+    // @returns         One of the `size.*` built-in constants.
+    // Dependencies:    SIZE_LARGE, SIZE_NORMAL, SIZE_SMALL
     getSize(simple string userSize) =>
-        // @function        Used to produce an argument for the `size` parameter in built-in functions.
-        // @param userSize  (simple string) User-selected size.
-        // @returns         One of the `size.*` built-in constants.
-        // Dependencies:    SIZE_LARGE, SIZE_NORMAL, SIZE_SMALL
         result = 
           switch userSize
             SIZE_LARGE  => size.large

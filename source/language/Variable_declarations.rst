@@ -27,7 +27,11 @@ The syntax of variable declarations is:
 .. code-block:: text
 
     [<declaration_mode>] [<type>] <identifier> = <expression> | <structure>
-    |
+    
+or
+    
+.. code-block:: text
+
     <tuple_declaration> = <function_call> | <structure>
 
 where:
@@ -83,8 +87,7 @@ The formal syntax of a variable declaration is:
         var | varip
 
     <type>
-        int   | float   | bool   | color   | string   | label   | line   | box   | table | 
-        int[] | float[] | bool[] | color[] | string[] | label[] | line[] | box[] | table[]
+        int | float | bool | color | string | line | linefill | label | box | table | array<type> | matrix<type> | UDF
 
 
 

@@ -260,6 +260,38 @@ On markets where 60min chart bars do not always contain 60 1min intrabars, more 
 
 
 
+Tuple element limit
+^^^^^^^^^^^^^^^^^^^
+
+All the ``request.*()`` functions in one script taken together cannot return more than 127 tuple values. Below we have an example showing what can cause this error and how to work around it:
+
+::
+
+    //@version=5
+    indicator("Tuple values error")
+
+    // CAUSES ERROR:
+    [v1, v2, v3,...] = request.security(syminfo.tickerid, "1D", [s1, s2, s3,...])
+
+    // Works fine:
+    type myType
+        int v1
+        int v2
+        int v3
+        ...
+
+    myObj = request.security(syminfo.tickerid, "1D", myType.new())
+
+Note that:
+
+ - In this example, we have a `request.security() <https://www.tradingview.com/pine-script-reference/v5/#fun_request{dot}security>`__ 
+   function with at least three values in our tuple, and we could either have more than 127 values in our tuple above or more than 127 values between multiple 
+   `request.security() <https://www.tradingview.com/pine-script-reference/v5/#fun_request{dot}security>`__ functions to throw this error.
+ - We get around the error by simply creating a :ref:`User-defined object <_PageObjects>` that can hold the same values without throwing an error. 
+ - Using the ``myType.new()`` function is functionally the same as listing the same values in our ``[s1, s2, s3,...]`` tuple.
+
+
+
 Script size and memory
 ----------------------
 

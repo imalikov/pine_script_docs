@@ -18,7 +18,7 @@ Script structure
 .. include:: <isonum.txt>
 
 
-A script in Pine Script™ follows this general structure:
+A Pine script follows this general structure:
 
 .. code-block:: text
 
@@ -28,35 +28,19 @@ A script in Pine Script™ follows this general structure:
 
 
 
-Comments
---------
-
-Double slashes (``//``) define comments in Pine Script™. Comments can begin anywhere on the line. 
-They can also follow Pine Script™ code on the same line::
-
-    //@version=5
-    indicator("")
-    // This line is a comment
-    a = close // This is also a comment
-    plot(a)
-
-The Pine Script™ Editor has a keyboard shortcut to comment/uncomment lines: :kbd:`ctrl` + :kbd:`/`. 
-You can use it on multiple lines by highlighting them first.
-
-
-
 Version
 -------
 
-A compiler directive in the following form tells the compiler which of the versions of Pine Script™ the script is written in::
+A :ref:`compiler annotation <PageScriptStructure_CompilerAnnotations>` 
+in the following form tells the compiler which of the versions of Pine Script™ the script is written in::
 
     //@version=5
     
 - The version number can be 1 to 5.
-- The compiler directive is not mandatory, but if omitted, version 1 is assumed. 
-  It is strongly recommended to always use the latest version.
-- While it is synctactically correct to place the version directive anywhere in the script, 
-  it is much more useful to readers when placed at the top of the script.
+- The compiler annotation is not mandatory. When omitted, version 1 is assumed. 
+  It is strongly recommended to always use the latest version of the language.
+- While it is synctactically correct to place the version compiler annotation anywhere in the script, 
+  it is much more useful to readers when it appears at the top of the script.
 
 Notable changes to the current version of Pine Script™ are documented in the :ref:`Release notes <PageReleaseNotes>`.
 
@@ -65,7 +49,7 @@ Notable changes to the current version of Pine Script™ are documented in the :
 Declaration statement
 ---------------------
 
-All Pine scripts must contain a *declaration statement*, which is a call to one of these functions:
+All Pine scripts must contain one :ref:`declaration statement <PageDeclarationStatements>`, which is a call to one of these functions:
 
 - `indicator() <https://www.tradingview.com/pine-script-reference/v5/#fun_indicator>`__
 - `strategy() <https://www.tradingview.com/pine-script-reference/v5/#fun_strategy>`__
@@ -87,15 +71,16 @@ Each type of script has distinct requirements:
   `line.new() <https://www.tradingview.com/pine-script-reference/v5/#fun_line{dot}new>`__, etc.).
 - Strategies must contain at least one ``strategy.*()`` call, e.g., 
   `strategy.entry() <https://www.tradingview.com/pine-script-reference/v5/#fun_strategy{dot}entry>`__.
-- Libraries must contain at least one library function declaration.
+- Libraries must contain at least one exported :ref:`function <PageLibraries_Functions>` or :ref:`user-defined type <PageLibraries_Objects>`.
 
 
 
 Code
 ----
 
-Lines in a script that are not comments or compiler directives are *statements*, which implement the script's algorithm. 
-A statement can be one of these:
+Lines in a script that are not :ref:`comments <PageScriptStructure_Comments>` or 
+:ref:`compiler annotations <PageScriptStructure_CompilerAnnotations>` are *statements*, 
+which implement the script's algorithm. A statement can be one of these:
 
 - :ref:`variable declaration <PageExpressionsDeclarationsStatements_VariableDeclaration>`
 - :ref:`variable reassignement <PageExpressionsDeclarationsStatements_VariableReassignment>`
@@ -105,22 +90,21 @@ A statement can be one of these:
   :ref:`a library function call <PageLibraries_UsingALibrary>`
 - `if <https://www.tradingview.com/pine-script-reference/v5/#op_if>`__,
   `for <https://www.tradingview.com/pine-script-reference/v5/#op_for>`__,
-  `while <https://www.tradingview.com/pine-script-reference/v5/#op_while>`__ or
-  `switch <https://www.tradingview.com/pine-script-reference/v5/#op_switch>`__ *structure*.
+  `while <https://www.tradingview.com/pine-script-reference/v5/#op_while>`__, 
+  `switch <https://www.tradingview.com/pine-script-reference/v5/#op_switch>`__ or
+  `type <https://www.tradingview.com/pine-script-reference/v5/#op_type>`__ *structure*.
 
 Statements can be arranged in multiple ways:
 
 - Some statements can be expressed in one line, like most variable declarations, 
   lines containing only a function call or single-line function declarations.
-  Others, like structures, always require multiple lines because they require a *local block*.
-- Statements in the *global scope* of the script (i.e., which are not part of local blocks) cannot begin with white space (space or tab). 
+  Lines can also be :ref:`wrapped <PageScriptStructure_LineWrapping>` (continued on multiple lines).
+  Multiple one-line statements can be concatenated on a single line by using the comma as a separator.
+- Others statements such as structures or multi-line function declarations always require multiple lines because they require a *local block*.
+  A local block must be indented by a tab or four spaces. Each local block defines a distinct *local scope*.
+- Statements in the *global scope* of the script (i.e., which are not part of local blocks) cannot begin with white space (a space or a tab). 
   Their first character must also be the line's first character.
   Lines beginning in a line's first position become by definition part of the script's *global scope*.
-- Structures or multi-line function declarations always require a *local block*. 
-  A local block must be indented by a tab or four spaces. Each local block defines a distinct *local scope*.
-- Multiple one-line statements can be concatenated on a single line by using the comma (``,``) as a separator.
-- Lines can contain comments, or be comments.
-- Lines can also be wrapped (continued on multiple lines).
 
 A simple valid Pine Script™ v5 indicator can be generated in the Pine Script™ Editor by using the "Open" button and choosing "New blank indicator"::
 
@@ -129,7 +113,9 @@ A simple valid Pine Script™ v5 indicator can be generated in the Pine Script�
     plot(close)
 
 This indicator includes three local blocks, one in the ``f()`` function declaration, 
-and two in the variable declaration using an `if <https://www.tradingview.com/pine-script-reference/v5/#op_if>`__ structure::
+and two in the variable declaration using an `if <https://www.tradingview.com/pine-script-reference/v5/#op_if>`__ structure:
+
+::
 
     //@version=5
 
@@ -146,7 +132,9 @@ and two in the variable declaration using an `if <https://www.tradingview.com/pi
     bgcolor(color.new(plotColor, 70))   // Call to a built-in function  (global scope)
 
 
-You can bring up a simple Pine Script™ v5 strategy by selecting "New blank strategy" instead::
+You can bring up a simple Pine Script™ v5 strategy by selecting "New blank strategy" instead:
+
+::
 
     //@version=5
     strategy("My Strategy", overlay=true, margin_long=100, margin_short=100)
@@ -160,6 +148,30 @@ You can bring up a simple Pine Script™ v5 strategy by selecting "New blank str
         strategy.entry("My Short Entry Id", strategy.short)
 
 
+
+.. _PageScriptStructure_Comments:
+
+Comments
+--------
+
+Double slashes (``//``) define comments in Pine Script™. Comments can begin anywhere on the line. 
+They can also follow Pine Script™ code on the same line:
+
+::
+
+    //@version=5
+    indicator("")
+    // This line is a comment
+    a = close // This is also a comment
+    plot(a)
+
+The Pine Script™ Editor has a keyboard shortcut to comment/uncomment lines: :kbd:`ctrl` + :kbd:`/`. 
+You can use it on multiple lines by highlighting them first.
+
+
+
+.. _PageScriptStructure_LineWrapping:
+
 Line wrapping
 -------------
 
@@ -167,7 +179,9 @@ Long lines can be split on multiple lines, or "wrapped". Wrapped lines must be i
 
     a = open + high + low + close
 
-may be wrapped as::
+may be wrapped as:
+
+::
 
     a = open +
           high +
@@ -186,7 +200,9 @@ However, since a local block must syntactically begin with an
 indentation (4 spaces or 1 tab), when splitting it onto the
 following line, the continuation of the statement must start with more
 than one indentation (not equal to a multiple of four spaces). For
-example::
+example:
+
+::
 
     updown(s) =>
         isEqual = s == s[1]
@@ -201,7 +217,9 @@ example::
                        -1 :
                        nz(ud[1])-1)
 
-You can use comments in wrapped lines::
+You can use comments in wrapped lines:
+
+::
 
     //@version=5
     indicator("")
@@ -209,6 +227,83 @@ You can use comments in wrapped lines::
       high > high[1] ? color.lime : // A comment
       low < low[1] ? color.blue : color.black
     bgcolor(c)
+
+
+
+.. _PageScriptStructure_CompilerAnnotations:
+
+Compiler annotations
+--------------------
+
+Compiler annotations accomplish different purposes:
+
+- ``// @version=`` is used to specify the version of Pine Script™ used in a script.
+- ``// @description`` is used to provide a description for a library.
+- ``// @function``, ``// @param`` and ``// @returns`` are used to document function definitions.
+- ``// @type`` and ``// @field`` are used to document :ref:`user-defined type (UDT) <PageTypeSystem_UserDefinedTypes>` definitions.
+- ``// @variable`` is used to document variable declarations.
+- ``// #region`` and ``// #endregion`` can be used in scripts to create collapsible blocks in the Editor.
+
+This script draws a rectangle using three interactively selected points on the chart.
+It illustrates how compiler annotations can be used:
+
+.. image:: images/ScriptStructure-CompilerAnnotations01.png
+
+::
+
+    //@version=5
+    indicator("Triangle", "", true)
+
+    int   TIME_DEFAULT  = 0
+    float PRICE_DEFAULT = 0.0
+
+    x1Input = input.time(TIME_DEFAULT,   "Point 1", inline = "1", confirm = true)
+    y1Input = input.price(PRICE_DEFAULT, "",        inline = "1", tooltip = "Pick point 1", confirm = true)
+    x2Input = input.time(TIME_DEFAULT,   "Point 2", inline = "2", confirm = true)
+    y2Input = input.price(PRICE_DEFAULT, "",        inline = "2", tooltip = "Pick point 2", confirm = true)
+    x3Input = input.time(TIME_DEFAULT,   "Point 3", inline = "3", confirm = true)
+    y3Input = input.price(PRICE_DEFAULT, "",        inline = "3", tooltip = "Pick point 3", confirm = true)
+
+    // @type            Used to represent the coordinates and color to draw a triangle.
+    // @field time1     Time of first point.
+    // @field time2     Time of second point.
+    // @field time3     Time of third point.
+    // @field price1    Price of first point.
+    // @field price2    Price of second point.
+    // @field price3    Price of third point.
+    // @field lineColor Color to be used to draw the triangle lines.
+    type Triangle
+        int   time1
+        int   time2
+        int   time3
+        float price1
+        float price2
+        float price3
+        color lineColor
+
+    //@function Draws a triangle using the coordinates of the `t` object.
+    //@param t  (Triangle) Object representing the triangle to be drawn.
+    //@returns  The ID of the last line drawn.
+    drawTriangle(Triangle t) =>
+        line.new(t.time1, t.price1, t.time2, t.price2, xloc = xloc.bar_time, color = t.lineColor)
+        line.new(t.time2, t.price2, t.time3, t.price3, xloc = xloc.bar_time, color = t.lineColor)
+        line.new(t.time1, t.price1, t.time3, t.price3, xloc = xloc.bar_time, color = t.lineColor)
+
+    // Draw the triangle only once on the last historical bar.
+    if barstate.islastconfirmedhistory
+        //@variable Used to hold the Triangle object to be drawn.
+        Triangle triangle = Triangle.new()
+
+        triangle.time1  := x1Input
+        triangle.time2  := x2Input
+        triangle.time3  := x3Input
+        triangle.price1 := y1Input
+        triangle.price2 := y2Input
+        triangle.price3 := y3Input
+        triangle.lineColor := color.purple
+        
+        drawTriangle(triangle)
+
 
 
 .. image:: /images/TradingView-Logo-Block.svg

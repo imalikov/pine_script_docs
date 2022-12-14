@@ -34,19 +34,19 @@ Session information is usable in three different ways in Pine Script™:
 2. **Session states** built-in variables such as `session.ismarket <https://www.tradingview.com/pine-script-reference/v5/#var_session{dot}ismarket>`__
    can identify which session a bar belongs to.
 3. When fetching data with `request.security() <https://www.tradingview.com/pine-script-reference/v5/#fun_request{dot}security>`__
-   you can choose to return data from *regular* sessions only, or from *extended* sessions also.
+   you can also choose to return data from *regular* sessions only or *extended* sessions.
    In this case, the definition of **regular and extended sessions** is that of the exchange.
-   It is part of the instrument's properties — not user-defined as in point #1.
+   It is part of the instrument's properties — not user-defined, as in point #1.
    This notion of *regular* and *extended* sessions is the same one used in the chart's interface,
    in the "Chart Settings/Symbol/Session" field, for example. 
 
-In the following sections, we cover both methods of using session information in Pine Script™.
+The following sections cover both methods of using session information in Pine Script™.
 
 Note that:
 
 - Not all user accounts on TradingView have access to extended session information.
-- There is no special "session" type in Pine Script™. Session strings are of "string" type,
-  but they must conform to the session string syntax.
+- There is no special "session" type in Pine Script™. Instead, session strings are of "string" type
+  but must conform to the session string syntax.
 
 
 
@@ -66,12 +66,12 @@ Their syntax is:
 
     <time_period>:<days>
 
-where:
+Where:
 
 - <time_period> uses times in "hhmm" format, with "hh" in 24-hour format, so ``1700`` for 5PM.
-  The time periods are in the "hhmm-hhmm" format, and multiple time periods can be separated by a comma,
+  The time periods are in the "hhmm-hhmm" format, and a comma can separate multiple time periods
   to specify combinations of discrete periods.
-- <days> is a set of digits from 1 to 7 that specifies on which days the session is valid.
+For example, - <days> is a set of digits from 1 to 7 that specifies on which days the session is valid.
   1 is Sunday, 7 is Saturday. 
   
 .. note:: **The default days are**: ``1234567``, which is different in Pine Script™ v5 than in earlier versions where 
@@ -88,17 +88,17 @@ These are examples of session strings:
    Equivalent to the previous example.
 
 ``"0000-0000"``
-   Equivalent to the previous two examples, because the default days are ``1234567``.
+   Equivalent to the previous two examples because the default days are ``1234567``.
 
 ``"0000-0000:23456"``
-   Same as previous example, but only Monday to Friday.
+   The same as the previous example, but only Monday to Friday.
 
 ``"2000-1630:1234567"``
    An overnight session that begins at 20:00 and ends at 16:30 the next day.
    It is valid on all days of the week.
 
 ``"0930-1700:146"``
-   A session that begins at 9:30 and ends at 17:00 on Sundays (1), Wednesdays (4) and Fridays (6).
+   A session that begins at 9:30 and ends at 17:00 on Sundays (1), Wednesdays (4), and Fridays (6).
 
 ``"1700-1700:23456"``
    An *overnight session*. The Monday session starts Sunday at 17:00 and ends Monday at 17:00.
@@ -117,8 +117,8 @@ These are examples of session strings:
 Using session strings 
 ^^^^^^^^^^^^^^^^^^^^^
 
-Session properties defined with session strings are independent from the exchange-defined sessions determining when an instrument can be traded.
-Programmers have full liberty in creating whatever session definitions suit their purpose,
+Session properties defined with session strings are independent of the exchange-defined sessions determining when an instrument can be traded.
+Programmers have complete liberty in creating whatever session definitions suit their purpose,
 which is usually to detect when bars belong to specific time periods.
 This is accomplished in Pine Script™ by using one of the following two signatures of the
 `time() <https://www.tradingview.com/pine-script-reference/v5/#fun_time>`__ function:
@@ -159,7 +159,7 @@ Note that:
 
 - We use a session input to allow users to specify the time they want to detect.
   We are only looking for the session's beginning time on bars,
-  so we use a five-minute gaps between the beginning and end time of our ``"0930-0935"`` default value.
+  so we use a five-minute gap between the beginning and end time of our ``"0930-0935"`` default value.
 - We create a ``sessionBegins()`` function to detect the beginning of a session.
   Its ``time("", sess)`` call uses an empty string for the function's ``timeframe`` parameter,
   which means it uses the chart's timeframe, whatever that is.
@@ -182,7 +182,7 @@ Session states
 --------------
 
 Three built-in variables allow you to distinguish the type of session the current bar belongs to.
-They are only useful on intraday timeframes:
+They are only helpful on intraday timeframes:
 
 - `session.ismarket <https://www.tradingview.com/pine-script-reference/v5/#var_session{dot}ismarket>`__
   returns ``true`` when the bar belongs to regular trading hours.
@@ -206,7 +206,7 @@ There are two types of sessions:
 - **extended** (which includes pre- and post-market data).
 
 Scripts using the `request.security() <https://www.tradingview.com/pine-script-reference/v5/#fun_request{dot}security>`__ 
-function to access data can return extended session data, or not. This is an example where only regular session data is fetched:
+function to access data can return extended session data or not. This is an example where only regular session data is fetched:
 
 .. image:: images/Sessions-RegularAndExtendedSessions-01.png
 
@@ -231,8 +231,8 @@ to build the first argument of the `request.security() <https://www.tradingview.
     extendedSessionData = request.security(t, timeframe.period, close, barmerge.gaps_on)
     plot(extendedSessionData, style = plot.style_linebr)
 
-Note that the previous chart's gaps in the script's plot are now filled. Also keep in mind
-that the background coloring on the chart is not produced by our example scripts;
+Note that the previous chart's gaps in the script's plot are now filled. Also, keep in mind
+that our example scripts do not produce the background coloring on the chart;
 it is due to the chart's settings showing extended hours.
 
 The `ticker.new() <https://www.tradingview.com/pine-script-reference/v5/#fun_ticker{dot}new>`__
@@ -242,7 +242,7 @@ function has the following signature:
 
     ticker.new(prefix, ticker, session, adjustment) → simple string
 
-where:
+Where:
 
 - ``prefix`` is the exchange prefix, e.g., ``"NASDAQ"``
 - ``ticker`` is a symbol name, e.g., ``"AAPL"``
@@ -250,7 +250,9 @@ where:
   Note that this is **not** a session string.
 - ``adjustment`` adjusts prices using different criteria: ``adjustment.none``, ``adjustment.splits``, ``adjustment.dividends``.
 
-Our first example could be rewritten as::
+Our first example could be rewritten as:
+
+::
 
     //@version=5
     indicator("Example 1: Regular Session Data")
@@ -260,9 +262,11 @@ Our first example could be rewritten as::
 
 If you want to use the same session specifications used for the chart's main
 symbol, omit the third argument in `ticker.new() <https://www.tradingview.com/pine-script-reference/v5/#fun_ticker{dot}new>`__; it is optional. 
-If you want your code to explicitly declare your intention, 
+If you want your code to declare your intention explicitly, 
 use the `syminfo.session <https://www.tradingview.com/pine-script-reference/v5/#var_syminfo{dot}session>`__
-built-in variable. It holds the session type of the chart's main symbol::
+built-in variable. It holds the session type of the chart's main symbol:
+
+::
 
     //@version=5
     indicator("Example 1: Regular Session Data")

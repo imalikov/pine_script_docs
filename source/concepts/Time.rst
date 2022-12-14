@@ -26,8 +26,8 @@ Four references
 
 Four different references come into play when using date and time values in Pine Script™:
 
-#. **UTC**: The native format for time values in Pine Script™ is the **Unix time in milliseconds**. 
-   Unix time is the time elapsed since the **Unix Epoch on January 1st, 1970 at UTC**.
+#. **UTC time zone**: The native format for time values in Pine Script™ is the **Unix time in milliseconds**. 
+   Unix time is the time elapsed since the **Unix Epoch on January 1st, 1970**.
    See here for the `current Unix time in seconds <https://www.unixtimestamp.com/>`__
    and here for more information on `Unix Time <https://en.wikipedia.org/wiki/Unix_time>`__.
    A value for the Unix time is called a *timestamp*.
@@ -36,19 +36,19 @@ Four different references come into play when using date and time values in Pine
    Some Pine Script™ built-ins use the UTC time zone as a reference.
 #. **Exchange time zone**: A second time-related key reference for traders is the time zone of the exchange where an instrument is traded.
    Some built-ins like `hour <https://www.tradingview.com/pine-script-reference/v5/#var_hour>`__
-   return values in the exchange's time zone.
+   return values in the exchange's time zone by default.
 #. ``timezone`` parameter: Some functions that normally return values in the exchange's time zone,
    such as `hour() <https://www.tradingview.com/pine-script-reference/v5/#fun_hour>`__
    include a ``timezone`` parameter that allows you to adapt the function's result to another time zone.
    Other functions like `time() <https://www.tradingview.com/pine-script-reference/v5/#fun_time>`__
-   include both ``session`` and ``timezone`` parameters. In those cases, the ``timezone`` arguments
+   include both ``session`` and ``timezone`` parameters. In those cases, the ``timezone`` argument
    applies to how the ``session`` argument is interpreted — not to the time value returned by the function.
 #. **Chart's time zone**: This is the time zone chosen by the user from the chart using the "Chart Settings/Symbol/Time Zone" field.
    This setting only affects the display of dates and times on the chart. 
-   It does not affect the behavior of Pine scripts, and they have no visiblity over this setting.
+   It does not affect the behavior of Pine scripts, and they have no visibility over this setting.
 
 
-We will note, when discussing variables or functions, if they return dates or times in UTC or exchange time zone.
+When discussing variables or functions, we will note if they return dates or times in UTC or exchange time zone.
 Scripts do not have visibility on the user's time zone setting on his chart.
 
 
@@ -104,7 +104,7 @@ Time zones
 ^^^^^^^^^^
 
 TradingViewers can change the time zone used to display bar times on their charts.
-Pine scripts have no visiblity over this setting.
+Pine scripts have no visibility over this setting.
 While there is a `syminfo.timezone <https://www.tradingview.com/pine-script-reference/v5/#var_syminfo{dot}timezone>`__
 variable to return the time zone of the exchange where the chart's instrument is traded,
 there is **no** ``chart.timezone`` equivalent.
@@ -139,7 +139,7 @@ This way, your displayed times can match the time zone used by traders on their 
 Note that:
 
 - We convert the user offset expressed in hours to milliseconds with ``msOffsetInput``.
-  We then add that offset to a timstamp in UTC format before converting it to display format, e.g., ``time + msOffsetInput`` and ``timenow + msOffsetInput``.
+  We then add that offset to a timestamp in UTC format before converting it to display format, e.g., ``time + msOffsetInput`` and ``timenow + msOffsetInput``.
 - We use a tooltip to provide instructions to users.
 - We provide ``minval`` and ``maxval`` values to protect the input field, 
   and a ``step`` value of 0.5 so that when they use the field's up/down arrows, they can intuitively figure out that fractions can be used.
@@ -165,7 +165,7 @@ Note that:
 - The `hour <https://www.tradingview.com/pine-script-reference/v5/#var_hour>`__ variable and the 
   `hour() <https://www.tradingview.com/pine-script-reference/v5/#fun_hour>`__ function normally returns a value in the exchange's time zone.
   Accordingly, plots in blue for both ``hour`` and ``hour(time, syminfo.timezone)`` overlap.
-  Using the function form with ``syminfo.timezone`` is thus redundant if the exchange's hour is what's required.
+  Using the function form with ``syminfo.timezone`` is thus redundant if the exchange's hour is required.
 - The orange line plotting ``hour(time, "GMT+0")``, however, returns the bar's hour at UTC, or "GMT+0" time,
   which in this case is four hours less than the exchange's time, since MSFT trades on the NASDAQ whose time zone is UTC-4.
 
@@ -223,13 +223,13 @@ Note that:
   `time_close <https://www.tradingview.com/pine-script-reference/v5/#var_time_close>`__ variables
   returns a timestamp in `UNIX time <https://en.wikipedia.org/wiki/Unix_time>`__, which is independent of the timezone selected by the user on his chart.
   In this case, the **chart's** time zone setting is the exchange time zone, so whatever symbol is on the chart, 
-  its exchange time zone will be used for the display of the date and time values on the chart's cursor.
-  The NASDAQ's time zone is UTC-4, but this only affects the chart's display of date/time values; it has no impact on the
+  its exchange time zone will be used to display the date and time values on the chart's cursor.
+  The NASDAQ's time zone is UTC-4, but this only affects the chart's display of date/time values; it does not impact the
   values plotted by the script.
 - The last `time <https://www.tradingview.com/pine-script-reference/v5/#var_time>`__
   value for the plot shown in the scale is the number of milliseconds elapsed from 00:00:00 UTC, 1 January, 1970, until the bar's opening time.
-  It corresponds to 17:30 on the 27th of September 2021. However, because the chart is using the UTC-4 time zone (the NASDAQ's time zone),
-  it is displaying the 13:30 time, four hours earlier than UTC time.
+  It corresponds to 17:30 on the 27th of September 2021. However, because the chart uses the UTC-4 time zone (the NASDAQ's time zone),
+  it displays the 13:30 time, four hours earlier than UTC time.
 - The difference between the two values on the last bar is the number of milliseconds in one hour (1000 * 60 * 60 = 3,600,000)
   because we are on a 1H chart.
 
@@ -254,7 +254,7 @@ it returns the starting time of the last trading day in the bar (e.g., at 1W, it
 `timenow <https://www.tradingview.com/pine-script-reference/v5/#var_timenow>`__ returns the current time in `UNIX time <https://en.wikipedia.org/wiki/Unix_time>`__.
 It works in realtime, but also when a script executes on historical bars. 
 In realtime, your scripts will only perceive changes when they execute on feed updates.
-When no updates occur the script is idle, so it cannot update its display.
+When no updates occur, the script is idle, so it cannot update its display.
 See the page on Pine Script™'s :ref:`execution model <PageExecutionModel>` for more information.
 
 This script uses the values of `timenow <https://www.tradingview.com/pine-script-reference/v5/#var_timenow>`__
@@ -327,8 +327,7 @@ If you wanted your script to only display for years 2020 and later, you could us
 
 `syminfo.timezone <https://www.tradingview.com/pine-script-reference/v5/#var_syminfo{dot}timezone>`__
 returns the time zone of the chart symbol's exchange. 
-It can be useful when a ``timezone`` parameter is available in a function
-and you want to explicitly mention that you are using the exchange's timezone.
+It can be helpful when a ``timezone`` parameter is available in a function, and you want to mention that you are using the exchange's timezone explicitly.
 It is usually redundant because when no argument is supplied to ``timezone``,
 the exchange's time zone is assumed.
 
@@ -368,7 +367,7 @@ The `time() <https://www.tradingview.com/pine-script-reference/v5/#fun_time>`__ 
 
 #. Test if a bar is in a specific time period, which will require using the ``session`` parameter.
    In those cases, ``timeframe.period``, i.e., the chart's timeframe, will often be used for the first parameter.
-   When using the function this way, we are relying on the fact that it will return
+   When using the function this way, we rely on the fact that it will return
    `na <https://www.tradingview.com/pine-script-reference/v5/#var_na>`__ when the bar is not part of the period specified
    in the ``session`` argument.
 #. Detecting changes in higher timeframes than the chart's by using the higher timeframe for the ``timeframe`` argument.
@@ -376,7 +375,7 @@ The `time() <https://www.tradingview.com/pine-script-reference/v5/#fun_time>`__ 
    This will usually require using `ta.change() <https://www.tradingview.com/pine-script-reference/v5/#fun_ta{dot}change>`__ to test, 
    e.g., ``ta.change(time("D"))`` will return the change in time when a new higher timeframe bar comes in, 
    so the expression's result will cast to a "bool" value when used in a conditional expression.
-   The "bool" result will be ``true`` when there is a change, and ``false`` when there is no change.
+   The "bool" result will be ``true`` when there is a change and ``false`` when there is no change.
 
 
 
@@ -397,8 +396,8 @@ Let's look at an example of the first case where we want to determine if a bar's
 Note that:
 
 - We use ``time(timeframe.period, "1100-1300")``, which says: 
-  "Check at the chart's timeframe if the current bar's opening time is situated between 11:00 and 13:00 inclusively".
-  If the bar is in the session, the function returns its opening time. If it is **not**, the function returns
+  "Check the chart's timeframe if the current bar's opening time is between 11:00 and 13:00 inclusively".
+  The function returns its opening time if the bar is in the session. If it is **not**, the function returns
   `na <https://www.tradingview.com/pine-script-reference/v5/#var_na>`__.
 - We are interested in identifying the instances when `time() <https://www.tradingview.com/pine-script-reference/v5/#fun_time>`__
   does not return `na <https://www.tradingview.com/pine-script-reference/v5/#var_na>`__
@@ -415,7 +414,7 @@ Testing for changes in higher timeframes
 """"""""""""""""""""""""""""""""""""""""
 
 It is often helpful to detect changes in a higher timeframe. 
-You may, for example, want to detect changes in trading days while on intraday charts.
+For example, you may want to detect trading day changes while on intraday charts.
 For these cases, you can use the fact that ``time("D")`` returns the opening time of the 1D bar,
 even if the chart is at an intraday timeframe such as 1H:
 
@@ -437,9 +436,9 @@ Note that:
   which uses overnight sessions of 17:00 to 17:00. It changes values when a new session comes in.
 - Because ``newExchangeDay`` detects change in `dayofmonth <https://www.tradingview.com/pine-script-reference/v5/#var_dayofmonth>`__
   in the calendar day, it changes when the day changes on the chart.
-- The two change detection methods do not coincide on the chart, except when there are days without trading.
+- The two change detection methods only coincide on the chart when there are days without trading.
   On Sundays here, for example, both detection methods will detect a change because the calendar day changes from the last trading day (Friday)
-  to the first calendar day of the new week, Sunday, which is when the Monday's overnight session begins at 17:00.
+  to the first calendar day of the new week, Sunday, which is when Monday's overnight session begins at 17:00.
 
 
 
@@ -472,9 +471,9 @@ This will plot the day of the opening of the bar where the January 1st, 2021 at 
     exchangeDay = dayofmonth(timestamp("2021-01-01"))
     plot(exchangeDay)
 
-The value will be the 31st or the 1st, depending on the calendar day of session opens on the chart's symbol.
-For symbols traded 24x7 at exchanges using the UTC time zone, the date will be the 1st.
-For symbols trading on exchanges at UTC-4, for example, the date will be the 31st.
+The value will be the 31st or the 1st, depending on the calendar day of when the session opens on the chart's symbol.
+The date for symbols traded 24x7 at exchanges using the UTC time zone will be the 1st.
+For symbols trading on exchanges at UTC-4, the date will be the 31st.
 
 
 
@@ -508,8 +507,8 @@ To generate a timestamp for Jan 1, 2021, use either one of these methods::
     printTable(str.format("yearBeginning1: {0,date,yyyy.MM.dd hh:mm}\nyearBeginning2: {1,date,yyyy.MM.dd hh:mm}", yearBeginning1, yearBeginning1))
 
 You can use offsets in `timestamp() <https://www.tradingview.com/pine-script-reference/v5/#fun_timestamp>`__ arguments.
-Here, we subtract 2 from the value supplied for its ``day`` parameter to get the date/time two days ago from the chart's last bar.
-Note that because of different bar alignments on different instruments,
+Here, we subtract 2 from the value supplied for its ``day`` parameter to get the date/time from the chart's last bar two days ago.
+Note that because of different bar alignments on various instruments,
 the bar identified on the chart may not always be exactly 48 hours away,
 although the function's return value is correct::
 

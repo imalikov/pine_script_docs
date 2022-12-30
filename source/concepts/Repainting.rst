@@ -177,7 +177,7 @@ during the realtime bar. This will require using values from a bar that has elap
 (typically the preceding bar), or the `open <https://www.tradingview.com/pine-script-reference/v5/#var_open>`__
 price, which does not vary in realtime.
 
-We can chieve this in many ways. This method adds a ``and barstate.isconfirmed`` 
+We can achieve this in many ways. This method adds a ``and barstate.isconfirmed`` 
 condition to our cross detections, which requires the script to be executing on the bar's last iteration, 
 when it closes and prices are confirmed. It is a simple way to avoid repainting::
 

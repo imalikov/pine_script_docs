@@ -23,8 +23,12 @@ Introduction
 The functions we present here all fetch data from other sources than the chart the script is running on.
 That data can be:
 
-- From other another symbol, timeframe or context, with `request.security() <https://www.tradingview.com/pine-script-reference/v5/#fun_request{dot}security>`__.
-- Financial data from `FactSet <https://www.factset.com/>`__, with `request.financial() <https://www.tradingview.com/pine-script-reference/v5/#fun_request{dot}financial>`__.
+- From other another symbol, timeframe or context, with 
+  `request.security() <https://www.tradingview.com/pine-script-reference/v5/#fun_request{dot}security>`__.
+- From a lower timeframe than the chart's, gathering intrabar information from intrabars using 
+  `request.security_lower_tf() <https://www.tradingview.com/pine-script-reference/v5/#fun_request{dot}security_lower_tf>`__.
+- Financial data from `FactSet <https://www.factset.com/>`__, with 
+  `request.financial() <https://www.tradingview.com/pine-script-reference/v5/#fun_request{dot}financial>`__.
 - Dividends, earnings and splits information from the exchange, with
   `request.dividends() <https://www.tradingview.com/pine-script-reference/v5/#fun_request{dot}dividends>`__,
   `request.earnings() <https://www.tradingview.com/pine-script-reference/v5/#fun_request{dot}earnings>`__ or

@@ -67,6 +67,24 @@ Before exploring each function in detail, let's go over their common characteris
 
 
 
+Handling by the Pine runtime
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+When your script contains calls to ``request.*()`` functions, 
+they are detected by the compiler and the runtime will set them up when your script begins execution on the dataset's first bar.
+Calls to ``request.*()`` functions can thus not be executed conditionally on a subset of the bars the script executes on.
+Your code can use logic to conditionally use the results or ``request.*()`` calls on specific bars,
+or select between the results of different ``request.*()`` calls, but the calls will nonetheless be executed on each bar.
+
+The requirement that ``request.*()`` function calls be set up on the dataset's first bar explains why parameters of these functions
+do not accept arguments of "series" form. Arguments of "const", "input" or "simple" form are required 
+because they are known when the script begins execution.
+
+A maximum of 40 calls to ``request.*()`` functions is allowed per script. 
+See the page on :ref:`limitations <PageLimitations_RequestCalls>` for more information.
+
+
+
 Use
 ^^^
 

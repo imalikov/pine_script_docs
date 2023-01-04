@@ -67,31 +67,14 @@ Before exploring each function in detail, let's go over their common characteris
 
 
 
-Handling by the Pine runtime
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-When your script contains calls to ``request.*()`` functions, 
-they are detected by the compiler and the runtime will set them up when your script begins execution on the dataset's first bar.
-Calls to ``request.*()`` functions can thus not be executed conditionally on a subset of the bars the script executes on.
-Your code can use logic to conditionally use the results or ``request.*()`` calls on specific bars,
-or select between the results of different ``request.*()`` calls, but the calls will nonetheless be executed on each bar.
-
-The requirement that ``request.*()`` function calls be set up on the dataset's first bar explains why parameters of these functions
-do not accept arguments of "series" form. Arguments of "const", "input" or "simple" form are required 
-because they are known when the script begins execution.
-
-A maximum of 40 calls to ``request.*()`` functions is allowed per script. 
-See the page on :ref:`limitations <PageLimitations_RequestCalls>` for more information.
-
-
-
 Use
 ^^^
 
-While the ``request.*()`` functions return "series" results, which means their result can change on every bar,
-their parameters require arguments of either "const" or "simple" form, 
-wich entails they must be known at either compile time or when the script begins execution on bar zero.
-This **also** entails that, except for the ``expression`` parameter in `request.security() <https://www.tradingview.com/pine-script-reference/v5/#fun_request{dot}security>`__
+While the ``request.*()`` functions return "series" results, which means they can be different on every bar,
+their parameters require arguments of either "const", "input" or "simple" form
+because they must be known when the script begins execution on bar zero.
+This **also** entails that, except for the ``expression`` parameter in 
+`request.security() <https://www.tradingview.com/pine-script-reference/v5/#fun_request{dot}security>`__
 which allows a "series" argument, the arguments of ``request.*()`` function calls cannot vary during the execution of a script, e.g.:
 
 - The argument used for the ``symbol`` parameter in a `request.security() <https://www.tradingview.com/pine-script-reference/v5/#fun_request{dot}security>`__
@@ -103,14 +86,19 @@ which allows a "series" argument, the arguments of ``request.*()`` function call
 - ``request.*()`` functions cannot be used in local blocks of either conditional structures or loops, nor in library functions.
   They can be used in user-defined functions.
 
-Think of ``request.*()`` function calls as requiring to be executable on bar zero and not varying during the script's execution on all bars.
+Think of ``request.*()`` function calls as requiring all arguments needed for the function to execute on bar zero and 
+not varying during the script's execution on all bars.
 You can make multiple calls in one script and choose which result you will use based on "series" criteria that may vary bar to bar,
-but all the necessary calls whose results you will be selecting from will need to have been previously made by the script, available for picking among them.
+but all the necessary calls whose results you will be selecting from will need to have been previously made by the script, 
+available for choosing among them.
 
 Because of the fact that one cannot turn ``request.*()`` function calls on or off during the script's execution,
 the only way to improve the performance of scripts using such functions is to minimize the number of different calls defined in the script.
 While a maximum of 40 calls can be made in any given script, programmers should strive to minimize the quantity of calls,
 as they have a sizable impact on script performance.
+
+A maximum of 40 calls to ``request.*()`` functions is allowed per script. 
+See the page on :ref:`limitations <PageLimitations_RequestCalls>` for more information.
 
 
 

@@ -44,11 +44,22 @@ Grammar
 
 ::
 
-    PINE_SCRIPT
+    PINE_INDICATOR
         [VERSION]
         DECLARATION_STATEMENT
         {STATEMENT{,STATEMENT}}
         DISPLAY_STATEMENT
+
+    PINE_STRATEGY
+        [VERSION]
+        DECLARATION_STATEMENT
+        {STATEMENT{,STATEMENT}}
+        STRATEGY_STATEMENT
+
+    PINE_LIBRARY
+        [VERSION]
+        DECLARATION_STATEMENT
+        {STATEMENT{,STATEMENT}}
 
     VERSION
         //@version = (1 | 2 | 3 | 4 | 5)

@@ -43,7 +43,7 @@ These are the signatures of the functions in the ``request`` namespace:
     request.security(symbol, timeframe, expression, gaps, lookahead, ignore_invalid_symbol, currency) → series int/float/bool/color
 
     request.security_lower_tf(symbol, timeframe, expression, ignore_invalid_symbol, currency) → <array with values of the same type as `expression`>
-    
+
     request.financial(symbol, financial_id, period, gaps, ignore_invalid_symbol, currency) → series float
     
     request.dividends(ticker, field, gaps, lookahead, ignore_invalid_symbol, currency) → series float
@@ -52,8 +52,8 @@ These are the signatures of the functions in the ``request`` namespace:
     
     request.quandl(ticker, gaps, index, ignore_invalid_symbol, currency) → series float
 
-Functions in the ``request.*()`` family have many different applications, and their use can be rather involved.
-Accordingly, this page is quite lengthy.
+.. note:: Functions in the ``request.*()`` family have many different applications, and their use can be rather involved.
+   Accordingly, this page is quite lengthy.
 
 
 

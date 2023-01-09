@@ -346,17 +346,17 @@ Note that:
 Matching local block type requirement
 -------------------------------------
 
-When multiple local blocks are used in structures, the type of the return value of all its local blocks must match.
+When multiple local blocks are used in structures, the type of the return value of all its local blocks must match. This applies only if the structure is used to assign a value to a variable in a declaration, because a variable can only have one type, and if the statement returns two incompatible types in its branches, the variable type cannot be properly determined. If the structure is not assigned anywhere, its branches can return different values. 
 
 This code compiles fine because `close <https://www.tradingview.com/pine-script-reference/v5/#var_close>`__
-and `open <https://www.tradingview.com/pine-script-reference/v5/#var_open>`__ are both of "float" type::
+and `open <https://www.tradingview.com/pine-script-reference/v5/#var_open>`__ are both of the ``float`` type::
 
     x = if close > open
         close
     else
         open
 
-This code does not compile because the first local block returns a "float" and the second one, a "string" value::
+This code does not compile because the first local block returns a ``float`` value, while the second one returns a `string``, and the result of the ``if``-statement is assigned to the ``x`` variable::
 
     // Compilation error!
     x = if close > open
@@ -364,7 +364,7 @@ This code does not compile because the first local block returns a "float" and t
     else
         "open"
 
-This applies only if the structure is used to assign a value to a variable in a declaration, but does not apply, for example, when using an if or switch structure for its side effects only.
+
 
 
 .. image:: /images/TradingView-Logo-Block.svg

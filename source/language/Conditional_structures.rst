@@ -347,9 +347,6 @@ Matching local block type requirement
 -------------------------------------
 
 When multiple local blocks are used in structures, the type of the return value of all its local blocks must match.
-This is even true if the structure is not used to assign a value to a variable in a declaration,
-such as when using an `if <https://www.tradingview.com/pine-script-reference/v5/#op_if>`__ 
-or `switch <https://www.tradingview.com/pine-script-reference/v5/#op_switch>`__ structure for its side effects only.
 
 This code compiles fine because `close <https://www.tradingview.com/pine-script-reference/v5/#var_close>`__
 and `open <https://www.tradingview.com/pine-script-reference/v5/#var_open>`__ are both of "float" type::
@@ -367,27 +364,7 @@ This code does not compile because the first local block returns a "float" and t
     else
         "open"
 
-While this makes perfect sense when using conditional structures to assign a value to a variable,
-it can be inconvenient when they are used for their side effects.
-To work around this limitation, you can force the type of the local block's unused return value, eg.::
-
-    //@version=5
-    indicator("", "", true)
-    var closeLine = line.new(bar_index - 1, close, bar_index, close, extend = extend.right, width = 3)
-    if barstate.islast
-        if syminfo.type == "crypto"
-            line.set_xy1(closeLine, bar_index - 1, close)
-            line.set_xy2(closeLine, bar_index, close)
-            int(na)
-        else
-            label.new(bar_index, high, "Not a crypto market")
-            int(na)
-
-Note that we make the return value of each local block ``int(na)``, 
-which is the `na <https://www.tradingview.com/pine-script-reference/v5/#var_na>`__
-value, cast to an integer using `int() <https://www.tradingview.com/pine-script-reference/v5/#fun_int>`__.
-This way, they both return an "int", which is not assigned to any variable.
-Without these additions to our code, it would not compile.
+This applies only if the structure is used to assign a value to a variable in a declaration, but does not apply, for example, when using an if or switch structure for its side effects only.
 
 
 .. image:: /images/TradingView-Logo-Block.svg

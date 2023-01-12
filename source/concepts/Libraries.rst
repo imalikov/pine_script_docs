@@ -137,7 +137,7 @@ If the argument can be used in "series" form, it is. If it cannot, an attempt is
     export myEma(int x) =>
         ta.ema(close, x)
 
-will work when called using ``t.myEma(20)``, 
+will work when called using ``myCustomLibrary.myEma(20)``, 
 even though `ta.ema() <https://www.tradingview.com/pine-script-reference/v5/#fun_ta{dot}ema>`__'s ``length`` parameter 
 requires a "simple int" argument. 
 When the Pine Script™ compiler detects that a "series" length cannot be used with 

@@ -564,7 +564,7 @@ the value of an expression or variable is undefined. It is similar to the ``null
 
 `na <https://www.tradingview.com/pine-script-reference/v5/#var_na>`__ values can be automatically cast to almost any type. 
 In some cases, however, the Pine Script™ compiler cannot automatically infer a type for an 
-`na <https://www.tradingview.com/pine-script-reference/v5/#var_na>`__ value because more that one automatic type-casting rule can be applied. 
+`na <https://www.tradingview.com/pine-script-reference/v5/#var_na>`__ value because more than one automatic type-casting rule can be applied. 
 For example:
 
 ::

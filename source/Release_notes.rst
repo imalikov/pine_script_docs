@@ -17,6 +17,14 @@ Release notes
 
 This page contains release notes of notable changes in Pine Script™.
 
+January 2022
+------------
+
+New array functions were added:
+
+* `array.first() <https://ru.tradingview.com/pine-script-reference/v5/#fun_array%7Bdot%7Dfirst>`_ - Returns the array's first element.
+* `array.last() <https://ru.tradingview.com/pine-script-reference/v5/#fun_array%7Bdot%7Dlast>`_ - Returns the array's last element.
+
 2022
 ----
 

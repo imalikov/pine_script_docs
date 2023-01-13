@@ -17,7 +17,7 @@ Release notes
 
 This page contains release notes of notable changes in Pine Script™.
 
-January 2022
+January 2023
 ------------
 
 New array functions were added:

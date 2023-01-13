@@ -701,7 +701,7 @@ New functions were added:
 * ``earnings()`` - requests earnings data for the specified symbol.
 * ``splits()`` - requests splits data for the specified symbol.
 
-New arguments for the study()Linefills function were added:
+New arguments for the study() function were added:
 
 * ``resolution_gaps`` - fills the gaps between values fetched from higher timeframes when using ``resolution``.
 * ``format.percent`` - formats the script output values as a percentage.

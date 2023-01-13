@@ -692,8 +692,7 @@ Note that:
   - Tuples are not allowed currently in the *expression* parameter and you will receive an error if you try to use a tuple.
   - You must use a lower timeframe than the chart timeframe so the same timeframe or a higher timeframe will throw an error.
   - This function only works on chart timeframes higher than *1 minute* or else a runtime error will occur.
-  - A maximum of 100K total intrabars can be accessed by a script. This means that on a 24x7 market you have a max of 1440 intrabars per chart bar, 
-  so will only see values for the last ~70 days because: 70 days * 24 hours * 60 minutes ═ 100,800 minutes.
+  - A maximum of 100K total intrabars can be accessed by a script. This means that on a 24x7 market you have a max of 1440 intrabars per chart bar, so will only see values for the last ~70 days because: 70 days * 24 hours * 60 minutes ═ 100,800 minutes.
 
 Fetching standard prices from a non-standard chart
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

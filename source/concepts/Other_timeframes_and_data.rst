@@ -687,8 +687,7 @@ higher than the current timeframe, you would get a runtime error. You can now do
 
 Note that:
   - There is a max of 40 function calls allowed in a script
-  - The amount of intrabars will vary based on the chart's timeframe as well as the underlyingg instrument or sector so you may expect 60 intrabars returned 
-  but receive a smaller amount.
+  - The amount of intrabars will vary based on the chart's timeframe as well as the underlyingg instrument or sector so you may expect 60 intrabars returned but receive a smaller amount.
   - We are calculating volatility in this example by comparing the absolute sum of high - low in the lower timeframe to the current timeframe of high - low.
   - Tuples are not allowed currently in the *expression* parameter and you will receive an error if you try to use a tuple.
   - You must use a lower timeframe than the chart timeframe so the same timeframe or a higher timeframe will throw an error.

@@ -265,11 +265,13 @@ The default strategy parameters also use commission. All strategies should accou
     float positionSize = strategy.equity * maxPctRisk / riskOnEntry
     // ————— Orders to broker emulator.
     // Entries, which may include reversals. Don"t enter on first bars if no stop can be calculated yet.
-    strategy.entry("Long", strategy.long, qty = positionSize, comment = "►Long", when = enterLong and not na(stopLong))
-    strategy.entry("Short", strategy.short, qty = positionSize, comment = "►Short", when = enterShort and not na(stopShort))
+    if enterLong and not na(stopLong)
+        strategy.entry("Long", strategy.long, qty = positionSize, comment = "►Long")
+    if enterShort and not na(stopShort)
+        strategy.entry("Short", strategy.short, qty = positionSize, comment = "►Short")
     // Exits. Each successive call modifies the existing order, so the current stop value is always used.
-    strategy.exit("◄Long", "Long", stop=stopLong)
-    strategy.exit("◄Short", "Short", stop=stopShort)
+    strategy.exit("◄Long", "Long", stop = stopLong)
+    strategy.exit("◄Short", "Short", stop = stopShort)
 
     // ———————————————————— Custom stat calcs.
     // From this point on, we only rely on changes to `strategy.*` variables to detect the execution of orders.

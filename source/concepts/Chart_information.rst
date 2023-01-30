@@ -123,7 +123,8 @@ The script then re-executes on all the chart's bars using the new values of the 
   The timezone the symbol is traded in. The string is an `IANA time zone database name <https://en.wikipedia.org/wiki/List_of_tz_database_time_zones>`__
   (e.g., "America/New_York").
 - `syminfo.type <https://www.tradingview.com/pine-script-reference/v5/#var_syminfo{dot}type>`__:
-  The type of market the symbol belongs to. The values are "stock", "futures", "index", "forex", "crypto", "fund", "dr" and "cfd".
+  The type of market the symbol belongs to. 
+  The values are "stock", "futures", "index", "forex", "crypto", "fund", "dr", "cfd", "bond", "warrant", "structured" and "right".
 
 This script will display the values of those built-in variables on the chart::
 

@@ -1069,9 +1069,8 @@ The behavior of some functions, variables and operators has changed:
     //@version=3
     strategy(title = "My Strategy")
     long() =>
-        if open > high[1]
-            strategy.entry("long", true, 1)
-            1
+        strategy.entry("long", true, 1, when = open > high[1])
+        1
     c = 0
     c := true ? 1 : long()
     plot(c)

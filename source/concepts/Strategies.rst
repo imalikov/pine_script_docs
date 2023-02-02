@@ -349,7 +349,6 @@ only after entry orders have been filled. If you apply the code to a
 chart, you will see that each entry order is closed by an exit order,
 though we did not specify entry order ID to close in this lines:::
 
-    if strategy.position_size == 15
         strategy.exit("bracket", loss = 10, profit = 10)
 
 Another example::

@@ -23,8 +23,12 @@ Introduction
 The functions we present here all fetch data from other sources than the chart the script is running on.
 That data can be:
 
-- From other another symbol, timeframe or context, with `request.security() <https://www.tradingview.com/pine-script-reference/v5/#fun_request{dot}security>`__.
-- Financial data from `FactSet <https://www.factset.com/>`__, with `request.financial() <https://www.tradingview.com/pine-script-reference/v5/#fun_request{dot}financial>`__.
+- From other another symbol, timeframe or context, with 
+  `request.security() <https://www.tradingview.com/pine-script-reference/v5/#fun_request{dot}security>`__.
+- From a lower timeframe than the chart's, gathering intrabar information from intrabars using 
+  `request.security_lower_tf() <https://www.tradingview.com/pine-script-reference/v5/#fun_request{dot}security_lower_tf>`__.
+- Financial data from `FactSet <https://www.factset.com/>`__, with 
+  `request.financial() <https://www.tradingview.com/pine-script-reference/v5/#fun_request{dot}financial>`__.
 - Dividends, earnings and splits information from the exchange, with
   `request.dividends() <https://www.tradingview.com/pine-script-reference/v5/#fun_request{dot}dividends>`__,
   `request.earnings() <https://www.tradingview.com/pine-script-reference/v5/#fun_request{dot}earnings>`__ or
@@ -38,6 +42,8 @@ These are the signatures of the functions in the ``request`` namespace:
 
     request.security(symbol, timeframe, expression, gaps, lookahead, ignore_invalid_symbol, currency) → series int/float/bool/color
 
+    request.security_lower_tf(symbol, timeframe, expression, ignore_invalid_symbol, currency) → <array with values of the same type as `expression`>
+
     request.financial(symbol, financial_id, period, gaps, ignore_invalid_symbol, currency) → series float
     
     request.dividends(ticker, field, gaps, lookahead, ignore_invalid_symbol, currency) → series float
@@ -46,8 +52,8 @@ These are the signatures of the functions in the ``request`` namespace:
     
     request.quandl(ticker, gaps, index, ignore_invalid_symbol, currency) → series float
 
-Functions in the ``request.*()`` family have many different applications, and their use can be rather involved.
-Accordingly, this page is quite lengthy.
+.. note:: Functions in the ``request.*()`` family have many different applications, and their use can be rather involved.
+   Accordingly, this page is quite lengthy.
 
 
 
@@ -64,10 +70,11 @@ Before exploring each function in detail, let's go over their common characteris
 Use
 ^^^
 
-While the ``request.*()`` functions return "series" results, which means their result can change on every bar,
-their parameters require arguments of either "const" or "simple" form, 
-wich entails they must be known at either compile time or when the script begins execution on bar zero.
-This **also** entails that, except for the ``expression`` parameter in `request.security() <https://www.tradingview.com/pine-script-reference/v5/#fun_request{dot}security>`__
+While the ``request.*()`` functions return "series" results, which means they can be different on every bar,
+their parameters require arguments of either "const", "input" or "simple" form
+because they must be known when the script begins execution on bar zero.
+This **also** entails that, except for the ``expression`` parameter in 
+`request.security() <https://www.tradingview.com/pine-script-reference/v5/#fun_request{dot}security>`__
 which allows a "series" argument, the arguments of ``request.*()`` function calls cannot vary during the execution of a script, e.g.:
 
 - The argument used for the ``symbol`` parameter in a `request.security() <https://www.tradingview.com/pine-script-reference/v5/#fun_request{dot}security>`__
@@ -79,14 +86,19 @@ which allows a "series" argument, the arguments of ``request.*()`` function call
 - ``request.*()`` functions cannot be used in local blocks of either conditional structures or loops, nor in library functions.
   They can be used in user-defined functions.
 
-Think of ``request.*()`` function calls as requiring to be executable on bar zero and not varying during the script's execution on all bars.
+Think of ``request.*()`` function calls as requiring all arguments needed for the function to execute on bar zero and 
+not varying during the script's execution on all bars.
 You can make multiple calls in one script and choose which result you will use based on "series" criteria that may vary bar to bar,
-but all the necessary calls whose results you will be selecting from will need to have been previously made by the script, available for picking among them.
+but all the necessary calls whose results you will be selecting from will need to have been previously made by the script, 
+available for choosing among them.
 
 Because of the fact that one cannot turn ``request.*()`` function calls on or off during the script's execution,
 the only way to improve the performance of scripts using such functions is to minimize the number of different calls defined in the script.
 While a maximum of 40 calls can be made in any given script, programmers should strive to minimize the quantity of calls,
 as they have a sizable impact on script performance.
+
+A maximum of 40 calls to ``request.*()`` functions is allowed per script. 
+See the page on :ref:`limitations <PageLimitations_RequestCalls>` for more information.
 
 
 

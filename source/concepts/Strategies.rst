@@ -347,13 +347,14 @@ The code given above places 2 orders sequentially: "Buy1" at market
 price and "Buy2" at a 10% higher price (stop order). The exit order is placed
 only after entry orders have been filled. If you apply the code to a
 chart, you will see that each entry order is closed by an exit order,
-though we did not specify entry order ID to close in this line:
-``strategy.exit("bracket", loss=10, profit=10, when=strategy.position_size == 15)``
+though we did not specify entry order ID to close in this line:::
+
+        strategy.exit("bracket", loss = 10, profit = 10)
 
 Another example::
 
     //@version=5
-    strategy("exit Demo", pyramiding=2, overlay = true)
+    strategy("Exit Demo", pyramiding = 2, overlay = true)
     if strategy.position_size == 0
         strategy.entry("Buy1", strategy.long, 5)
     else if strategy.position_size == 5

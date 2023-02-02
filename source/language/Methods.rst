@@ -338,19 +338,19 @@ Below, we have defined a ``getType()`` method that returns a string representati
     // @param this Object to inspect.
     // @returns    (string) A string representation of the type.
     method getType(int this) =>
-        na(this) ? 'int(na)' : 'int'
+        na(this) ? "int(na)" : "int"
 
     method getType(float this) =>
-        na(this) ? 'float(na)' : 'float'
+        na(this) ? "float(na)" : "float"
 
     method getType(bool this) =>
-        na(this) ? 'bool(na)' : 'bool'
+        na(this) ? "bool(na)" : "bool"
 
     method getType(color this) =>
-        na(this) ? 'color(na)' : 'color'
+        na(this) ? "color(na)" : "color"
 
     method getType(string this) =>
-        na(this) ? 'string(na)' : 'string'
+        na(this) ? "string(na)" : "string"
 
 Now we can use these overloads to inspect some variables. 
 This script uses `str.format() <https://www.tradingview.com/pine-script-reference/v5/#fun_str{dot}format>`__ to format the results from applying the ``getType()`` 

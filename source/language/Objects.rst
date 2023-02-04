@@ -325,11 +325,11 @@ changing this field in either object affects the other:
             this.info := info
             this.lbl.set_text(this.info)
 
-    var parent  = InfoLabel.new('', label.new(0, 0))
+    var parent  = InfoLabel.new("", label.new(0, 0))
     var shallow = parent.copy()
 
-    parent.set(bar_index, 0, 'Parent')
-    shallow.set(bar_index, 1, 'Shallow Copy')
+    parent.set(bar_index, 0, "Parent")
+    shallow.set(bar_index, 1, "Shallow Copy")
 
 To produce a *deep copy* of an object with all of its special type fields pointing to independent instances, 
 we must explicitly copy those fields as well.
@@ -359,11 +359,11 @@ field do not affect the ``parent`` object:
     method deepCopy(InfoLabel this) =>
         InfoLabel.new(this.info, this.lbl.copy())
 
-    var parent = InfoLabel.new('', label.new(0, 0))
+    var parent = InfoLabel.new("", label.new(0, 0))
     var deep   = parent.deepCopy()
 
-    parent.set(bar_index, 0, 'Parent')
-    deep.set(bar_index, 1, 'Deep Copy')
+    parent.set(bar_index, 0, "Parent")
+    deep.set(bar_index, 1, "Deep Copy")
 
 
 

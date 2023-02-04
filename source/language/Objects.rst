@@ -277,7 +277,7 @@ Changing ``pivot2.x`` will thus also change ``pivot1.x``, as both refer to the `
     plot(pivot1.x)	
     plot(pivot2.x)	
 
-To create a copy of an object that is independent of the original, the built-in ``copy()`` method must be used.	
+To create a copy of an object that is independent of the original, we can use the built-in ``copy()`` method in this case.	
 
 In this example, we declare the ``pivot2`` variable referring to a copied instance of the ``pivot1`` object.	
 Now, changing ``pivot2.x`` will not change ``pivot1.x``, as it refers to the ``x`` field of a separate object:	
@@ -296,6 +296,74 @@ Now, changing ``pivot2.x`` will not change ``pivot1.x``, as it refers to the ``x
     // Plots 1000 and 2000.	
     plot(pivot1.x)	
     plot(pivot2.x)	
+
+It's important to note that the built-in ``copy()`` method produces a *shallow copy* of a user-defined object. 
+If the fields of an object contain special types, such as arrays, matrices, or labels, 
+those fields in the new object will point to the same instances as the original.
+
+In the following example, we define an ``InfoLabel`` type with a ``lbl`` field of the label type. 
+The user-defined ``set()`` :ref:`method <PageMethods>` updates the position and text of the ``lbl`` field of the ``InfoLabel`` and 
+the value of the ``info`` field. The script creates a ``shallow`` copy of the ``parent`` object, then calls 
+the ``set()`` method on each object. Since the ``lbl`` field in both objects point to the same label instance, 
+changing this field in either object affects the other:
+
+::
+
+    //@version=5
+    indicator("Shallow Copy")
+
+    type InfoLabel
+        string info
+        label  lbl
+
+    method set(InfoLabel this, int x = na, int y = na, string info = na) =>
+        if not na(x)
+            this.lbl.set_x(x)
+        if not na(y)
+            this.lbl.set_y(y)
+        if not na(info)
+            this.info := info
+            this.lbl.set_text(this.info)
+
+    var parent  = InfoLabel.new('', label.new(0, 0))
+    var shallow = parent.copy()
+
+    parent.set(bar_index, 0, 'Parent')
+    shallow.set(bar_index, 1, 'Shallow Copy')
+
+To produce a *deep copy* of an object with all of its special type fields pointing to independent instances, 
+we must explicitly copy those fields as well.
+
+In this example, we have defined a ``deepCopy()`` method that instantiates a new ``InfoLabel`` object with 
+its ``lbl`` field pointing to a copy of the original's field. Here we see that changes to the ``deep`` copy's ``lbl`` 
+field do not affect the ``parent`` object:
+
+::
+
+    //@version=5
+    indicator("Deep Copy")
+
+    type InfoLabel
+        string info
+        label  lbl
+
+    method set(InfoLabel this, int x = na, int y = na, string info = na) =>
+        if not na(x)
+            this.lbl.set_x(x)
+        if not na(y)
+            this.lbl.set_y(y)
+        if not na(info)
+            this.info := info
+            this.lbl.set_text(this.info)
+
+    method deepCopy(InfoLabel this) =>
+        InfoLabel.new(this.info, this.lbl.copy())
+
+    var parent = InfoLabel.new('', label.new(0, 0))
+    var deep   = parent.deepCopy()
+
+    parent.set(bar_index, 0, 'Parent')
+    deep.set(bar_index, 1, 'Deep Copy')
 
 
 

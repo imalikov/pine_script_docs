@@ -297,7 +297,7 @@ Now, changing ``pivot2.x`` will not change ``pivot1.x``, as it refers to the ``x
     plot(pivot1.x)	
     plot(pivot2.x)	
 
-It's important to note that the built-in ``copy()`` method produces a *shallow copy* of a user-defined object. 
+It's important to note that the built-in ``copy()`` method produces a *shallow copy* of an object. 
 If the fields of an object contain special types, such as arrays, matrices, or labels, 
 those fields in the new object will point to the same instances as the original.
 

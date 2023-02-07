@@ -20,3 +20,4 @@ Language
    User-defined_functions
    Arrays
    Objects
+   Methods

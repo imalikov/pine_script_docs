@@ -35,9 +35,9 @@ Built-in methods
 ----------------
 
 Pine Script™ includes built-in methods for `array <https://www.tradingview.com/pine-script-reference/v5/#op_array>`__, 
-`matrix <https://www.tradingview.com/pine-script-reference/v5/#op_matrix>`__, `line <https://www.tradingview.com/pine-script-reference/v5/#fun_line>`__, 
-`linefill <https://www.tradingview.com/pine-script-reference/v5/#fun_linefill>`__, `label <https://www.tradingview.com/pine-script-reference/v5/#fun_label>`__, 
-`box <https://www.tradingview.com/pine-script-reference/v5/#fun_box>`__, and `table <https://www.tradingview.com/pine-script-reference/v5/#fun_table>`__ types. 
+`matrix <https://www.tradingview.com/pine-script-reference/v5/#op_matrix>`__, `line <https://www.tradingview.com/pine-script-reference/v5/#op_line>`__, 
+`linefill <https://www.tradingview.com/pine-script-reference/v5/#op_linefill>`__, `label <https://www.tradingview.com/pine-script-reference/v5/#op_label>`__, 
+`box <https://www.tradingview.com/pine-script-reference/v5/#op_box>`__, and `table <https://www.tradingview.com/pine-script-reference/v5/#op_table>`__ types. 
 These methods provide users with a more concise way to call specialized procedures for these types within their scripts.
 
 When using these special types, the expressions
@@ -154,13 +154,9 @@ Note that:
 User-defined methods
 --------------------
 
-.. _PageMethods_UserDefinedMethods_DefiningMethods:
-
-Defining methods
-^^^^^^^^^^^^^^^^
-
 Pine Script™ allows users to define custom methods for use with objects of any built-in or user-defined type.
 Defining a method is essentially the same as defining a function, but with two key differences:
+
  - The `method <https://www.tradingview.com/pine-script-reference/v5/#op_method>`__ keyword must be included before the function name.
  - The first parameter in the signature defines the type of object that the method will be associated with.
 
@@ -318,10 +314,10 @@ Here is how the full script example looks now that we've applied our user-define
 
 
 
-.. _PageMethods_UserDefinedMethods_OverridingAndOverloading:
+.. _PageMethods_MethodOverloading:
 
-Overriding and overloading
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+Method Overloading
+------------------
 
 User-defined methods can override and overload existing built-in and user-defined methods with the same identifier.
 This capability allows users to define multiple procedures associated with different parameter signatures under the same method name.
@@ -399,6 +395,9 @@ then displays the string in the ``lbl`` label using the built-in `set_text() <ht
 Note that:
  - The underlying type of each variable determines which overload of ``getType()`` the compiler will use.
  - The method will append "(na)" to the output string when a variable is ``na`` to demarcate that it is empty.
+
+Advanced Example
+----------------
 
 Let's apply what we've learned to construct a script that estimates the cumulative distribution of elements in an array,
 meaning the fraction of elements in the array that are less than or equal to any given value.

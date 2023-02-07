@@ -351,7 +351,8 @@ Below, we have defined a ``getType()`` method that returns a string representati
 Now we can use these overloads to inspect some variables. 
 This script uses `str.format() <https://www.tradingview.com/pine-script-reference/v5/#fun_str{dot}format>`__ to format the results from applying the ``getType()`` 
 method to five different variables into a single ``results`` string, 
-then displays the string in the ``lbl`` label using the built-in `set_text() <https://www.tradingview.com/pine-script-reference/v5/#fun_label{dot}set_text>`__ method:
+then displays the string in the ``lbl`` label using the built-in 
+`set_text() <https://www.tradingview.com/pine-script-reference/v5/#fun_label{dot}set_text>`__ method:
 
 ::
 
@@ -396,6 +397,9 @@ Note that:
  - The underlying type of each variable determines which overload of ``getType()`` the compiler will use.
  - The method will append "(na)" to the output string when a variable is ``na`` to demarcate that it is empty.
 
+
+.. _PageMethods_AdvancedExample:
+
 Advanced Example
 ----------------
 
@@ -403,11 +407,12 @@ Let's apply what we've learned to construct a script that estimates the cumulati
 meaning the fraction of elements in the array that are less than or equal to any given value.
 
 There are many ways in which we could choose to tackle this objective. 
-For this example, we will start by defining a method to replace elements of an array, which will help us count the occurrences within a range of values.
+For this example, we will start by defining a method to replace elements of an array, 
+which will help us count the occurrences of elements within a range of values.
 
-Written below is an overload of the built-in `fill() <https://www.tradingview.com/pine-script-reference/v5/#fun_array{dot}fill>`__ method for
-``array<float>`` instances. This overload replaces elements in a ``srcArray`` within the range between the ``lowerBound`` and ``upperBound`` with an ``innerValue``,
-and replaces all elements outside the range with an ``outerValue``:
+Written below is an overload of the built-in `fill() <https://www.tradingview.com/pine-script-reference/v5/#fun_array{dot}fill>`__ 
+method for ``array<float>`` instances. This overload replaces elements in a ``srcArray`` within the range between the 
+``lowerBound`` and ``upperBound`` with an ``innerValue``, and replaces all elements outside the range with an ``outerValue``:
 
 ::
 
@@ -431,14 +436,14 @@ With this method, we can filter an array by value ranges to produce an array of 
 
 ::
 
-    srcArray.copy().fill(1.0, 0.0, min, target)
+    srcArray.copy().fill(1.0, 0.0, min, val)
 
-copies the ``srcArray`` object, replaces all elements between ``min`` and ``target`` with 1.0, then replaces all elements above ``target`` with 0.0.
-From here, it's simple to estimate the output of the cumulative distribution function at the ``target``, as it's simply the average of the resulting array:
+copies the ``srcArray`` object, replaces all elements between ``min`` and ``val`` with 1.0, then replaces all elements above ``val`` with 0.0.
+From here, it's simple to estimate the output of the cumulative distribution function at the ``val``, as it's simply the average of the resulting array:
 
 ::
     
-    srcArray.copy().fill(1.0, 0.0, min, target).avg()
+    srcArray.copy().fill(1.0, 0.0, min, val).avg()
 
 Note that:
  - The compiler will only use this ``fill()`` overload instead of the built-in when the user provides ``innerValue``, ``outerValue``, ``lowerBound``, and ``upperBound`` arguments in the call.
@@ -446,8 +451,8 @@ Note that:
  - We are able to call ``copy()``, ``fill()``, and ``avg()`` successively on the same line of code because the first two methods return an ``array<float>`` instance.
 
 We can now use this to define a method that will calculate our empirical distribution values.
-The following ``eCDF()`` method estimates a number of evenly spaced ascending ``steps`` from the cumulative distribution function of a ``srcArray`` 
-and pushes the results into a ``cdfArray``:   
+The following ``eCDF()`` method estimates a number of evenly spaced ascending ``steps`` from 
+the cumulative distribution function of a ``srcArray`` and pushes the results into a ``cdfArray``:   
 
 ::
 
@@ -493,8 +498,8 @@ Note that:
  - This method does not include special handling for divide by zero conditions. If ``rng`` is 0, the value of the array element will be ``na``.
 
 The full example below queues a ``sourceArray`` of size ``length`` with ``sourceInput`` values using our previous ``qDq()`` method, 
-normalizes the array's elements using the ``featureScale()`` method, then calls the ``eCDF()`` method to get an array of estimates for ``n`` evenly spaced steps on the distribution, 
-which it converts to a string and displays in a label:
+normalizes the array's elements using the ``featureScale()`` method, then calls the ``eCDF()`` method to get an array of estimates for 
+``n`` evenly spaced steps on the distribution, which it converts to a string and displays in a label:
 
 ::
 

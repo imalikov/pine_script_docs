@@ -298,8 +298,15 @@ Now, changing ``pivot2.x`` will not change ``pivot1.x``, as it refers to the ``x
     plot(pivot2.x)	
 
 It's important to note that the built-in ``copy()`` method produces a *shallow copy* of an object. 
-If the fields of an object contain special types, such as arrays, matrices, or labels, 
-those fields in the new object will point to the same instances as the original.
+If an object has fields with special types 
+(`array <https://www.tradingview.com/pine-script-reference/v5/#op_array>`__, 
+`matrix <https://www.tradingview.com/pine-script-reference/v5/#op_matrix>`__, 
+`line <https://www.tradingview.com/pine-script-reference/v5/#op_line>`__, 
+`linefill <https://www.tradingview.com/pine-script-reference/v5/#op_linefill>`__, 
+`label <https://www.tradingview.com/pine-script-reference/v5/#op_label>`__, 
+`box <https://www.tradingview.com/pine-script-reference/v5/#op_box>`__, or 
+`table <https://www.tradingview.com/pine-script-reference/v5/#op_table>`__), 
+those fields in a shallow copy of the object will point to the same instances as the original.
 
 In the following example, we define an ``InfoLabel`` type with a ``lbl`` field of the label type. 
 The user-defined ``set()`` :ref:`method <PageMethods>` updates the position and text of the ``lbl`` field of the ``InfoLabel`` and 

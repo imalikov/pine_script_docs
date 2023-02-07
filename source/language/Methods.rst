@@ -383,7 +383,7 @@ then displays the string in the ``lbl`` label using the built-in
     d = color.white
     e = '1'
 
-    // Inspect variables and print results in a label.
+    // Inspect variables and format results.
     results = str.format(
      "a: {0}\nb: {1}\nc: {2}\nd: {3}\ne: {4}", 
      a.getType(), b.getType(), c.getType(), d.getType(), e.getType()
@@ -439,7 +439,7 @@ With this method, we can filter an array by value ranges to produce an array of 
     srcArray.copy().fill(1.0, 0.0, min, val)
 
 copies the ``srcArray`` object, replaces all elements between ``min`` and ``val`` with 1.0, then replaces all elements above ``val`` with 0.0.
-From here, it's simple to estimate the output of the cumulative distribution function at the ``val``, as it's simply the average of the resulting array:
+From here, it's easy to estimate the output of the cumulative distribution function at the ``val``, as it's simply the average of the resulting array:
 
 ::
     
@@ -468,9 +468,7 @@ the cumulative distribution function of a ``srcArray`` and pushes the results in
         float val = min
         for i = 1 to steps
             val += rng
-            cdfArray.push(
-             srcArray.copy().fill(1.0, 0.0, min, val).avg()
-             )
+            cdfArray.push(srcArray.copy().fill(1.0, 0.0, min, val).avg())
         cdfArray
 
 Lastly, to ensure that our ``eCDF()`` method functions properly for arrays containing small and large values,
@@ -486,7 +484,7 @@ We will use this to normalize our arrays prior to invoking the ``eCDF()`` method
     // @param srcArray  (array<float>) Array to normalize.
     // @returns         (array<float>) Normalized copy of the `srcArray`.
     method featureScale(array<float> srcArray) =>
-        float min = srcArray.max()
+        float min = srcArray.min()
         float rng = srcArray.range()
         array<float> scaledArray = array.new<float>()
         // Push normalized `element` values into the `scaledArray`.
@@ -551,16 +549,14 @@ normalizes the array's elements using the ``featureScale()`` method, then calls 
         float val = min
         for i = 1 to steps
             val += rng
-            cdfArray.push(
-             srcArray.copy().fill(1.0, 0.0, min, val).avg()
-             )
+            cdfArray.push(srcArray.copy().fill(1.0, 0.0, min, val).avg())
         cdfArray
 
     // @function        Rescales the elements within a `srcArray` to the interval [0, 1].
     // @param srcArray  (array<float>) Array to normalize.
     // @returns         (array<float>) Normalized copy of the `srcArray`.
     method featureScale(array<float> srcArray) =>
-        float min = srcArray.max()
+        float min = srcArray.min()
         float rng = srcArray.range()
         array<float> scaledArray = array.new<float>()
         // Push normalized `element` values into the `scaledArray`.

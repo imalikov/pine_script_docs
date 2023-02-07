@@ -800,6 +800,26 @@ This is not allowed:
     // Not allowed.
     [v1, v2] = close > open ? [high, close] : [close, low]
 
+Please note that the items within a tuple returned from a function may be of simple or series form, depending on its contents. 
+If a tuple contains a series value, all other elements within the tuple will also be of the series form. For example:
+
+::
+
+    //@version=5
+    indicator("tuple_typeforms")
+
+    makeTicker(simple string prefix, simple string ticker) =>
+        tId = prefix + ":" + ticker // simple string
+        source = close  // series float
+        [tId, source]
+
+    // Both variables are series now. 
+    [tId, source] = makeTicker("BATS", "AAPL") 
+
+    // Error cannot call 'request.security' with 'series string' tId.
+    r = request.security(tId, "", source)
+
+    plot(r)
 
 
 .. image:: /images/TradingView-Logo-Block.svg

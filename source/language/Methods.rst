@@ -157,8 +157,8 @@ User-defined methods
 Pine Script™ allows users to define custom methods for use with objects of any built-in or user-defined type.
 Defining a method is essentially the same as defining a function, but with two key differences:
 
- - The `method <https://www.tradingview.com/pine-script-reference/v5/#op_method>`__ keyword must be included before the function name.
- - The first parameter in the signature defines the type of object that the method will be associated with.
+- The `method <https://www.tradingview.com/pine-script-reference/v5/#op_method>`__ keyword must be included before the function name.
+- The first parameter in the signature defines the type of object that the method will be associated with.
 
 .. code-block:: text
     

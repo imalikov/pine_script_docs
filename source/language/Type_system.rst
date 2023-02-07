@@ -810,14 +810,14 @@ If a tuple contains a series value, all other elements within the tuple will als
 
     makeTicker(simple string prefix, simple string ticker) =>
         tId = prefix + ":" + ticker // simple string
-        source = close  // series string
+        source = close  // series float
         [tId, source]
 
     // Both variables are series now. 
-    [t, s] = makeTicker("BATS", "AAPL") 
+    [tId, source] = makeTicker("BATS", "AAPL") 
 
-    // Error, Cannot call 'request.security' with 'series string'.
-    r = request.security(t, "", s)
+    // Error cannot call 'request.security' with 'series string' tId.
+    r = request.security(tId, "", source)
 
     plot(r)
 

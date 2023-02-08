@@ -185,7 +185,7 @@ The following example shows different function calls and the number of plot coun
 
 This example generates a plot count of 56. If we were to add two more instances of the last call to 
 `plotcandle() <https://www.tradingview.com/pine-script-reference/v5/#fun_plotcandle>`__, 
-the script would throw an error stating the script now uses 70 plot counts, as each additional call to 
+the script would throw an error stating that the script now uses 70 plot counts, as each additional call to 
 `plotcandle() <https://www.tradingview.com/pine-script-reference/v5/#fun_plotcandle>`__ 
 generates seven plot counts, and 56 + (7 * 2) is 70.
 

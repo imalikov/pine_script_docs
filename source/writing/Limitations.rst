@@ -95,7 +95,7 @@ A maximum of 64 plot counts are allowed per script. The functions that generate 
 - `plotshape() <https://www.tradingview.com/pine-script-reference/v5/#fun_plotshape>`__
 - `alertcondition() <https://www.tradingview.com/pine-script-reference/v5/#fun_alertcondition>`__
 - `bgcolor() <https://www.tradingview.com/pine-script-reference/v5/#fun_bgcolor>`__
-- `fill() <https://www.tradingview.com/pine-script-reference/v5/#fun_fill>`__, but only if its color is a `series <https://www.tradingview.com/pine-script-reference/v5/#op_series>`__
+- `fill() <https://www.tradingview.com/pine-script-reference/v5/#fun_fill>`__, but only if its ``color`` is of the `series <https://www.tradingview.com/pine-script-reference/v5/#op_series>`__ form.
 
 The following functions do not generate plot counts:
 

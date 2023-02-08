@@ -308,11 +308,11 @@ If an object has fields with special types
 `table <https://www.tradingview.com/pine-script-reference/v5/#op_table>`__), 
 those fields in a shallow copy of the object will point to the same instances as the original.
 
-In the following example, we define an ``InfoLabel`` type with a ``lbl`` field of the label type. 
-The user-defined ``set()`` :ref:`method <PageMethods>` updates the position and text of the ``lbl`` field of the ``InfoLabel`` and 
-the value of the ``info`` field. The script creates a ``shallow`` copy of the ``parent`` object, then calls 
-the ``set()`` method on each object. Since the ``lbl`` field in both objects point to the same label instance, 
-changing this field in either object affects the other:
+In the following example, we have defined an ``InfoLabel`` type with a label as one of its fields.
+The script instantiates a ``shallow`` copy of the ``parent`` object, then calls a user-defined 
+``set()`` :ref:`method <PageMethods>` to update the ``info`` and ``lbl`` fields of each object.
+Since the ``lbl`` field of both objects points to the same label instance, 
+changes to this field in either object affect the other:
 
 ::
 

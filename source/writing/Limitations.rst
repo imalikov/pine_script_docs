@@ -241,6 +241,7 @@ This example conditionally draws the "Buy" and "Sell" labels rather than always 
 .. image:: images/Limitations-LabelsWithNa-2.png
 
 ::
+
     //@version=5
 
     // Approximate maximum number of label drawings

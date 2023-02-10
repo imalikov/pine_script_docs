@@ -205,6 +205,65 @@ In this example we set the maximum quantity of last labels shown on the chart to
     indicator("Label limits example", max_labels_count = 100, overlay = true)
     label.new(bar_index, high, str.tostring(high, format.mintick))
 
+It's important to note that when you set any of the attributes of a drawing object to na, it still counts as a drawing on the chart and thus contributes to a script's drawing totals.
+To demonstrate this, the following script draws a "Buy" and "Sell" label on each bar with ``x`` values determined by the ``longCondition`` and ``shortCondition`` variables.
+The "Buy" label's ``x`` value is na when the bar index is even, and the "Sell" label's ``x`` value is na when the bar index is odd.
+Although the ``max_labels_count`` is 10 in this example, we can see that the script displays fewer than ten labels on the chart since the ones with na values also count toward the total:
+
+.. image:: images/Limitations-LabelsWithNa-1.png
+
+::
+
+    //@version=5
+
+    // Approximate maximum number of label drawings
+    MAX_LABELS = 10
+
+    indicator("labels with na", overlay = false, max_labels_count = MAX_LABELS)
+
+    // Add background color for the last MAX_LABELS bars.
+    bgcolor(bar_index > last_bar_index - MAX_LABELS ? color.new(color.green, 80) : na)
+
+    longCondition =  bar_index % 2 != 0
+    shortCondition = bar_index % 2 == 0
+
+    // Add "Buy" and "Sell" labels on each new bar.
+    label.new(longCondition ? bar_index : na,  0, text = "Buy", color = color.new(color.green, 0), style = label.style_label_up)
+    label.new(shortCondition ? bar_index : na, 0, text = "Sell", color = color.new(color.red, 0), style = label.style_label_down)
+
+    plot(longCondition  ? 1 : 0)
+    plot(shortCondition ? 1 : 0)
+
+
+If we want the script to display the desired number of labels, we need to eliminate the ones with na ``x`` values so that they don't add to the script's label count.
+This example conditionally draws the "Buy" and "Sell" labels rather than always drawing them and setting their attributes to na on alternating bars:
+
+.. image:: images/Limitations-LabelsWithNa-2.png
+
+::
+
+    //@version=5
+
+    // Approximate maximum number of label drawings
+    MAX_LABELS = 10
+
+    indicator("conditional labels", overlay = false, max_labels_count = MAX_LABELS)
+
+    // Add background color for the last MAX_LABELS bars.
+    bgcolor(bar_index > last_bar_index - MAX_LABELS ? color.new(color.green, 80) : na)
+
+    longCondition =  bar_index % 2 != 0
+    shortCondition = bar_index % 2 == 0
+
+    // Add a "Buy" label when `longCondition` is true.
+    if longCondition
+        label.new(bar_index,  0, text = "Buy", color = color.new(color.green, 0), style = label.style_label_up)
+    // Add a "Sell" label when `shortCondition` is true.
+    if shortCondition
+        label.new(bar_index, 0, text = "Sell", color = color.new(color.red, 0), style = label.style_label_down)
+
+    plot(longCondition  ? 1 : 0)
+    plot(shortCondition ? 1 : 0)
 
 
 Table limits

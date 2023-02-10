@@ -497,7 +497,8 @@ Note that:
 
 The full example below queues a ``sourceArray`` of size ``length`` with ``sourceInput`` values using our previous ``qDq()`` method, 
 normalizes the array's elements using the ``featureScale()`` method, then calls the ``eCDF()`` method to get an array of estimates for 
-``n`` evenly spaced steps on the distribution, which it converts to a string and displays in a label:
+``n`` evenly spaced steps on the distribution. The script then calls a user-defined ``makeLabel()`` function to display the estimates and prices 
+in a label on the right side of the chart:
 
 ::
 
@@ -564,11 +565,32 @@ normalizes the array's elements using the ``featureScale()`` method, then calls 
             scaledArray.push((element - min)/rng)
         scaledArray
 
+    // @function        Draws a label containing eCDF estimates in the format "{price}: {percent}%" 
+    // @param srcArray  (array<float>) Array of source values.
+    // @param cdfArray  (array<float>) Array of CDF estimates.
+    // @returns         (void)
+    makeLabel(array<float> srcArray, array<float> cdfArray) =>
+        float max      = srcArray.max()
+        float rng      = srcArray.range()/cdfArray.size()
+        string results = ""
+        var label lbl  = label.new(0, 0, "", style = label.style_label_left, text_font_family = font.family_monospace)
+        // Add percentage strings to `results` starting from the max.
+        cdfArray.reverse()
+        for [i, element] in cdfArray
+            results += str.format("{0}: {1}%\n", max - i*rng, element*100)
+        // Update `lbl` attributes.
+        lbl.set_xy(bar_index + 1, srcArray.avg())
+        lbl.set_text(results)
+
     var array<float> sourceArray = array.new<float>(length)
 
-    var lbl = label.new(0, 0)
-    lbl.set_x(bar_index)
-    lbl.set_text(str.tostring(sourceArray.qDq(sourceInput).featureScale().eCDF(n)))
+    // Add background color for the last `length` bars.
+    bgcolor(bar_index > last_bar_index - length ? color.new(color.orange, 80) : na)
+
+    // Queue `sourceArray`, feature scale, then estimate the distribution over `n` steps.
+    array<float> distArray = sourceArray.qDq(sourceInput).featureScale().eCDF(n)
+    // Draw label.
+    makeLabel(sourceArray, distArray)
 
 
 

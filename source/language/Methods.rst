@@ -77,6 +77,8 @@ then `array.avg() <https://www.tradingview.com/pine-script-reference/v5/#fun_arr
 `array.stdev() <https://www.tradingview.com/pine-script-reference/v5/#fun_array{dot}stdev>`__ to compute the ``sampleMean`` and ``sampleDev``.
 The script then uses these values to calculate the ``highBand`` and ``lowBand``, which it plots on the chart along with the ``sampleMean``:
 
+.. image:: images/Methods_custom_bb.png
+
 ::
     
     //@version=5
@@ -354,6 +356,8 @@ method to five different variables into a single ``results`` string,
 then displays the string in the ``lbl`` label using the built-in 
 `set_text() <https://www.tradingview.com/pine-script-reference/v5/#fun_label{dot}set_text>`__ method:
 
+.. image:: images/Methods_overloads_type_inspection.png
+
 ::
 
     //@version=5
@@ -499,6 +503,8 @@ The full example below queues a ``sourceArray`` of size ``length`` with ``source
 normalizes the array's elements using the ``featureScale()`` method, then calls the ``eCDF()`` method to get an array of estimates for 
 ``n`` evenly spaced steps on the distribution. The script then calls a user-defined ``makeLabel()`` function to display the estimates and prices 
 in a label on the right side of the chart:
+
+.. image:: images/Methods_empirical_distribution.png
 
 ::
 

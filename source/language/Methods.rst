@@ -322,7 +322,7 @@ Method Overloading
 ------------------
 
 User-defined methods can override and overload existing built-in and user-defined methods with the same identifier.
-This capability allows users to define multiple procedures associated with different parameter signatures under the same method name.
+This capability allows users to define multiple routines associated with different parameter signatures under the same method name.
 
 As a simple example, suppose we want to define a method to identify a variable's type.
 Since we must explicitly specify the type of object associated with a user-defined method, 

@@ -580,10 +580,10 @@ in a label on the right side of the chart:
         float rng      = srcArray.range()/cdfArray.size()
         string results = ""
         var label lbl  = label.new(0, 0, "", style = label.style_label_left, text_font_family = font.family_monospace)
-        // Add percentage strings to `results` starting from the max.
+        // Add percentage strings to `results` starting from the `max`.
         cdfArray.reverse()
         for [i, element] in cdfArray
-            results += str.format("{0}: {1}%\n", max - i*rng, element*100)
+            results += str.format("{0}: {1}%\n", max - i * rng, element * 100)
         // Update `lbl` attributes.
         lbl.set_xy(bar_index + 1, srcArray.avg())
         lbl.set_text(results)

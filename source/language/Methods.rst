@@ -23,7 +23,7 @@ Methods
 Introduction
 ------------
 
-Pine Script™ *methods* are specialized functions associated with specific instances of built-in or user-defined :ref:`types <PageTypeSystem>`.
+Pine Script™ methods are specialized functions associated with specific instances of built-in or user-defined :ref:`types <PageTypeSystem>`.
 They are essentially the same as regular functions in most regards but offer a shorter, more convenient syntax.
 Users can access methods using dot notation on variables directly, just like accessing the fields of a :ref:`Pine Script™ object <PageObjects>`.
 

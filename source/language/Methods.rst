@@ -466,7 +466,7 @@ the cumulative distribution function of a ``srcArray`` and pushes the results in
     // @returns        (array<float>) Array of estimated CDF ratios.
     method eCDF(array<float> srcArray, int steps) =>
         float min = srcArray.min()
-        float rng = srcArray.range()/steps
+        float rng = srcArray.range() / steps
         array<float> cdfArray = array.new<float>()
         // Add averages of `srcArray` filtered by value region to the `cdfArray`.
         float val = min

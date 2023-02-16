@@ -23,9 +23,9 @@ Methods
 Introduction
 ------------
 
-Pine Script™ Methods are special functions that associate procedures with instances of built-in or user-defined :ref:`types <PageTypeSystem>`. 
-Experienced programmers will know them as extension methods since methods are only associated with a type after it is defined. 
-Unlike standard functions, users can access methods using dot notation on variables directly, just like accessing the fields of a :ref:`Pine Script™ object <PageObjects>`.
+Pine Script™ *methods* are specialized functions associated with specific instances of built-in or user-defined :ref:`types <PageTypeSystem>`.
+They are essentially the same as regular functions in most regards but offer a shorter, more convenient syntax.
+Users can access methods using dot notation on variables directly, just like accessing the fields of a :ref:`Pine Script™ object <PageObjects>`.
 
 
 
@@ -38,7 +38,7 @@ Pine Script™ includes built-in methods for `array <https://www.tradingview.com
 `matrix <https://www.tradingview.com/pine-script-reference/v5/#op_matrix>`__, `line <https://www.tradingview.com/pine-script-reference/v5/#op_line>`__, 
 `linefill <https://www.tradingview.com/pine-script-reference/v5/#op_linefill>`__, `label <https://www.tradingview.com/pine-script-reference/v5/#op_label>`__, 
 `box <https://www.tradingview.com/pine-script-reference/v5/#op_box>`__, and `table <https://www.tradingview.com/pine-script-reference/v5/#op_table>`__ types. 
-These methods provide users with a more concise way to call specialized procedures for these types within their scripts.
+These methods provide users with a more concise way to call specialized routines for these types within their scripts.
 
 When using these special types, the expressions
 
@@ -66,7 +66,7 @@ to get the value from an array ``id`` at the specified ``index``, we can simply 
 
 to achieve the same effect.
 This notation eliminates the need for users to reference the function's namespace, as 
-`get() <https://www.tradingview.com/pine-script-reference/v5/#fun_array{dot}get>`__ is an extension method of ``id`` in this context.
+`get() <https://www.tradingview.com/pine-script-reference/v5/#fun_array{dot}get>`__ is a method of ``id`` in this context.
 
 Written below is a practical example to demonstrate the usage of built-in methods in place of functions.
 
@@ -100,7 +100,7 @@ The script then uses these values to calculate the ``highBand`` and ``lowBand``,
         array.shift(sourceArray)
         // Update the mean and standard deviaiton values.
         sampleMean := array.avg(sourceArray)
-        sampleDev  := array.stdev(sourceArray)*multiplier
+        sampleDev  := array.stdev(sourceArray) * multiplier
 
     // Calculate bands.
     float highBand = sampleMean + sampleDev
@@ -135,7 +135,7 @@ functions in the script with equivalent methods:
         sourceArray.shift()
         // Update the mean and standard deviaiton values.
         sampleMean := sourceArray.avg()
-        sampleDev  := sourceArray.stdev()*multiplier
+        sampleDev  := sourceArray.stdev() * multiplier
 
     // Calculate band values.
     float highBand = sampleMean + sampleDev
@@ -160,12 +160,12 @@ Pine Script™ allows users to define custom methods for use with objects of any
 Defining a method is essentially the same as defining a function, but with two key differences:
 
 - The `method <https://www.tradingview.com/pine-script-reference/v5/#op_method>`__ keyword must be included before the function name.
-- The first parameter in the signature defines the type of object that the method will be associated with.
+- The type of the first parameter in the signature must be explicitly declared, as it represents the type of object that the method will be associated with.
 
 .. code-block:: text
     
     [export] method <functionName>(<paramType> <paramName> [= <defaultValue>], …) =>
-    <functionBlock>
+        <functionBlock>
 
 Let's apply user-defined methods to our previous Bollinger Bands example to encapsulate operations from the global scope, 
 which will simplify the code and promote reusability.
@@ -180,7 +180,7 @@ See this portion from the example:
         sourceArray.shift()
         // Update the mean and standard deviaiton values.
         sampleMean := sourceArray.avg()
-        sampleDev  := sourceArray.stdev()*multiplier
+        sampleDev  := sourceArray.stdev() * multiplier
 
     // Calculate band values.
     float highBand = sampleMean + sampleDev
@@ -188,7 +188,7 @@ See this portion from the example:
 
 We will start by defining a simple method to queue values through an array in a single call.
 
-This ``qDq()`` method invokes the `push() <https://www.tradingview.com/pine-script-reference/v5/#fun_array{dot}push>`__ and 
+This ``maintainQueue()`` method invokes the `push() <https://www.tradingview.com/pine-script-reference/v5/#fun_array{dot}push>`__ and 
 `shift() <https://www.tradingview.com/pine-script-reference/v5/#fun_array{dot}shift>`__ methods on a ``srcArray`` when ``takeSample`` is true and returns 
 the object:
 
@@ -201,7 +201,7 @@ the object:
     //                   The queue's oldest value is also removed, so its size is constant.
     // @param takeSample (bool) A new `value` is only pushed into the queue if this is true.
     // @returns          (array<float>) `srcArray` object.
-    method qDq(array<float> srcArray, float value, bool takeSample = true) =>
+    method maintainQueue(array<float> srcArray, float value, bool takeSample = true) =>
         if takeSample
             srcArray.push(value)
             srcArray.shift()
@@ -210,17 +210,17 @@ the object:
 Note that:
  - Just as with user-defined functions, we use the ``@function`` :ref:`compiler annotation <PageScriptStructure_CompilerAnnotations>` to document method descriptions.
 
-Now we can replace ``sourceArray.push()`` and ``sourceArray.shift()`` with ``sourceArray.qDq()`` in our example:
+Now we can replace ``sourceArray.push()`` and ``sourceArray.shift()`` with ``sourceArray.maintainQueue()`` in our example:
 
 ::
 
     // Identify if `n` bars have passed.
     if bar_index % n == 0
         // Update the queue.
-        sourceArray.qDq(sourceInput)
+        sourceArray.maintainQueue(sourceInput)
         // Update the mean and standard deviaiton values.
         sampleMean  := sourceArray.avg()
-        sampleDev   := sourceArray.stdev()*multiplier
+        sampleDev   := sourceArray.stdev() * multiplier
 
     // Calculate band values.
     float highBand  = sampleMean + sampleDev
@@ -246,7 +246,7 @@ The method uses these values to return a tuple containing the basis, upper band,
         if calculate
             // Compute the mean and standard deviation of the array.
             mean := srcArray.avg()
-            dev  := srcArray.stdev()*mult
+            dev  := srcArray.stdev() * mult
         [mean, mean + dev, mean - dev]
 
 With this method, we can now remove Bollinger Band calculations from the global scope and improve code readability:
@@ -257,11 +257,11 @@ With this method, we can now remove Bollinger Band calculations from the global 
     bool newSample = bar_index % n == 0
 
     // Update the queue and compute new BB values on each new sample.
-    [sampleMean, highBand, lowBand] = sourceArray.qDq(sourceInput, newSample).calcBB(multiplier, newSample)
+    [sampleMean, highBand, lowBand] = sourceArray.maintainQueue(sourceInput, newSample).calcBB(multiplier, newSample)
 
 Note that:
- - Rather than using an ``if`` block in the global scope, we have defined a ``newSample`` variable that is only true once every ``n`` bars. The ``qDq()`` and ``calcBB()`` methods use this value for their respective ``takeSample`` and ``calculate`` parameters.
- - Since the ``qDq()`` method returns the object that it references, we're able to call ``calcBB()`` from the same line of code, as both methods apply to ``array<float>`` instances. 
+ - Rather than using an ``if`` block in the global scope, we have defined a ``newSample`` variable that is only true once every ``n`` bars. The ``maintainQueue()`` and ``calcBB()`` methods use this value for their respective ``takeSample`` and ``calculate`` parameters.
+ - Since the ``maintainQueue()`` method returns the object that it references, we're able to call ``calcBB()`` from the same line of code, as both methods apply to ``array<float>`` instances. 
 
 Here is how the full script example looks now that we've applied our user-defined methods:
 
@@ -284,7 +284,7 @@ Here is how the full script example looks now that we've applied our user-define
     //                   The queue's oldest value is also removed, so its size is constant.
     // @param takeSample (bool) A new `value` is only pushed into the queue if this is true.
     // @returns          (array<float>) `srcArray` object.
-    method qDq(array<float> srcArray, float value, bool takeSample = true) =>
+    method maintainQueue(array<float> srcArray, float value, bool takeSample = true) =>
         if takeSample
             srcArray.push(value)
             srcArray.shift()
@@ -301,14 +301,14 @@ Here is how the full script example looks now that we've applied our user-define
         if calculate
             // Compute the mean and standard deviation of the array.
             mean := srcArray.avg()
-            dev  := srcArray.stdev()*mult
+            dev  := srcArray.stdev() * mult
         [mean, mean + dev, mean - dev]
 
     // Identify if `n` bars have passed.
     bool newSample = bar_index % n == 0
 
     // Update the queue and compute new BB values on each new sample.
-    [sampleMean, highBand, lowBand] = sourceArray.qDq(sourceInput, newSample).calcBB(multiplier, newSample)
+    [sampleMean, highBand, lowBand] = sourceArray.maintainQueue(sourceInput, newSample).calcBB(multiplier, newSample)
 
     plot(sampleMean, "Basis", color.orange)
     plot(highBand, "Upper", color.lime)
@@ -324,9 +324,9 @@ Method Overloading
 User-defined methods can override and overload existing built-in and user-defined methods with the same identifier.
 This capability allows users to define multiple procedures associated with different parameter signatures under the same method name.
 
-As a trivial example, let's say that we want to define a method to identify a variable's type.
-Since we must explicitly specify the type that a user-defined method is associated with, 
-we will need to define an overload for each type that we want the method to recognize.
+As a simple example, suppose we want to define a method to identify a variable's type.
+Since we must explicitly specify the type of object associated with a user-defined method, 
+we will need to define overloads for each type that we want it to recognize. 
 
 Below, we have defined a ``getType()`` method that returns a string representation of a variable's type with overloads for the five primitive types:
 
@@ -351,8 +351,8 @@ Below, we have defined a ``getType()`` method that returns a string representati
         na(this) ? "string(na)" : "string"
 
 Now we can use these overloads to inspect some variables. 
-This script uses `str.format() <https://www.tradingview.com/pine-script-reference/v5/#fun_str{dot}format>`__ to format the results from applying the ``getType()`` 
-method to five different variables into a single ``results`` string, 
+This script uses `str.format() <https://www.tradingview.com/pine-script-reference/v5/#fun_str{dot}format>`__ 
+to format the results from calling the ``getType()`` method on five different variables into a single ``results`` string, 
 then displays the string in the ``lbl`` label using the built-in 
 `set_text() <https://www.tradingview.com/pine-script-reference/v5/#fun_label{dot}set_text>`__ method:
 
@@ -493,13 +493,13 @@ We will use this to normalize our arrays prior to invoking the ``eCDF()`` method
         array<float> scaledArray = array.new<float>()
         // Push normalized `element` values into the `scaledArray`.
         for element in srcArray
-            scaledArray.push((element - min)/rng)
+            scaledArray.push((element - min) / rng)
         scaledArray
 
 Note that:
  - This method does not include special handling for divide by zero conditions. If ``rng`` is 0, the value of the array element will be ``na``.
 
-The full example below queues a ``sourceArray`` of size ``length`` with ``sourceInput`` values using our previous ``qDq()`` method, 
+The full example below queues a ``sourceArray`` of size ``length`` with ``sourceInput`` values using our previous ``maintainQueue()`` method, 
 normalizes the array's elements using the ``featureScale()`` method, then calls the ``eCDF()`` method to get an array of estimates for 
 ``n`` evenly spaced steps on the distribution. The script then calls a user-defined ``makeLabel()`` function to display the estimates and prices 
 in a label on the right side of the chart:
@@ -509,7 +509,7 @@ in a label on the right side of the chart:
 ::
 
     //@version=5
-    indicator("Empirical Distribution")
+    indicator("Empirical Distribution", overlay = true)
 
     float sourceInput = input.source(close, "Source")
     int length        = input.int(20, "Length")
@@ -522,7 +522,7 @@ in a label on the right side of the chart:
     //                   The queue's oldest value is also removed, so its size is constant.
     // @param takeSample (bool) A new `value` is only pushed into the queue if this is true.
     // @returns          (array<float>) `srcArray` object.
-    method qDq(array<float> srcArray, float value, bool takeSample = true) =>
+    method maintainQueue(array<float> srcArray, float value, bool takeSample = true) =>
         if takeSample
             srcArray.push(value)
             srcArray.shift()
@@ -568,7 +568,7 @@ in a label on the right side of the chart:
         array<float> scaledArray = array.new<float>()
         // Push normalized `element` values into the `scaledArray`.
         for element in srcArray
-            scaledArray.push((element - min)/rng)
+            scaledArray.push((element - min) / rng)
         scaledArray
 
     // @function        Draws a label containing eCDF estimates in the format "{price}: {percent}%" 
@@ -594,7 +594,7 @@ in a label on the right side of the chart:
     bgcolor(bar_index > last_bar_index - length ? color.new(color.orange, 80) : na)
 
     // Queue `sourceArray`, feature scale, then estimate the distribution over `n` steps.
-    array<float> distArray = sourceArray.qDq(sourceInput).featureScale().eCDF(n)
+    array<float> distArray = sourceArray.maintainQueue(sourceInput).featureScale().eCDF(n)
     // Draw label.
     makeLabel(sourceArray, distArray)
 

@@ -550,7 +550,7 @@ in a label on the right side of the chart:
     // @returns        (array<float>) Array of estimated CDF ratios.
     method eCDF(array<float> srcArray, int steps) =>
         float min = srcArray.min()
-        float rng = srcArray.range()/steps
+        float rng = srcArray.range() / steps
         array<float> cdfArray = array.new<float>()
         // Add averages of `srcArray` filtered by value region to the `cdfArray`.
         float val = min
@@ -577,7 +577,7 @@ in a label on the right side of the chart:
     // @returns         (void)
     makeLabel(array<float> srcArray, array<float> cdfArray) =>
         float max      = srcArray.max()
-        float rng      = srcArray.range()/cdfArray.size()
+        float rng      = srcArray.range() / cdfArray.size()
         string results = ""
         var label lbl  = label.new(0, 0, "", style = label.style_label_left, text_font_family = font.family_monospace)
         // Add percentage strings to `results` starting from the `max`.

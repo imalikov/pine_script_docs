@@ -385,7 +385,7 @@ then displays the string in the ``lbl`` label using the built-in
     b = 1.0
     c = true
     d = color.white
-    e = '1'
+    e = "1"
 
     // Inspect variables and format results.
     results = str.format(

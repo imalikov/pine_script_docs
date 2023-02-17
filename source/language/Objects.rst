@@ -342,8 +342,8 @@ To produce a *deep copy* of an object with all of its special type fields pointi
 we must explicitly copy those fields as well.
 
 In this example, we have defined a ``deepCopy()`` method that instantiates a new ``InfoLabel`` object with 
-its ``lbl`` field pointing to a copy of the original's field. Here we see that changes to the ``deep`` copy's ``lbl`` 
-field do not affect the ``parent`` object:
+its ``lbl`` field pointing to a copy of the original's field. Changes to the ``deep`` copy's ``lbl`` 
+field will not affect the ``parent`` object, as it points to a separate instance:
 
 ::
 

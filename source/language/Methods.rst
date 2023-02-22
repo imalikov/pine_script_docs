@@ -318,7 +318,7 @@ Here is how the full script example looks now that we've applied our user-define
 
 .. _PageMethods_MethodOverloading:
 
-Method Overloading
+Method overloading
 ------------------
 
 User-defined methods can override and overload existing built-in and user-defined methods with the same identifier.
@@ -404,7 +404,7 @@ Note that:
 
 .. _PageMethods_AdvancedExample:
 
-Advanced Example
+Advanced example
 ----------------
 
 Let's apply what we've learned to construct a script that estimates the cumulative distribution of elements in an array,

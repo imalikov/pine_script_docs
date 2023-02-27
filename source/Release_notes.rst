@@ -35,7 +35,7 @@ using the handy dot notation syntax. Pine Script™ includes built-in methods fo
 `matrix <https://www.tradingview.com/pine-script-reference/v5/#op_matrix>`__, `line <https://www.tradingview.com/pine-script-reference/v5/#op_line>`__, 
 `linefill <https://www.tradingview.com/pine-script-reference/v5/#op_linefill>`__, `label <https://www.tradingview.com/pine-script-reference/v5/#op_label>`__, 
 `box <https://www.tradingview.com/pine-script-reference/v5/#op_box>`__, and `table <https://www.tradingview.com/pine-script-reference/v5/#op_table>`__ types 
-and facilitates user-defined methods with the new `method` keyword. 
+and facilitates user-defined methods with the new `method <https://www.tradingview.com/pine-script-reference/v5/#op_method>`__ keyword. 
 For more details on this new feature, see our :ref:`User Manual's page on methods <PageMethods>`.
 
 

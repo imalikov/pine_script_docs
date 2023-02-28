@@ -17,8 +17,31 @@ Release notes
 
 This page contains release notes of notable changes in Pine Script™.
 
+
+
+2023
+----
+
+February 2023
+^^^^^^^^^^^^^
+
+Pine Script™ Methods
+~~~~~~~~~~~~~~~~~~~~
+
+Pine Script™ methods are specialized functions associated with specific instances of built-in or user-defined types. 
+They offer a more convenient syntax than standard functions, as users can access methods in the same way as object fields 
+using the handy dot notation syntax. Pine Script™ includes built-in methods for 
+`array <https://www.tradingview.com/pine-script-reference/v5/#op_array>`__, 
+`matrix <https://www.tradingview.com/pine-script-reference/v5/#op_matrix>`__, `line <https://www.tradingview.com/pine-script-reference/v5/#op_line>`__, 
+`linefill <https://www.tradingview.com/pine-script-reference/v5/#op_linefill>`__, `label <https://www.tradingview.com/pine-script-reference/v5/#op_label>`__, 
+`box <https://www.tradingview.com/pine-script-reference/v5/#op_box>`__, and `table <https://www.tradingview.com/pine-script-reference/v5/#op_table>`__ types 
+and facilitates user-defined methods with the new `method <https://www.tradingview.com/pine-script-reference/v5/#op_method>`__ keyword. 
+For more details on this new feature, see our :ref:`User Manual's page on methods <PageMethods>`.
+
+
+
 January 2023
-------------
+^^^^^^^^^^^^
 
 New array functions were added:
 

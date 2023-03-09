@@ -22,6 +22,13 @@ This page contains release notes of notable changes in Pine Script™.
 2023
 ----
 
+March 2023
+^^^^^^^^^^
+
+It is now possible to use seconds-based timeframe strings for the `timeframe` parameter in `request.security()` and `request.security_lower_tf()`.
+
+
+
 February 2023
 ^^^^^^^^^^^^^
 

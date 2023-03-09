@@ -25,7 +25,9 @@ This page contains release notes of notable changes in Pine Script™.
 March 2023
 ^^^^^^^^^^
 
-It is now possible to use seconds-based timeframe strings for the `timeframe` parameter in `request.security()` and `request.security_lower_tf()`.
+It is now possible to use seconds-based timeframe strings for the ``timeframe`` parameter in 
+`request.security() <https://www.tradingview.com/pine-script-reference/v5/#fun_request{dot}security>`__ 
+and `request.security_lower_tf() <https://www.tradingview.com/pine-script-reference/v5/#fun_request{dot}security_lower_tf>`__.
 
 
 

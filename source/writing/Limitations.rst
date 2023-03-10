@@ -367,7 +367,7 @@ Compiled tokens
 
 Before a script is executed, it is compiled into a tokenized Intermediate Language (IL). 
 Using an IL allows Pine Script™ to accommodate longer scripts by applying various optimizations before it is executed. 
-The compiled form of indicators and strategies is limited to 60,000 tokens; libraries have a limit of 1 million tokens. 
+The compiled form of indicators and strategies is limited to 67,000 tokens; libraries have a limit of 1 million tokens. 
 There is no way to inspect the number of tokens created during compilation; you will only know your script exceeds the limit when the compiler reaches it.
 
 Replacing code repetitions with function calls and using libraries to offload some of the workload 

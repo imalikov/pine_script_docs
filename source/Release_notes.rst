@@ -31,7 +31,7 @@ and `request.security_lower_tf() <https://www.tradingview.com/pine-script-refere
 
 A new function was added:
 
-* `request.currency_rate() <https://www.tradingview.com/pine-script-reference/v5/#fun_request{dot}currency_rate>`_ - provides a rate that can be used to convert a value expressed in the ``from`` currency to another in the ``to`` currency.
+* `request.currency_rate() <https://www.tradingview.com/pine-script-reference/v5/#fun_request{dot}currency_rate>`_ - Provides a daily rate to convert a value expressed in the ``from`` currency to another in the ``to`` currency.
 
 
 

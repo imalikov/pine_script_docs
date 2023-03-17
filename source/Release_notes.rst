@@ -29,6 +29,10 @@ It is now possible to use seconds-based timeframe strings for the ``timeframe`` 
 `request.security() <https://www.tradingview.com/pine-script-reference/v5/#fun_request{dot}security>`__ 
 and `request.security_lower_tf() <https://www.tradingview.com/pine-script-reference/v5/#fun_request{dot}security_lower_tf>`__.
 
+A new function was added:
+
+* `request.currency_rate() <https://www.tradingview.com/pine-script-reference/v5/#fun_request{dot}currency_rate>`_ - provides a daily rate to convert a value expressed in the ``from`` currency to another in the ``to`` currency.
+
 
 
 February 2023

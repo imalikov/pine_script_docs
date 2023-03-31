@@ -164,109 +164,107 @@ More information
 
 
 
-Execution of Pine Script™ functions and historical context inside function blocks
--------------------------------------------------------------------------
+Historical values of functions
+------------------------------
 
-The history of series variables used inside Pine Script™ functions is created through each successive call to the function. 
-If the function is not called on each bar the script runs on, 
-this will result in disparities between the historic values of series inside vs outside the function's local block. 
-Hence, series referenced inside and outside the function using the same index value will not refer to the same point in history if the function is not called on each bar.
+Every function call in Pine leaves a trail of historical values that a script can access on subsequent bars using the `[] <https://www.tradingview.com/pine-script-reference/v5/#op_%5B%5D>`_ operator. The historical series of functions depend on successive calls to record the output on every bar. When a script does not call functions on each bar, it can produce an inconsistent history that may impact calculations and results, namely when it depends on the continuity of their historical series to operate as expected. The compiler warns users in these cases to make them aware that the values from a function, whether built-in or user-defined, might be misleading.
 
-Let's look at this example script where the ``f()`` and ``f2()`` functions are called every second bar::
-
-   //@version=5
-   indicator("My Script", overlay = true)
-
-   // Returns the value of "a" the last time the function was called 2 bars ago.
-   f(a) => a[1]
-   // Returns the value of last bar's "close", as expected.
-   f2() => close[1]
-
-   oneBarInTwo = bar_index % 2 == 0
-   plot(oneBarInTwo ? f(close) : na, color = color.maroon, linewidth = 6, style = plot.style_cross)
-   plot(oneBarInTwo ? f2() : na, color = color.lime, linewidth = 6, style = plot.style_circles)
-   plot(close[2], color = color.maroon)
-   plot(close[1], color = color.lime)
+To demonstrate, let's write a script that calculates the index of the current bar and outputs that value on every second bar. In the following script, we've defined a ``calcBarIndex()`` function that adds 1 to the previous value of its internal ``index`` variable on every bar. The script calls the function on each bar that the ``condition`` returns ``true`` on (every other bar) to update the ``customIndex`` value. It plots this value alongside the built-in ``bar_index`` to validate the output:
 
 .. image:: images/Function_historical_context_1.png
 
-As can be seen with the resulting plots, ``a[1]`` returns the previous value of a in the function's context, 
-so the last time ``f()`` was called two bars ago — not the close of the previous bar, as ``close[1]`` does in ``f2()``. 
-This results in ``a[1]`` in the function block referring to a different past value than ``close[1]`` even though they use the same index of 1.
+::
 
+    //@version=5
+    indicator("My script")
 
+    //@function Calculates the index of the current bar by adding 1 to its own value from the previous bar.
+    // The first bar will have an index of 0.
+    calcBarIndex() =>
+        int index = na
+        index := nz(index[1], replacement = -1) + 1
+
+    //@variable Returns `true` on every other bar.
+    condition = bar_index % 2 == 0
+
+    int customIndex = na
+
+    // Call `calcBarIndex()` when the `condition` is `true`. This prompts the compiler to raise a warning.
+    if condition
+        customIndex := calcBarIndex()
+
+    plot(bar_index,   "Bar index",    color = color.green)
+    plot(customIndex, "Custom index", color = color.red, style = plot.style_cross)
+
+**Note that:** 
+
+- The `nz() <https://www.tradingview.com/pine-script-reference/v5/#fun_nz>`_ function replaces `na <https://www.tradingview.com/pine-script-reference/v5/#var_na>`_ values with a specified ``replacement`` value (0 by default). On the first bar of the script, when the ``index`` series has no history, the `na <https://www.tradingview.com/pine-script-reference/v5/#var_na>`_ value is replaced with -1 before adding 1 to return an initial value of 0.
+
+Upon inspecting the chart, we see that the two plots differ wildly. The reason for this behavior is that the script called ``calcBarIndex()`` within the scope of an `if <https://www.tradingview.com/pine-script-reference/v5/#op_if>`_ structure on every other bar, resulting in a historical output inconsistent with the ``bar_index`` series. When calling the function once every two bars, internally referencing the previous value of ``index`` gets the value from two bars ago, i.e., the last bar the function executed on. This behavior results in a ``customIndex`` value of half that of the built-in ``bar_index``.
+
+To align the ``calcBarIndex()`` output with the ``bar_index``, we can move the function call to the script's global scope. That way, the function will execute on every bar, allowing its entire history to be recorded and referenced rather than only the results from every other bar. In the code below, we've defined a ``globalScopeBarIndex`` variable in the global scope and assigned it to the return from ``calcBarIndex()`` rather than calling the function locally. The script sets the ``customIndex`` to the value of ``globalScopeBarIndex`` on the occurrence of the ``condition``:
+
+.. image:: images/Function_historical_context_2.png
+
+::
+
+    //@version=5
+    indicator("My script")
+
+    //@function Calculates the index of the current bar by adding 1 to its own value from the previous bar.
+    // The first bar will have an index of 0.
+    calcBarIndex() =>
+        int index = na
+        index := nz(index[1], replacement = -1) + 1
+
+    //@variable Returns `true` on every second bar.
+    condition = bar_index % 2 == 0
+
+    globalScopeBarIndex = calcBarIndex()
+    int customIndex = na
+
+    // Assign `customIndex` to `globalScopeBarIndex` when the `condition` is `true`. This won't produce a warning.
+    if condition
+        customIndex := globalScopeBarIndex
+
+    plot(bar_index,   "Bar index",    color = color.green)
+    plot(customIndex, "Custom index", color = color.red, style = plot.style_cross)
+
+This behavior can also radically impact built-in functions that reference history internally. For example, the `ta.sma() <https://www.tradingview.com/pine-script-reference/v5/#fun_ta{dot}sma>`_ function references its past values "under the hood". If a script calls this function conditionally rather than on every bar, the values within the calculation can change significantly. We can ensure calculation consistency by assigning `ta.sma() <https://www.tradingview.com/pine-script-reference/v5/#fun_ta{dot}sma>`_ to a variable in the global scope and referencing that variable's history as needed. 
+
+The following example calculates three SMA series: ``controlSMA``, ``localSMA``, and ``globalSMA``. The script calculates ``controlSMA`` in the global scope and ``localSMA`` within the local scope of an `if <https://www.tradingview.com/pine-script-reference/v5/#op_if>`_ structure. Within the `if <https://www.tradingview.com/pine-script-reference/v5/#op_if>`_ structure, it also updates the value of ``globalSMA`` using the ``controlSMA`` value. As we can see, the values from the ``globalSMA`` and ``controlSMA`` series align, whereas the ``localSMA`` series diverges from the other two because it uses an incomplete history, which affects its calculations:
+
+.. image:: images/Function_historical_context_3.png
+
+::
+
+    //@version=5
+    indicator("My script")
+
+    //@variable Returns `true` on every second bar.
+    condition = bar_index % 2 == 0
+
+    controlSMA = ta.sma(close, 20)
+    float globalSMA = na
+    float localSMA  = na
+
+    // Update `globalSMA` and `localSMA` when `condition` is `true`.
+    if condition
+        globalSMA := controlSMA        // No warning.
+        localSMA  := ta.sma(close, 20) // Raises warning. This function depends on its history to work as intended.
+
+    plot(controlSMA, "Control SMA", color = color.green)
+    plot(globalSMA,  "Global SMA",  color = color.blue, style = plot.style_cross)
+    plot(localSMA,   "Local SMA",   color = color.red,  style = plot.style_cross)
 
 Why this behavior?
 ^^^^^^^^^^^^^^^^^^
 
-This behavior is required because forcing execution of functions on each bar would lead to unexpected results, 
-as would be the case for a `label.new() <https://www.tradingview.com/pine-script-reference/v5/#fun_label{dot}new>`__ function call inside an if branch, 
-which must not execute unless the `if <https://www.tradingview.com/pine-script-reference/v5/#op_if>`__ condition requires it.
-
-On the other hand, this behavior leads to unexpected results with certain built-in functions 
-which require being executed each bar to correctly calculate their results. 
-Such functions will not return expected results if they are placed in contexts where they are not executed every bar, such as 
-`if <https://www.tradingview.com/pine-script-reference/v5/#op_if>`__ branches.
-
-The solution in these cases is to take those function calls outside their context so they can be executed on every bar.
-
-In this script, `ta.barssince() <https://www.tradingview.com/pine-script-reference/v5/#fun_ta{dot}barssince>`__ 
-is not called on every bar because it is inside a ternary operator's conditional branch::
-
-   //@version=5
-   indicator("Barssince", overlay = false)
-   res = close > close[1] ? ta.barssince(close < close[1]) : -1
-   plot(res, style = plot.style_histogram, color=res >= 0 ? color.red : color.blue)
-
-This leads to incorrect results because `ta.barssince() <https://www.tradingview.com/pine-script-reference/v5/#fun_ta{dot}barssince>`__ is not executed on every bar:
-
-.. image:: images/Function_historical_context_2.png
-
-The solution is to take the `ta.barssince() <https://www.tradingview.com/pine-script-reference/v5/#fun_ta{dot}barssince>`__ 
-call outside the conditional branch to force its execution on every bar::
-
-   //@version=5
-   indicator("Barssince", overlay = false)
-   b = ta.barssince(close < close[1])
-   res = close > close[1] ? b : -1
-   plot(res, style = plot.style_histogram, color = res >= 0 ? color.red : color.blue)
-
-Using this technique we get the expected output:
-
-.. image:: images/Function_historical_context_3.png
-
-
+This behavior is required because forcing the execution of functions on each bar would lead to unexpected results in those functions that produce side effects, i.e., the ones that do something aside from returning the value. For example, the `label.new() <https://www.tradingview.com/pine-script-reference/v5/#fun_label{dot}new>`__ function creates a label on the chart, so forcing it to be called on every bar even when it is inside of an `if <https://www.tradingview.com/pine-script-reference/v5/#op_if>`__ structure would create labels where they should not logically appear.
 
 Exceptions
 ^^^^^^^^^^
 
-Not all built-in functions need to be executed every bar. These are the functions which do not require it, and so do not need special treatment::
+Not all built-in functions use their previous values in their calculations, meaning not all require execution on every bar. For example, `math.max() <https://www.tradingview.com/pine-script-reference/v5/#fun_math{dot}max>`_ compares all arguments passed into it to return the highest value. Such functions that do not interact with their history in any way do not require special treatment.
 
-   dayofmonth, dayofweek, hour, linebreak, math.abs, math.acos, math.asin, math.atan, math.ceil,
-   math.cos, math.exp, math.floor, math.log, math.log10, math.max, math.min, math.pow, math.round,
-   math.sign, math.sin, math.sqrt, math.tan, minute, month, na, nz, second, str.tostring,
-   ticker.heikinashi, ticker.kagi, ticker.new, ticker.renko, time, timestamp, weekofyear, year
-
-.. note:: Functions called from within a `for <https://www.tradingview.com/pine-script-reference/v5/#op_for>`__ loop use the same context in each of the loop's iterations. In the example below, each `ta.lowest() <https://www.tradingview.com/pine-script-reference/v5/#fun_ta{dot}lowest>`__ call on the same bar uses the value that was passed to it, i.e., `bar_index <https://www.tradingview.com/pine-script-reference/v5/#var_bar_index>`__, so function calls used in loops do not require special treatment.
-
-::
-
-   //@version=5
-   indicator("My Script")
-   va = 0.0
-   for i = 1 to 2 by 1
-       if (i + bar_index) % 2 == 0
-           va := ta.lowest(bar_index, 10)  // same context on each call
-   plot(va)
-
-
-
-.. rubric:: Footnotes
-
-.. [#all_available_bars] The upper limit for the total number of historical bars is about 10000 for *Pro/Pro+* users and about 20000 for *Premium* users. *Free* users are able to see about 5000 bars.
-
-
-.. image:: /images/TradingView-Logo-Block.svg
-    :width: 200px
-    :align: center
-    :target: https://www.tradingview.com/
+If the usage of a function within a conditional block does not cause a compiler warning, it's safe to use without impacting calculations. Otherwise, move the function call to the global scope to force consistent execution. When keeping a function call within a conditional block despite the warning, ensure the output is correct at the very least to avoid unexpected results.

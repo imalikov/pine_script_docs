@@ -22,6 +22,13 @@ This page contains release notes of notable changes in Pine Script™.
 2023
 ----
 
+April 2023
+^^^^^^^^^^
+
+Fixed behaviour of `array.mode() <https://www.tradingview.com/pine-script-reference/v5/#fun_array{dot}mode>`__, `matrix.mode() <https://www.tradingview.com/pine-script-reference/v5/#fun_matrix{dot}mode>`__ and `ta.mode() <https://www.tradingview.com/pine-script-reference/v5/#fun_ta{dot}mode>`__. Now functions will return the smallest value if there are no the most frequently occurring value.
+
+
+
 March 2023
 ^^^^^^^^^^
 

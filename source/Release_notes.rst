@@ -27,7 +27,7 @@ April 2023
 
 Fixed an issue with trailing stops in `strategy.exit() <https://www.tradingview.com/pine-script-reference/v5/#fun_strategy{dot}exit>`__  being filled on high/low prices rather than on intrabar prices.
 
-Fixed behaviour of `array.mode() <https://www.tradingview.com/pine-script-reference/v5/#fun_array{dot}mode>`__, `matrix.mode() <https://www.tradingview.com/pine-script-reference/v5/#fun_matrix{dot}mode>`__ and `ta.mode() <https://www.tradingview.com/pine-script-reference/v5/#fun_ta{dot}mode>`__. Now functions will return the smallest value if there are no the most frequently occurring value.
+Fixed behaviour of `array.mode() <https://www.tradingview.com/pine-script-reference/v5/#fun_array{dot}mode>`__, `matrix.mode() <https://www.tradingview.com/pine-script-reference/v5/#fun_matrix{dot}mode>`__ and `ta.mode() <https://www.tradingview.com/pine-script-reference/v5/#fun_ta{dot}mode>`__. Now these functions will return the smallest value when the data has no most frequent value.
 
 
 March 2023
